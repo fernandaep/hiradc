@@ -14,6 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        //$category = Category::paginate(2);
+        //return $category;
         return Category::latest()->get();
     }
 
@@ -72,6 +74,19 @@ class CategoryController extends Controller
         ]);
         $category = Category::findOrFail($id);
         $category->update($request->all());
+
+        if($category) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Category Updated',
+                'data'    => $category
+            ], 200);
+        }
+        //failed save to database
+        return response()->json([
+            'success' => false,
+            'message' => 'Category Failed to Update',
+        ], 409);
     }
 
     /**

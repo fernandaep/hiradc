@@ -1,5 +1,5 @@
 import Home from '../views/Home'
-import Category from '../views/category'
+import Category from '../views/category/Index'
 import CategoryCreate from '../views/category/Create'
 
 export default
