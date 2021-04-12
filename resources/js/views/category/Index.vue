@@ -11,9 +11,6 @@
               </button>
             </div>
           </div>
-          <div class="pencarian">
-            <input type="text" class="form-control" name="pencarian" placeholder="Pencarian"  v-model="pencarian" >
-          </div>
           <div class="card-body table-responsive p-0">
             <table class="table table-hover">
               <tbody>

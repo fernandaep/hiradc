@@ -27,6 +27,30 @@
                             <p>Kategori</p>
                         </router-link>
                     </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'activity'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Kegiatan</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'possibility'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Kemungkinan</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'condition'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Kondisi</p>
+                        </router-link>
+                    </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'threat'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>threat</p>
+                        </router-link>
+                    </li>
                 </ul>
             </nav>
         </div>
