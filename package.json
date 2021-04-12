@@ -35,7 +35,9 @@
         "vue-axios": "^3.2.4",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.5.1",
+        "vue-select": "^3.11.2",
         "vue-sweetalert2": "^4.2.1",
-        "vuejs-datatable": "^2.0.0-alpha.7"
+        "vuejs-datatable": "^2.0.0-alpha.7",
+        "vuelidate": "^0.7.6"
     }
 }

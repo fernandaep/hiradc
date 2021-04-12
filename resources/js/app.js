@@ -16,15 +16,18 @@ import Vue from 'vue';
 import VueRouter from 'vue-router'; 
 import routes from './router';
 import App from './layouts/App.vue';
-import { VuejsDatatableFactory } from 'vuejs-datatable';
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import { Form, HasError, AlertError } from 'vform';
 import moment from "moment"; 
+import Vuelidate from 'vuelidate';
+import vSelect from 'vue-select';
 
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 
 
 Vue.filter("strToUpper", function(text) {
@@ -32,18 +35,20 @@ Vue.filter("strToUpper", function(text) {
 });
 
 Vue.filter("formatDate", function(date) {
-	return moment(date).format('MMMM Do YYYY');
+	return moment(date).format('DD MMMM YYYY hh:mm:ss A');
 }); 
 
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
-Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('v-select', vSelect)
 
-Vue.use(VueRouter,VuejsDatatableFactory);
+
+Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VueSweetalert2);
+Vue.use(Vuelidate);
 
 const app = new Vue({
     el: '#app',

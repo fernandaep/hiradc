@@ -21,6 +21,7 @@
                             <p>Home</p>
                         </router-link>
                     </li>
+                    <li class="nav-header">Master</li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'category'}" >
                             <i class="nav-icon fas fa-cogs"></i>
@@ -48,7 +49,25 @@
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'threat'}" >
                             <i class="nav-icon fas fa-cogs"></i>
-                            <p>threat</p>
+                            <p>Threat</p>
+                        </router-link>
+                    </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'vulnerability'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Vulnerability</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'term'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Istilah</p>
+                        </router-link>
+                    </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'consequence'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Konsekuensi</p>
                         </router-link>
                     </li>
                 </ul>

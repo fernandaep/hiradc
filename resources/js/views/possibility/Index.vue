@@ -1,173 +1,347 @@
 <template>
-  <div class="container">
-    <div class="row mt-5">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Kemungkinan</h3>
-            <div class="card-tools">
-              <button class="btn btn-success" data-toggle="modal" data-target="#addNew" >
-                Add New <i class="fas fa-cogs fa-fw"></i>
-              </button>
-            </div>
-          </div>
-         
-          <div class="card-body table-responsive p-0">
-            <table class="table table-hover">
-              <tbody>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Nama</th>
-                  <th scope="col">Nilai</th>
-                  <th scope="col">Keterangan</th>
-                  <th scope="col">Action</th>
-                </tr>
-
-                <tr v-for="possibility in possibilities" :key="possibility.id">
-                  <td>{{ possibility.id }}</td>
-                  <td>{{ possibility.nama }}</td>
-                  <td>{{ possibility.nilai }}</td>
-                  <td>{{ possibility.keterangan }}</td>
-                  <td>
-                    <a href="#" data-id="possibility.id" @click="editModalWindow(possibility)">
-                      <i class="fa fa-edit blue"></i>
-                    </a>
-                    |
-                    <a href="#" @click="deletePossibility(possibility.id)">
-                      <i class="fa fa-trash red"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="card-footer"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- modal -->
-    <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 v-show="!editMode" class="modal-title" id="addNewLabel">
-              Add New possibility
-            </h5>
-            <h5 v-show="editMode" class="modal-title" id="addNewLabel">
-              Update Possibility
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-           
-          <form @submit.prevent="editMode ? update() : store()">
-            <div class="modal-body">
-                <div class="form-group">
-                  <input v-model="form.nama" type="text" name="nama" placeholder="Nama" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input v-model="form.nilai" type="text" name="nilai" placeholder="Nilai" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input v-model="form.keterangan" type="text" name="keterangan" placeholder="Keterangan" class="form-control">
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">
-                Close
-              </button>
-              <button v-show="editMode" type="submit" class="btn btn-primary">
-                Update
-                 <template v-if="loading">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; display: block; shape-rendering: auto;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"> <circle cx="30" cy="50" fill="#e90c59" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="-0.5s"></animate> </circle> <circle cx="70" cy="50" fill="#46dff0" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="0s"></animate> </circle> <circle cx="30" cy="50" fill="#e90c59" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="-0.5s"></animate> <animate attributeName="fill-opacity" values="0;0;1;1" calcMode="discrete" keyTimes="0;0.499;0.5;1" dur="1s" repeatCount="indefinite"></animate> </circle></svg>
-                </template>
+  <div class="overflow-auto">
+     <div class="container">
+        <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Kemungkinan
+                </h3>
                 
-              </button>
-              <button v-show="!editMode" type="submit" class="btn btn-primary">
-                Create
-                <template v-if="loading">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; display: block; shape-rendering: auto;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"> <circle cx="30" cy="50" fill="#e90c59" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="-0.5s"></animate> </circle> <circle cx="70" cy="50" fill="#46dff0" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="0s"></animate> </circle> <circle cx="30" cy="50" fill="#e90c59" r="20"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" keyTimes="0;0.5;1" values="30;70;30" begin="-0.5s"></animate> <animate attributeName="fill-opacity" values="0;0;1;1" calcMode="discrete" keyTimes="0;0.499;0.5;1" dur="1s" repeatCount="indefinite"></animate> </circle></svg>
-                </template>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+              </div>
+              <div class="card-body">
+              <b-row class="p-20">
+                <b-col>
+                  <b-button variant="outline-success" size="sm" @click="openModal('save' , 'SAVE', $event.target)"> 
+                  Add New <i class="fas fa-plus"></i>
+                  </b-button>
+                </b-col>
+                 <b-col sm="4" md="2" class="my-1">
+                  <b-form-group
+                    label="Per page"
+                    label-for="per-page-select"
+                    label-cols-sm="8"
+                    label-cols-md="8"
+                    label-cols-lg="6"
+                    label-align-sm="right"
+                    label-size="sm"
+                    class="mb-0"
+                  >
+                    <b-form-select
+                      id="per-page-select"
+                      v-model="perPage"
+                      :options="pageOptions"
+                      size="sm"
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col lg="8" class="my-1">
+                  <b-form-group
+                    label="Filter"
+                    label-for="filter-input"
+                    label-cols-sm="3"
+                    label-align-sm="right"
+                    label-size="sm"
+                    class="mb-0"
+                  >
+                    <b-input-group size="sm">
+                      <b-form-input
+                        id="filter-input"
+                        v-model="filter"
+                        type="search"
+                        placeholder="Type to Search"
+                      ></b-form-input>
 
+                      <b-input-group-append>
+                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <br>
+              <b-table
+                id="my-table"
+                :items="items"
+                :per-page="perPage"
+                :current-page="currentPage"
+                :filter="filter"
+                :fields="fields"
+                :head-variant="headvariant"
+                primary-key="id"
+                :tbody-transition-props="transProps"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                stacked="md"
+                small striped hover responsive
+              >
+              <template #cell(no)="row">
+                {{ row.index + 1 }}
+              </template>
+              <template #cell(created_at)="row">
+                {{ row.item.created_at | formatDate}}
+              </template>
+              <template #cell(updated_at)="row">
+                {{ row.item.updated_at | formatDate}}
+              </template>
+                <template #cell(actions)="row">
+                  <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
+                    <i class="fa fa-edit"></i>
+                  </b-button>
+                  <b-button variant="outline-danger" size="sm" @click="deletePossibility(row.item.id)">
+                   <i class="fa fa-trash"></i>
+                  </b-button>
+                </template>
+
+
+              </b-table>
+
+              <b-row>
+                 <b-col class="my-1">
+                  <b-pagination
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    align="right"
+                    size="sm"
+                    class="my-0"
+                  ></b-pagination>
+                </b-col>
+              </b-row>
+              <!-- Info modal -->
+              <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
+                <form @submit.prevent="editMode ? update() : store()"> 
+                  <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="Name" label-for="nama">
+                      <b-form-input
+                        id="nama"
+                        name="nama"
+                        ref="namaReff"
+                        v-model="$v.form.nama.$model"
+                        :state="validateState('nama')"
+                        aria-describedby="input-1-live-feedback"
+                      ></b-form-input>
+
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >This is a required field.
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </div>
+                  <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="Nilai" label-for="nilai">
+                      <b-form-input
+                        id="nilai"
+                        name="nilai"
+                        ref="nilaiReff"
+                        v-model="$v.form.nilai.$model"
+                        :state="validateState('nilai')"
+                        aria-describedby="input-1-live-feedback"
+                      ></b-form-input>
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >This is a required field.
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </div>
+                   <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="keterangan" label-for="keterangan">
+                      <b-form-input
+                        id="keterangan"
+                        name="keterangan"
+                        ref="keteranganReff"
+                        v-model="$v.form.keterangan.$model"
+                        :state="validateState('keterangan')"
+                        aria-describedby="input-1-live-feedback"
+                      ></b-form-input>
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >This is a required field.
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @click="hideModal" >
+                      Close
+                    </button>
+                    <button type="submit" v-show="editMode" class="btn btn-primary">
+                      Update
+                    </button>
+                    <button type="submit" v-show="!editMode"  class="btn btn-primary">
+                      Create
+                    </button>
+                  </div>
+                </form>
+              </b-modal>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+     </div>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      editMode: false,
-      loading:false,
-      possibilities: [],
-      theErrors: [],
+import { validationMixin } from "vuelidate";
+import { required, minLength } from "vuelidate/lib/validators";
 
+  export default {
+    mixins: [validationMixin],
+    data() {
+      return {
+        perPage: 10,
+        editMode:false,
+        loading:false,
+        pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
+        currentPage: 1,
+        filter: "",
+        items: [],
+        fields: [
+          {
+            key: 'no',
+            sortable: true,
+            tdClass:'text-center',
+            thClass:'text-center'
+          },
+          {
+            key: 'id',
+            sortable: true
+          },
+          {
+            key: 'nama',
+            sortable: true
+          },
+          {
+            key: 'nilai',
+            sortable: true
+          },
+          {
+            key: 'keterangan',
+            sortable: true
+          },
+          {
+            key: 'created_at',
+            sortable: true,
+            tdClass:'text-right',
+            thClass:'text-center'
+          },
+          {
+            key: 'updated_at',
+            sortable: true,
+            tdClass:'text-right',
+            thClass:'text-center'
+          },
+          { 
+            key: 'actions', 
+            label: 'Actions' ,
+            tdClass:'text-center',
+            thClass:'text-center'
+          }
+        ],
+        headvariant:'dark',
+        transProps: {
+          name: 'flip-list'
+        },
+        sortBy: 'created_at',
+        sortDesc: true,
+        infoModal: {
+          id: 'info-modal',
+          title: '',
+        },
+        form: {
+          id : '',
+          nama : '',
+        },
+      }
+    },
+    validations: {
       form: {
-        id : '',
-        nama : '',
-        nilai : '',
-        keterangan : '',
-      },
-
-    };
-  },
-  created() {
-    this.loadData();
-  },
- /*  watch: {
-        // whenever question changes, this function will run
-        pencarian: function (q) {
-          if (q != '') {
-            this.searchCategory()  
-          }
-          else {
-            this.getCategories()
-          }
-          
-        }
-      }, */
-  methods: {
+        nama: {
+          required,
+          minLength: minLength(3)
+        },
+        nilai : {
+          required,
+          minLength: minLength(1)
+        },
+        keterangan : {
+          required,
+          minLength: minLength(5)
+        },
+      }
+    },
+    mounted() {
+      this.loadData();
+    },
+    methods: {
      loadData() {
         axios.get("api/possibility").then((response) => {
-          this.possibilities = response.data;
+          this.items = Object.values(response.data);
+          //console.log(Object.values(response.data));
         }); 
       },
-      openModalWindow() {
-        this.editMode = false;
-        this.form.nama = '';
-        this.form.nilai = '';
-        this.form.kegiatan = '';
-        $("#addNew").modal("show");
+      focusMyElement()
+      {
+         this.$refs.namaReff.focus();
+         this.$refs.nilaiReff.focus();
+         this.$refs.keteranganReff.focus();
       },
-      editModalWindow(possibility){
-        console.log(possibility);
-           this.editMode = true;
-           $('#addNew').modal('show');
-           this.form.id = possibility.id;
-           this.form.nama = possibility.nama;
-           this.form.nilai = possibility.nilai;
-           this.form.keterangan = possibility.keterangan;
+
+      openModal(tipe, title, button,item) {
+        if(tipe=="edit") {
+          this.editMode = true;
+          this.form.id =item.id;
+          this.form.nama =item.nama;
+          this.form.nilai =item.nilai;
+          this.form.keterangan =item.keterangan;
+         
+        }
+        else {
+          this.editMode = false;
+          this.form.nama ='';
+          this.form.nilai ='';
+          this.form.keterangan ='';
+        }
+
+        this.infoModal.title = title
+        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
       },
-     async store() {
-        this.loading=true;
+      resetInfoModal() {
+        this.infoModal.title = ''
+          this.$nextTick(() => {
+          this.$v.$reset();
+        });
+      },
+      hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+      validateState(name) {
+        const { $dirty, $error } = this.$v.form[name];
+        return $dirty ? !$error : null;
+      },
+       validateState(nilai) {
+        const { $dirty, $error } = this.$v.form[nilai];
+        return $dirty ? !$error : null;
+      },
+       validateState(keterangan) {
+        const { $dirty, $error } = this.$v.form[keterangan];
+        return $dirty ? !$error : null;
+      },
+      async store() {
+         this.$v.form.$touch();
+          if (this.$v.form.$anyError) {
+            return;
+          }
           try {
-            let response = await axios.post('api/possibility',this.form)
+            let response =  await axios.post('api/possibility',this.form)
+             //console.log(response.status);
               if(response.status==200){
-                  // /console.log(response.data);
                   this.form.nama = '';
                   this.form.nilai = '';
-                  this.form.keterangan= '';
-                  this.loading=false;
-                  $('#addNew').modal('hide');
-                  this.theErrors=[];
+                  this.form.keterangan = '';
+                  this.hideModal();
                   this.$swal({
                     icon: 'success',
                     title: 'Possibility Added successfully'
@@ -175,13 +349,15 @@ export default {
                   this.loadData();
               }
           } catch (e) {
-            //console.log(e.response.data.errors);
-            this.theErrors = e.response.data.errors ;
+            console.log(e.response.data.errors);
           }
       },
 
-       async update() {
-          this.loading=false;
+      async update() {
+        this.$v.form.$touch();
+          if (this.$v.form.$anyError) {
+            return;
+          }
           try {
             let id = this.form.id;
             let updated = await axios.put('api/possibility/'+id,this.form)
@@ -189,9 +365,7 @@ export default {
                   this.form.nama = '';
                   this.form.nilai = '';
                   this.form.keterangan = '';
-                  this.loading=false;
-                  $('#addNew').modal('hide');
-                  this.theErrors=[];
+                  this.hideModal();
                   this.$swal({
                     icon: 'success',
                     title: 'Possibility Updated successfully'
@@ -207,19 +381,6 @@ export default {
           }
       },
 
-      
-     /*  update(){
-        let id = this.form.id;
-        axios.put("api/category/" + id , this.form)
-        .then(function (response) {
-           console.log(respon);
-        })
-        .catch(function () {
-            //alert("Could not load your category")
-            console.log(response.data.errors);
-        });
-      },  */
-         
       deletePossibility(id) { 
         this.$swal({
           title: 'Are you sure?',
@@ -243,49 +404,16 @@ export default {
           }
         })
       },
-       /*  getActivities(page) {
-          var app = this;
-          if (typeof page === 'undefined') {
-            page = 1;
-          }
-          axios.get("api/activity/"+id+'/show-all?page='+page)
-          .then(function (resp) {
-            app.activities = resp.data.data;
-            app.activitiesData = resp.data;
-            app.loading = false;
-          })
-          .catch(function (resp) {
-            console.log(resp);
-            app.loading = false;
-            alert("Could not load activity");
-          });
-        },
-        searchActivities(page){
-          var app = this;
-          if (typeof page === 'undefined') {
-            page = 1;
-          }
-          axios.get("api/activity/"+id+'/search?q='+app.pencarian+'&page='+page)
-          .then(function (resp) {
-            app.activities = resp.data;
-            app.ActivitiesData = [];
-          })
-          .catch(function (resp) {
-            console.log(resp);
-            alert("Could not load Activity");
-          });
-        }, */
-      
-
-     },
+    },
+    computed: {
+      rows() {
+        return this.items.length
+      }
+    },
+  }
+</script>
+<style>
+table#my-table .flip-list-move {
+  transition: transform 1s;
 }
-</script> 
-
-<style scoped>
-.pencarian {
-  color: red;
- 
-  float: right;
-  padding-bottom: 10px;
-}
-</style> */
+</style>

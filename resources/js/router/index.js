@@ -4,6 +4,9 @@ import Activity from '../views/activity/index'
 import Possibility from '../views/Possibility/Index'
 import Condition from '../views/Condition/Index'
 import Threat from '../views/Threat/Index'
+import Vulnerability from '../views/Vulnerability/index'
+import Term from '../views/Term/Index'
+import Consequence from '../views/Consequence/Index'
 
 
 export default
@@ -40,6 +43,21 @@ export default
             path:'/threat',
             name:'threat',
             component: Threat,
+        },
+        {
+            path:'/vulnerability',
+            name:'vulnerability',
+            component: Vulnerability,
+        },
+        {
+            path:'/term',
+            name:'term',
+            component: Term,
+        },
+        {
+            path:'/consequence',
+            name:'consequence',
+            component: Consequence,
         },
     ]
 }
