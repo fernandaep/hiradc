@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ThreatResource;
 use App\Models\Threat;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class ThreatController extends Controller
      */
     public function index()
     {
-        return Threat::latest()->get();
+        $threat = Threat::latest()->get();
+        return ThreatResource::collection($threat);
     }
 
 
@@ -27,10 +29,8 @@ class ThreatController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
         $threat = Threat::create([
+            'term_id' => request('term_id'),
             'nama'=> request('nama'),
         ]);
         

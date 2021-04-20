@@ -6,7 +6,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  Kemungkinan
+                  Istilah 
                 </h3>
                 
               </div>
@@ -79,6 +79,9 @@
               <template #cell(no)="row">
                 {{ row.index + 1 }}
               </template>
+               <template #cell(category_id)="row">
+                {{ row.item.category  }}
+              </template>
               <template #cell(created_at)="row">
                 {{ row.item.created_at | formatDate}}
               </template>
@@ -112,7 +115,20 @@
               <!-- Info modal -->
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
-                 <div class="modal-body">
+                  <div class="modal-body">
+                    <b-form-group id="kategorigroup" label="Kategori" label-for="kategori">
+                      <v-select v-model="selected"  :options="categories">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selected"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="kategoriReff"
+                            />
+                          </template>
+                      </v-select>
+                    </b-form-group>
                     <b-form-group id="example-input-group-1" label="kode" label-for="kode">
                       <b-form-input
                         id="kode"
@@ -127,10 +143,9 @@
                         id="input-1-live-feedback"
                       >This is a required field.
                       </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-              <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="isitilah" label-for="istilah">
+                      
+                   </b-form-group>
+                    <b-form-group id="example-input-group-1" label="Istilah" label-for="istilah">
                       <b-form-input
                         id="istilah"
                         name="istilah"
@@ -144,7 +159,8 @@
                       >This is a required field.
                       </b-form-invalid-feedback>
                     </b-form-group>
-                  </div> 
+                   
+                  </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" @click="hideModal" >
                       Close
@@ -178,10 +194,12 @@ import { required, minLength } from "vuelidate/lib/validators";
         perPage: 10,
         editMode:false,
         loading:false,
-        pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
+        pageOptions: [5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
+        selected:"",
         filter: "",
         items: [],
+        categories:[],
         fields: [
           {
             key: 'no',
@@ -191,6 +209,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           },
           {
             key: 'id',
+            sortable: true
+          },
+          {
+            key: 'category_id',
+            label: 'Kategori',
             sortable: true
           },
           {
@@ -232,13 +255,18 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
         form: {
           id : '',
+          category_id:'',
           kode : '',
           istilah : '',
+          
         },
       }
     },
     validations: {
       form: {
+        category_id: {
+        required,
+        },
         kode: {
           required,
           minLength: minLength(1)
@@ -251,30 +279,43 @@ import { required, minLength } from "vuelidate/lib/validators";
     },
     mounted() {
       this.loadData();
+      this.getCategory();
     },
     methods: {
+    
      loadData() {
         axios.get("api/term").then((response) => {
-          this.items = Object.values(response.data);
-          //console.log(Object.values(response.data));
+          this.items = Object.values(response.data.data);
+          //console.log(Object.values(response.data.data));
         }); 
       },
-      focusMyElement()
+      getCategory()
       {
-         this.$refs.kodeReff.focus();
-         this.$refs.istilahReff.focus();
+        axios.get("api/category").then((response) => {
+        this.categories = Object.values(response.data);
+        let cat=$.map(this.categories,function(t){
+          return {label:t.nama,value:t.id}
+        });
+        this.categories=cat;
+        }); 
       },
 
       openModal(tipe, title, button,item) {
+        //console.log("openModal");
         if(tipe=="edit") {
           this.editMode = true;
           this.form.id =item.id;
           this.form.kode =item.kode;
           this.form.istilah =item.istilah;
-         
+          this.form.category_id =item.category_id;
+          this.selected =item.category_id;
+          this.selected={label:item.category,value:item.category_id}
+          
         }
         else {
           this.editMode = false;
+          this.selected ='';
+          this.form.category_id ='';
           this.form.kode ='';
           this.form.istilah ='';
         }
@@ -295,20 +336,22 @@ import { required, minLength } from "vuelidate/lib/validators";
         const { $dirty, $error } = this.$v.form[kode];
         return $dirty ? !$error : null;
       },
-       validateState(istilah) {
+      validateState(istilah) {
         const { $dirty, $error } = this.$v.form[istilah];
         return $dirty ? !$error : null;
       },
       async store() {
+         this.form.category_id = this.selected.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
           }
           try {
+            
             let response =  await axios.post('api/term',this.form)
              //console.log(response.status);
               if(response.status==200){
-                  this.form.nama = '';
+                  this.form.category_id = '';
                   this.form.kode = '';
                   this.form.istilah = '';
                   this.hideModal();
@@ -324,12 +367,14 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
 
       async update() {
+        let id = this.form.id;
+        this.form.category_id = this.selected.value;
+        
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
           }
           try {
-            let id = this.form.id;
             let updated = await axios.put('api/term/'+id,this.form)
               if(updated.status==200){
                   this.form.kode= '';
@@ -337,7 +382,7 @@ import { required, minLength } from "vuelidate/lib/validators";
                   this.hideModal();
                   this.$swal({
                     icon: 'success',
-                    title: 'term Updated successfully'
+                    title: 'Term Updated successfully'
                   });
                   this.loadData();
               }
@@ -348,6 +393,10 @@ import { required, minLength } from "vuelidate/lib/validators";
               });
             this.theErrors = e.response.data.errors ;
           }
+      },
+      focusMyElement()
+      {
+
       },
 
       deleteTerm(id) { 

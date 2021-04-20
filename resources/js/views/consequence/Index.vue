@@ -13,9 +13,9 @@
               <div class="card-body">
               <b-row class="p-20">
                 <b-col>
-                  <b-button variant="outline-success" size="sm" @click="openModal('save' , 'SAVE', $event.target)"> 
-                  Add New <i class="fas fa-plus"></i>
-                  </b-button>
+                  <router-link :to="{name:'consequence.create'}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i> Add New
+                      </router-link>
                 </b-col>
                  <b-col sm="4" md="2" class="my-1">
                   <b-form-group
@@ -86,15 +86,15 @@
                 {{ row.item.updated_at | formatDate}}
               </template>
                 <template #cell(actions)="row">
-                  <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
-                    <i class="fa fa-edit"></i>
+                  <b-button variant="outline-info" size="sm">
+                    <router-link :to="{name:'consequence.edit',params: {id: row.item.id}}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit"></i> Edit
+                    </router-link>
                   </b-button>
                   <b-button variant="outline-danger" size="sm" @click="deleteConsequence(row.item.id)">
                    <i class="fa fa-trash"></i>
                   </b-button>
                 </template>
-
-
               </b-table>
 
               <b-row>
@@ -113,189 +113,13 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Nilai" label-for="nilai">
+                    <b-form-group id="example-input-group-1" label="nilai" label-for="nilai">
                       <b-form-input
                         id="nilai"
                         name="nilai"
                         ref="nilaiReff"
                         v-model="$v.form.nilai.$model"
                         :state="validateState('nilai')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Konsekensi" label-for="konsekuensi">
-                      <b-form-input
-                        id="konsekuensi"
-                        name="konsekuensi"
-                        ref="konsekuensiReff"
-                        v-model="$v.form.konsekuensi.$model"
-                        :state="validateState('konsekuensi')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Financial" label-for="financial">
-                      <b-form-input
-                        id="financial"
-                        name="financial"
-                        ref="financialReff"
-                        v-model="$v.form.financial.$model"
-                        :state="validateState('financial')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Objective" label-for="objective">
-                      <b-form-input
-                        id="objective"
-                        name="objective"
-                        ref="objectiveReff"
-                        v-model="$v.form.objective.$model"
-                        :state="validateState('objective')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Legal" label-for="legal">
-                      <b-form-input
-                        id="legal"
-                        name="legal"
-                        ref="legal"
-                        v-model="$v.form.legal.$model"
-                        :state="validateState('legal')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Biaya" label-for="biaya">
-                      <b-form-input
-                        id="biaya"
-                        name="biaya"
-                        ref="biaya"
-                        v-model="$v.form.biaya.$model"
-                        :state="validateState('biaya')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Reputasi" label-for="reputasi">
-                      <b-form-input
-                        id="reputasi"
-                        name="reputasi"
-                        ref="reputasi"
-                        v-model="$v.form.reputasi.$model"
-                        :state="validateState('reputasi')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="cakupan" label-for="cakupan">
-                      <b-form-input
-                        id="cakupan"
-                        name="cakupan"
-                        ref="cakupan"
-                        v-model="$v.form.cakupan.$model"
-                        :state="validateState('cakupan')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="lama_pemulihan" label-for="lama_pemulihan">
-                      <b-form-input
-                        id="lama_pemulihan"
-                        name="lama_pemulihan"
-                        ref="lama_pemulihan"
-                        v-model="$v.form.lama_pemulihan.$model"
-                        :state="validateState('lama_pemulihan')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="lama_penyimpangan" label-for="lama_penyimpangan">
-                      <b-form-input
-                        id="lama_penyimpangan"
-                        name="lama_penyimpangan"
-                        ref="lama_penyimpangan"
-                        v-model="$v.form.lama_penyimpangan.$model"
-                        :state="validateState('lama_penyimpangan')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="product_image" label-for="product_image">
-                      <b-form-input
-                        id="product_image"
-                        name="product_image"
-                        ref="product_image"
-                        v-model="$v.form.product_image.$model"
-                        :state="validateState('product_image')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="dampak_sosial" label-for="dampak_sosial">
-                      <b-form-input
-                        id="dampak_sosial"
-                        name="dampak_sosial"
-                        ref="dampak_sosial"
-                        v-model="$v.form.dampak_sosial.$model"
-                        :state="validateState('dampak_sosial')"
                         aria-describedby="input-1-live-feedback"
                       ></b-form-input>
                       <b-form-invalid-feedback
@@ -348,6 +172,14 @@ import { required, minLength } from "vuelidate/lib/validators";
             thClass:'text-center'
           },
           {
+            key: 'id',
+            sortable: true
+          },
+          {
+            key: 'kategori',
+            sortable: true
+          },
+          {
             key: 'nilai',
             sortable: true
           },
@@ -380,19 +212,19 @@ import { required, minLength } from "vuelidate/lib/validators";
             sortable: true
           },
           {
-            key: 'lama pemulihan',
+            key: 'lama_pemulihan',
             sortable: true
           },
           {
-            key: 'lama penyimpangan',
+            key: 'lama_penyimpangan',
             sortable: true
           },
           {
-            key: 'product image',
+            key: 'product_image',
             sortable: true
           },
           {
-            key: 'dampak sosial',
+            key: 'dampak_sosial',
             sortable: true
           },
           {
@@ -471,26 +303,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           required,
           minLength: minLength(3)
         },
-        cakupan: {
-          required,
-          minLength: minLength(3)
-        },
-        lama_pemulihan: {
-          required,
-          minLength: minLength(3)
-        },
-        lama_penyimpangan: {
-          required,
-          minLength: minLength(3)
-        },
-        product_image: {
-          required,
-          minLength: minLength(3)
-        },
-        dampak_sosial: {
-          required,
-          minLength: minLength(3)
-        },
+        cakupan : '',
+        lama_pemulihan : '',
+        lama_penyimpangan : '',
+        product_image : '',
+        dampak_sosial : '',
       }
     },
     mounted() {
@@ -517,6 +334,8 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.objective =item.objective;
           this.form.legal =item.legal;
           this.form.biaya =item.biaya;
+          this.form.reputasi =item.reputasi;
+          this.form.cakupan =item.cakupan;
           this.form.lama_pemulihan =item.lama_pemulihan;
           this.form.lama_penyimpangan =item.lama_penyimpangan;
          this.form.product_image =item.product_image;

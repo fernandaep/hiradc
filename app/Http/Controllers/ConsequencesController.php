@@ -33,11 +33,11 @@ class ConsequencesController extends Controller
             'legal' => 'required',
             'biaya' => 'required',
             'reputasi' => 'required',
-            'cakupan'=>'cakupan',
-            'lama_pemulihan'=> 'lama_pemulihan',
-            'lama_penyimpangan'=> 'lama_penyimpangan',
-            'product_image'=> 'product_image',
-            'dampak_sosial'=> 'dampak_sosial',
+            'cakupan'=>'',
+            'lama_pemulihan'=> '',
+            'lama_penyimpangan'=> '',
+            'product_image'=> '',
+            'dampak_sosial'=> '',
 
         ]);
         $consequence = Consequence::create([
@@ -78,7 +78,7 @@ class ConsequencesController extends Controller
      */
     public function show($id)
     {
-        return Consequence::findorFail($id);
+        $consequence = Consequence::whereCode($id)->first();
     }
 
     /**
@@ -99,17 +99,14 @@ class ConsequencesController extends Controller
             'legal' => 'required',
             'biaya' => 'required',
             'reputasi' => 'required',
-            'cakupan'=>'cakupan',
-            'lama_pemulihan'=> 'lama_pemulihan',
-            'lama_penyimpangan'=> 'lama_penyimpangan',
-            'product_image'=> 'product_image',
-            'dampak_sosial'=> 'dampak_sosial',
-
-
+            'cakupan'=>'',
+            'lama_pemulihan'=> '',
+            'lama_penyimpangan'=> '',
+            'product_image'=> '',
+            'dampak_sosial'=> '',
         ]);
         $consequence = Consequence::findOrFail($id);
         $consequence->update($request->all());
-
         if($consequence) {
             return response()->json([
                 'success' => true,

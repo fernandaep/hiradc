@@ -220,7 +220,7 @@ import { required, minLength } from "vuelidate/lib/validators";
       form: {
         nama: {
           required,
-          minLength: minLength(3)
+          minLength: minLength(1)
         }
       }
     },

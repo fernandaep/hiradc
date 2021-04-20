@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ConditionResource;
 use App\Models\Condition;
 use Illuminate\Http\Request;
 
-class ConditionController extends Controller
+class conditionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class ConditionController extends Controller
      */
     public function index()
     {
-        return Condition::latest()->get();
+        
+        $condition = Condition::latest()->get();
+        return ConditionResource::collection($condition);
     }
 
     /**
@@ -25,14 +28,12 @@ class ConditionController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
         $condition = Condition::create([
-            'nama'=> request('nama'),
+            'category_id' => request('category_id'),
+            'nama'      => request('nama'),
         ]);
-        
-        if($condition) {
+
+        if ($condition) {
             return response()->json([
                 'success' => true,
                 'message' => 'Condition Created',
@@ -57,7 +58,6 @@ class ConditionController extends Controller
         return Condition::findorFail($id);
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -73,7 +73,7 @@ class ConditionController extends Controller
         $condition = Condition::findOrFail($id);
         $condition->update($request->all());
 
-        if($condition) {
+        if ($condition) {
             return response()->json([
                 'success' => true,
                 'message' => 'Condition Updated',

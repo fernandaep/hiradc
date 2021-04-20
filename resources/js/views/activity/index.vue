@@ -280,7 +280,7 @@ import { required, minLength } from "vuelidate/lib/validators";
                   this.hideModal();
                   this.$swal({
                     icon: 'success',
-                    title: 'Category Added successfully'
+                    title: 'Activity Added successfully'
                   });
                   this.loadData();
               }
@@ -302,14 +302,14 @@ import { required, minLength } from "vuelidate/lib/validators";
                   this.hideModal();
                   this.$swal({
                     icon: 'success',
-                    title: 'Category Updated successfully'
+                    title: 'Activity Updated successfully'
                   });
                   this.loadData();
               }
           } catch (e) {
              this.$swal({
                 icon: 'Error',
-                title: 'Category Updated Failed '+e.response.data.errors
+                title: 'Activity Updated Failed '+e.response.data.errors
               });
             this.theErrors = e.response.data.errors ;
           }

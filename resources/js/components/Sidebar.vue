@@ -30,44 +30,57 @@
                     </li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'activity'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                           <i class="nav-icon fas fa-archive"></i>
                             <p>Kegiatan</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'possibility'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                            <i class="nav-icon fas fa-balance-scale"></i>
                             <p>Kemungkinan</p>
                         </router-link>
                     </li>
+                    <li class="nav-header">Relasi</li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'condition'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                            <i class="nav-icon fas fa-building"></i>
                             <p>Kondisi</p>
                         </router-link>
                     </li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'threat'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                         <i class="nav-icon fas fa-hard-hat"></i>
                             <p>Threat</p>
                         </router-link>
                     </li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'vulnerability'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                           <i class="nav-icon fas fa-hand-holding-medical"></i>
                             <p>Vulnerability</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'term'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                           <i class="nav-icon fas fa-dharmachakra"></i>
                             <p>Istilah</p>
                         </router-link>
                     </li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'consequence'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                            <i class="nav-icon fas fa-dice"></i>
                             <p>Konsekuensi</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'k3team'}" >
+                            <i class="nav-icon fas fa-handshake"></i>
+                            <p>Team K3</p>
+                        </router-link>
+                    </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'register'}" >
+                            <i class="nav-icon fas fa-registered"></i>
+                            <p>register</p>
                         </router-link>
                     </li>
                 </ul>

@@ -6,7 +6,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  Threat
+                  Threat 
                 </h3>
                 
               </div>
@@ -79,6 +79,9 @@
               <template #cell(no)="row">
                 {{ row.index + 1 }}
               </template>
+               <template #cell(term_id)="row">
+                {{ row.item.term  }}
+              </template>
               <template #cell(created_at)="row">
                 {{ row.item.created_at | formatDate}}
               </template>
@@ -113,7 +116,21 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Name" label-for="nama">
+                    <b-form-group id="istilahgroup" label="Istilah" label-for="istilah">
+                      <v-select v-model="selected"  :options="terms">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selected"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="istilahReff"
+                            />
+                          </template>
+                      </v-select>
+
+                    </b-form-group>
+                    <b-form-group id="example-input-group-1" label="Threat" label-for="nama">
                       <b-form-input
                         id="nama"
                         name="nama"
@@ -128,6 +145,7 @@
                       >This is a required field.
                       </b-form-invalid-feedback>
                     </b-form-group>
+                   
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" @click="hideModal" >
@@ -162,10 +180,12 @@ import { required, minLength } from "vuelidate/lib/validators";
         perPage: 10,
         editMode:false,
         loading:false,
-        pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
+        pageOptions: [5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
+        selected:"",
         filter: "",
         items: [],
+        terms:[],
         fields: [
           {
             key: 'no',
@@ -175,6 +195,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           },
           {
             key: 'id',
+            sortable: true
+          },
+          {
+            key: 'term_id',
+            label: 'Istilah',
             sortable: true
           },
           {
@@ -212,12 +237,17 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
         form: {
           id : '',
+          term_id:'',
           nama : '',
+          
         },
       }
     },
     validations: {
       form: {
+        term_id: {
+        required,
+        },
         nama: {
           required,
           minLength: minLength(3)
@@ -226,28 +256,43 @@ import { required, minLength } from "vuelidate/lib/validators";
     },
     mounted() {
       this.loadData();
+      this.getTerm();
     },
     methods: {
+    
      loadData() {
         axios.get("api/threat").then((response) => {
-          this.items = Object.values(response.data);
-          //console.log(Object.values(response.data));
+          this.items = Object.values(response.data.data);
+          //console.log(Object.values(response.data.data));
         }); 
       },
-      focusMyElement()
+      getTerm()
       {
-         this.$refs.namaReff.focus();
+        axios.get("api/term").then((response) => {
+        this.terms = Object.values(response.data);
+        let cat=$.map(this.terms,function(t){
+          return {label:t.istilah,value:t.id}  
+        });
+        /* this.terms=cat; */
+        console.log(this.term);
+        }); 
       },
 
       openModal(tipe, title, button,item) {
+        //console.log("openModal");
         if(tipe=="edit") {
           this.editMode = true;
           this.form.id =item.id;
           this.form.nama =item.nama;
-         
+          this.form.term_id =item.term_id;
+          this.selected =item.term_id;
+          this.selected={label:item.term,value:item.term_id}
+          
         }
         else {
           this.editMode = false;
+          this.selected ='';
+          this.form.term_id ='';
           this.form.nama ='';
         }
 
@@ -268,14 +313,17 @@ import { required, minLength } from "vuelidate/lib/validators";
         return $dirty ? !$error : null;
       },
       async store() {
+         this.form.term_id = this.selected.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
           }
           try {
+            
             let response =  await axios.post('api/threat',this.form)
              //console.log(response.status);
               if(response.status==200){
+                  this.form.term_id = '';
                   this.form.nama = '';
                   this.hideModal();
                   this.$swal({
@@ -290,12 +338,14 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
 
       async update() {
+        let id = this.form.id;
+        this.form.term_id = this.selected.value;
+        
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
           }
           try {
-            let id = this.form.id;
             let updated = await axios.put('api/threat/'+id,this.form)
               if(updated.status==200){
                   this.form.nama = '';
@@ -313,6 +363,11 @@ import { required, minLength } from "vuelidate/lib/validators";
               });
             this.theErrors = e.response.data.errors ;
           }
+      },
+
+      focusMyElement()
+      {
+
       },
 
       deleteThreat(id) { 

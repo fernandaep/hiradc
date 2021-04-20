@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TermResource;
 use Illuminate\Http\Request;
 use App\Models\Term;
 
@@ -14,7 +15,8 @@ class TermController extends Controller
      */
     public function index()
     {
-        return Term::latest()->get();
+        $term = Term::latest()->get();
+        return TermResource::collection($term);
     }
 
 
@@ -32,6 +34,7 @@ class TermController extends Controller
             'istilah' => 'required',
         ]);
         $term = Term::create([
+            'category_id' => request('category_id'),
             'kode'=> request('kode'),
             'istilah'=> request('istilah'),
         ]);
