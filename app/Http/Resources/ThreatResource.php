@@ -17,11 +17,11 @@ class ThreatResource extends JsonResource
         return [
             'id' => $this->id,
             'term_id' => $this->term_id,
-            'term' => $this->term->istilah,
+            'kode' => $this->term->kode,
+            'istilah' => $this->term->istilah,
             'nama' => $this->nama,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
-        //return parent::toArray($request);
     }
 }

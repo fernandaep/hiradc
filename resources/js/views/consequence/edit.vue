@@ -137,50 +137,89 @@ export default {
     };
   },
   mounted() {
-       this.update();
+      this.loadData();
+      this.getData();
   },
   methods: {
      
-    savedata() {
-       let id = this.form.id;
-       var app = this;
-       var newform = app.form;
-         axios.patch("api/consequence"+id, newform).then(function (response) {
-            app.form.nilai = '';
-            app.form.konsekuensi = '';
-            app.form.financial = '';
-            app.form.objective = '';
-            app.form.legal = '';
-            app.form.biaya = '';
-            app.form.reputasi = '';
-            app.form.cakupan = '';
-            app.form.lama_pemulihan = '';
-            app.form.lama_penyimpangan = '';
-            app.form.product_image = '';
-            app.form.dampak_sosial = '';
-          /* this.consequences = set(this.edit).then(this.update) */
-        })
-            console.log(this.savedata);
-      },
-    
-   
-    async update() {
-          try {
-            let app = this;
-            let id = this.form.id;
-            axios.get('api/consequence/'+id,this.form)
-             .then(function (response){
-                app.form = response.data;
-             })
-          } catch (e) {
-             this.$swal({
-                icon: 'Error',
-                title: 'Consequence Updated Failed '+e.response.data.errors
-              });
-            this.theErrors = e.response.data.errors ;
-          }
-          console.log(this.update);
-      },
+      loadData() {
+           let id = this.form.id;
+            axios.get("api/consequence"+id).then(response => {
+                this.items = Object.values(response.data);
+                //console.log(Object.values(response.data));
+            });
+        },
+      getData(item,tipe) {
+             if (tipe == "getData") {
+                this.form.nilai = item.nilai;
+                this.form.konsekuensi = item.konsekuensi;
+                this.form.financial = item.financial;
+                this.form.objective = item.objective;
+                this.form.legal = item.legal;
+                this.form.biaya = item.biaya;
+                this.form.reputasi = item.reputasi;
+                this.form.cakupan = item.cakupan;
+                this.form.lama_pemulihan = item.lama_pemulihan;
+                this.form.lama_penyimpangan = item.lama_penyimpangan;
+                this.form.product_image = item.product_image;
+                this.form.dampak_sosial = item.dampak_sosial;
+            } else {
+                this.editMode = false;
+                this.form.nilai = "";
+                this.form.konsekuensi = "";
+                this.form.financial = "";
+                this.form.objective = "";
+                this.form.legal = "";
+                this.form.biaya = "";
+                this.form.reputasi = "";
+                this.form.cakupan = "";
+                this.form.lama_pemulihan = "";
+                this.form.lama_penyimpangan = "";
+                this.form.product_image = "";
+                this.form.dampak_sosial = "";
+            }
+          },
+
+      async update() {
+            this.$v.form.$touch();
+            if (this.$v.form.$anyError) {
+                return;
+            }
+            try {
+                let id = this.form.id;
+                let updated = await axios.put(
+                    "api/consequence/" + id,
+                    this.form
+                );
+                if (updated.status == 200) {
+                    this.form.nilai = "";
+                    this.form.konsekuensi = "";
+                    this.form.financial = "";
+                    this.form.objective = "";
+                    this.form.legal = "";
+                    this.form.biaya = "";
+                    this.form.reputasi = "";
+                    this.form.cakupan = "";
+                    this.form.lama_pemulihan = "";
+                    this.form.lama_penyimpangan = "";
+                    this.form.product_image = "";
+                    this.form.dampak_sosial = "";
+                    this.hideModal();
+                    this.$swal({
+                        icon: "success",
+                        title: "Consequence Updated successfully"
+                    });
+                    this.loadData();
+                }
+            } catch (e) {
+                this.$swal({
+                    icon: "Error",
+                    title:
+                        "Consequence Updated Failed " + e.response.data.errors
+                });
+                this.theErrors = e.response.data.errors;
+            }
+        },
   }
 };
 </script>
