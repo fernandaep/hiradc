@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PossibilityController;
@@ -11,7 +11,7 @@ use App\Http\Controllers\ConsequencesController;
 use App\Http\Controllers\K3teamController;
 use App\Http\Controllers\RegisterController;
 
-
+Route::resource('karyawan', KaryawanController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('activity', ActivityController::class);
 Route::resource('possibility', PossibilityController::class);

@@ -9,4 +9,9 @@ class K3team extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class); 
+    }
 }

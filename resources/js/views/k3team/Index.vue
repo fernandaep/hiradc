@@ -113,7 +113,49 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="unit_kerja" label-for="unit_kerja">
+                    <b-form-group id="nik_koordinator" label="NIK Koordinator" label-for="nik">
+                      <v-select v-model="selected"  :options="karyawans">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selected"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="koordinatorReff"
+                            />
+                          </template>
+                      </v-select>
+
+                    </b-form-group>
+                    <b-form-group id="nik_koordinator" label="NIK Karyawan" label-for="nik">
+                      <v-select v-model="selected"  :options="karyawans">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selected"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="karyawanReff"
+                            />
+                          </template>
+                      </v-select>
+
+                    </b-form-group>
+                    <b-form-group id="nik_koordinator" label="NIK Sekretaris" label-for="nik">
+                      <v-select v-model="selected"  :options="karyawans">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selected"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="sekretarisReff"
+                            />
+                          </template>
+                      </v-select>
+
+                    </b-form-group>
+                    <b-form-group id="example-input-group-1" label="Unit Kerja" label-for="unit_kerja">
                       <b-form-input
                         id="unit_kerja"
                         name="unit_kerja"
@@ -164,8 +206,10 @@ import { required, minLength } from "vuelidate/lib/validators";
         loading:false,
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
+        selected:"",
         filter: "",
         items: [],
+        karyawans:[],
         fields: [
           {
             key: 'no',
@@ -175,6 +219,18 @@ import { required, minLength } from "vuelidate/lib/validators";
           },
           {
             key: 'id',
+            sortable: true
+          },
+          {
+            key: 'nik',
+            sortable: true
+          },
+          {
+            key: 'nip',
+            sortable: true
+          },
+          {
+            key: 'nama',
             sortable: true
           },
           {
@@ -212,12 +268,20 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
         form: {
           id : '',
+          karyawan_id :'',
           unit_kerja : '',
         },
       }
     },
     validations: {
       form: {
+        karyawan_id: {
+        required,
+        },
+        nama: {
+          required,
+          minLength: minLength(3)
+        },
         unit_kerja: {
           required,
           minLength: minLength(1)
@@ -226,29 +290,41 @@ import { required, minLength } from "vuelidate/lib/validators";
     },
     mounted() {
       this.loadData();
+      this.getKaryawan();
     },
     methods: {
      loadData() {
         axios.get("api/k3team").then((response) => {
-          this.items = Object.values(response.data);
+          this.items = Object.values(response.data.data);
           //console.log(Object.values(response.data));
         }); 
       },
-      focusMyElement()
-      {
-         this.$refs.unit_kerjaReff.focus();
-      },
+      getKaryawan() {
+            axios.get("api/karyawan").then(response => {
+                this.karyawans = Object.values(response.data);
+                let cat = $.map(this.karyawans, function(t) {
+                    return { label: t.nik, value: t.nik };
+                });
+                this.karyawans=cat; 
+                //console.log(this.karyawans);
+            });
+        },
 
       openModal(tipe, title, button,item) {
         if(tipe=="edit") {
           this.editMode = true;
           this.form.id =item.id;
           this.form.unit_kerja =item.unit_kerja;
+          this.form.karyawan_nik = item.karyawan_nik;
+          this.selected = item.karyawan_nik;
+          this.selected = { label: item.karyawan, value: item.karyawan_nik };
          
         }
         else {
           this.editMode = false;
-          this.form.unit_kerja ='';
+          this.form.unit_kerja ="";
+          this.form.karyawan_nik="";
+          this.form.nama="";
         }
 
         this.infoModal.title = title
@@ -268,6 +344,7 @@ import { required, minLength } from "vuelidate/lib/validators";
         return $dirty ? !$error : null;
       },
       async store() {
+         this.form.karyawan_nik = this.selected.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -276,6 +353,7 @@ import { required, minLength } from "vuelidate/lib/validators";
             let response =  await axios.post('api/k3team',this.form)
              //console.log(response.status);
               if(response.status==200){
+                this.form.karyawan_nik = "";
                   this.form.nama = '';
                   this.hideModal();
                   this.$swal({
@@ -290,12 +368,13 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
 
       async update() {
+         let id = this.form.id;
+        this.form.karyawan_nik = this.selected.value;
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
           }
           try {
-            let id = this.form.id;
             let updated = await axios.put('api/k3team/'+id,this.form)
               if(updated.status==200){
                   this.form.unit_kerja = '';
@@ -314,7 +393,10 @@ import { required, minLength } from "vuelidate/lib/validators";
             this.theErrors = e.response.data.errors ;
           }
       },
-
+      focusMyElement()
+            {
+              this.$refs.unit_kerjaReff.focus();
+            },
       deleteK3team(id) { 
         this.$swal({
           title: 'Are you sure?',

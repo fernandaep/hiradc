@@ -22,6 +22,12 @@
                         </router-link>
                     </li>
                     <li class="nav-header">Master</li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'karyawan'}" >
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>Karyawan</p>
+                        </router-link>
+                    </li>
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'category'}" >
                             <i class="nav-icon fas fa-cogs"></i>

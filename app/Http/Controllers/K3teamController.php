@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\K3TeamResource;
 use App\Models\K3team;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class K3teamController extends Controller
      */
     public function index()
     {
-        return K3team::latest()->get();
+        $k3team = K3team::latest()->get();
+        return K3TeamResource::collection($k3team);
     }
 
 
@@ -27,6 +29,7 @@ class K3teamController extends Controller
     public function store(Request $request)
     {
         request()->validate([
+            'karyawan_nik' => request('karyawan_nik'),
             'unit_kerja' => 'required',
         ]);
         $k3team= K3team::create([

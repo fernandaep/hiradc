@@ -1,4 +1,5 @@
 import Home from '../views/Home'
+import Karyawan from '../views/Karyawan/Index'
 import Category from '../views/category/Index'
 import Activity from '../views/activity/index'
 import Possibility from '../views/Possibility/Index'
@@ -23,6 +24,11 @@ export default
             path:'/',
             name:'home',
             component: Home,
+        },
+        {
+            path:'/karyawan',
+            name:'karyawan',
+            component: Karyawan,
         },
         {
             path:'/category',
