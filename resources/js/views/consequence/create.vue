@@ -7,6 +7,34 @@
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
+                                    >Category</label
+                                >
+                                <div class="col-sm-10">
+                                    <b-form-group
+                                        id="kategorigroup"
+                                        label-for="kategori"
+                                    >
+                                        <v-select
+                                            v-model="selected"
+                                            :options="categories"
+                                        >
+                                            <template
+                                                #search="{attributes, events}"
+                                            >
+                                                <input
+                                                    class="vs__search"
+                                                    :required="!selected"
+                                                    v-bind="attributes"
+                                                    v-on="events"
+                                                    ref="kategoriReff"
+                                                />
+                                            </template>
+                                        </v-select>
+                                    </b-form-group>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label
                                     for="nilai"
                                     class="col-sm-2 col-form-label"
@@ -303,33 +331,29 @@ export default {
             },
             validations: {
                 form: {
+                    category_id: {
+                        required
+                    },
                     nilai: {
-                        required,
-                        minLength: minLength(1)
+                        required
                     },
                     konsekuensi: {
-                        required,
-                        minLength: minLength(1)
+                        required
                     },
                     financial: {
-                        required,
-                        minLength: minLength(1)
+                        required
                     },
                     objective: {
-                        required,
-                        minLength: minLength(1)
+                        required
                     },
                     legal: {
-                        required,
-                        minLength: minLength(1)
+                        required
                     },
                     biaya: {
-                        required,
-                        minLength: minLength(3)
+                        required
                     },
                     reputasi: {
-                        required,
-                        minLength: minLength(3)
+                        required
                     },
                     cakupan: "",
                     lama_pemulihan: "",
@@ -339,25 +363,39 @@ export default {
                 }
             },
             items: [],
-            theErrors: []
+            theErrors: [],
+            selected: "",
+            categories: []
         };
     },
     mounted() {
-        //this.loadData();
+        this.loadData();
+        this.getCategory();
     },
     methods: {
         loadData() {
             axios.get("api/consequence").then(response => {
-                this.items = Object.values(response.data);
+                this.items = Object.values(response.data.data);
                 //console.log(Object.values(response.data));
+            });
+        },
+        getCategory() {
+            axios.get("api/category").then(response => {
+                this.categories = Object.values(response.data);
+                let cat = $.map(this.categories, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                this.categories = cat;
             });
         },
 
         async store() {
             try {
+                this.form.category_id = this.selected.value;
                 let response = await axios.post("api/consequence", this.form);
                 //console.log(response.status);
                 if (response.status == 200) {
+                    this.form.category_id = "";
                     this.form.nilai = "";
                     this.form.konsekuensi = "";
                     this.form.financial = "";

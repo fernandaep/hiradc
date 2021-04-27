@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ConsequenceResource;
 use App\Models\Consequence;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ConsequencesController extends Controller
      */
     public function index()
     {
-        return Consequence::latest()->get();
+        $consequence = Consequence::latest()->get();
+        return ConsequenceResource::collection($consequence);
     }
 
     /**
@@ -41,6 +43,7 @@ class ConsequencesController extends Controller
 
         ]);
         $consequence = Consequence::create([
+            'category_id' => request('category_id'),
             'nilai'=> request('nilai'),
             'konsekuensi'=> request('konsekuensi'),
             'financial'=> request('financial'),
