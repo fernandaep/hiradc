@@ -222,16 +222,19 @@ import { required, minLength } from "vuelidate/lib/validators";
             sortable: true
           },
           {
-            key: 'nik',
+            key: "karyawan_nik",
+            label: "NIK",
             sortable: true
           },
           {
-            key: 'nip',
+            key: "nip",
+            label: "NIP",
             sortable: true
           },
           {
-            key: 'nama',
-            sortable: true
+           key: "nama",
+           label: "nama",
+           sortable: true
           },
           {
             key: 'unit_kerja',
@@ -296,7 +299,7 @@ import { required, minLength } from "vuelidate/lib/validators";
      loadData() {
         axios.get("api/k3team").then((response) => {
           this.items = Object.values(response.data.data);
-          //console.log(Object.values(response.data));
+          console.log(Object.values(response.data));
         }); 
       },
       getKaryawan() {

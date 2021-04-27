@@ -15,6 +15,7 @@ class CreateK3teamsTable extends Migration
     {
         Schema::create('k3teams', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('karyawan_nik');
             $table->string('unit_kerja');
             $table->timestamps();
         });
