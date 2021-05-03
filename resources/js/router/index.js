@@ -12,6 +12,8 @@ import createConsequence from '../views/Consequence/create'
 import editConsequence from '../views/Consequence/edit'
 import K3team from '../views/K3team/Index'
 import Register from '../views/Register/Index'
+import createRegister from '../views/Register/create'
+import editRegister from '../views/Register/edit'
 
 
 
@@ -90,6 +92,16 @@ export default
             path:'/register',
             name:'register',
             component: Register,
+        },
+        {
+            path:'/createregister',
+            name:'register.create',
+            component: createRegister,
+        },
+        {
+            path:'/editregister/:id',
+            name:'register.edit',
+            component: editRegister,
         },
     ]
 }

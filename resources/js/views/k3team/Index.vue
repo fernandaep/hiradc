@@ -114,7 +114,7 @@
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
                     <b-form-group id="nik_koordinator" label="NIK Koordinator" label-for="nik">
-                      <v-select v-model="selected"  :options="karyawans">
+                      <v-select v-model="selectedkoordinator"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
@@ -127,22 +127,22 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_koordinator" label="NIK Karyawan" label-for="nik">
-                      <v-select v-model="selected"  :options="karyawans">
+                    <b-form-group id="nik_koordinator" label="NIK Ketua" label-for="nik">
+                      <v-select v-model="selectedketua"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
                               :required="!selected"
                               v-bind="attributes"
                               v-on="events"
-                              ref="karyawanReff"
+                              ref="ketuaReff"
                             />
                           </template>
                       </v-select>
 
                     </b-form-group>
                     <b-form-group id="nik_koordinator" label="NIK Sekretaris" label-for="nik">
-                      <v-select v-model="selected"  :options="karyawans">
+                      <v-select v-model="selectedsekretaris"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
@@ -206,7 +206,9 @@ import { required, minLength } from "vuelidate/lib/validators";
         loading:false,
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
-        selected:"",
+        selectedkoordinator:"",
+        selectedketua:"",
+        selectedsekretaris:"",
         filter: "",
         items: [],
         karyawans:[],
@@ -224,6 +226,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           {
             key: "karyawan_nik",
             label: "NIK",
+            sortable: true
+          },
+           {
+            key: "nama",
+            label: "Nama",
             sortable: true
           },
           {
@@ -293,7 +300,10 @@ import { required, minLength } from "vuelidate/lib/validators";
     },
     mounted() {
       this.loadData();
-      this.getKaryawan();
+      this.getKoordinator();
+      this.getKetua();
+      this.getSekretaris();
+
     },
     methods: {
      loadData() {
@@ -302,7 +312,27 @@ import { required, minLength } from "vuelidate/lib/validators";
           console.log(Object.values(response.data));
         }); 
       },
-      getKaryawan() {
+      getKoordinator() {
+            axios.get("api/karyawan").then(response => {
+                this.karyawans = Object.values(response.data);
+                let cat = $.map(this.karyawans, function(t) {
+                    return { label: t.nik, value: t.nik };
+                });
+                this.karyawans=cat; 
+                //console.log(this.karyawans);
+            });
+        },
+        getKetua() {
+            axios.get("api/karyawan").then(response => {
+                this.karyawans = Object.values(response.data);
+                let cat = $.map(this.karyawans, function(t) {
+                    return { label: t.nik, value: t.nik };
+                });
+                this.karyawans=cat; 
+                //console.log(this.karyawans);
+            });
+        },
+        getSekretaris() {
             axios.get("api/karyawan").then(response => {
                 this.karyawans = Object.values(response.data);
                 let cat = $.map(this.karyawans, function(t) {
@@ -347,7 +377,9 @@ import { required, minLength } from "vuelidate/lib/validators";
         return $dirty ? !$error : null;
       },
       async store() {
-         this.form.karyawan_nik = this.selected.value;
+         this.form.karyawan_nik = this.selectedkoordinator.value;
+          this.form.karyawan_nik = this.selectedketua.value;
+           this.form.karyawan_nik = this.selectedsekretaris.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -372,7 +404,9 @@ import { required, minLength } from "vuelidate/lib/validators";
 
       async update() {
          let id = this.form.id;
-        this.form.karyawan_nik = this.selected.value;
+        this.form.karyawan_nik = this.selectedkaryawan.value;
+        this.form.karyawan_nik = this.selectedketua.value;
+        this.form.karyawan_nik = this.selectedsekretaris.value;
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;

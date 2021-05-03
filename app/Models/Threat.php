@@ -14,4 +14,11 @@ class Threat extends Model
     {
         return $this->belongsTo(Term::class); 
     }
+
+    public function register()
+    {
+        return $this->hasMany(Register::class); 
+    }
+
+    
 }

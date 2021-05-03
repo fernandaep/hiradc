@@ -15,4 +15,9 @@ class Condition extends Model
     {
         return $this->belongsTo(Category::class); 
     }
+
+    public function register()
+    {
+        return $this->hasMany(Register::class); 
+    }
 }

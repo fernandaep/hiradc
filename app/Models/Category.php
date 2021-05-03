@@ -25,4 +25,9 @@ class Category extends Model
     {
         return $this->hasMany(Term::class); 
     }
+
+    public function consequence()
+    {
+        return $this->hasMany(Consequence::class); 
+    }
 }

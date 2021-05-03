@@ -371,11 +371,12 @@ export default {
     mounted() {
         this.loadData();
         this.getCategory();
+        /* this.edit(); */
     },
     methods: {
         loadData() {
             let id = this.form.id;
-            axios.get("api/consequence" + id).then(response => {
+            axios.get("api/consequence").then(response => {
                 this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });

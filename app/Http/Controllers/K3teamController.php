@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\K3TeamResource;
 use App\Models\K3team;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class K3teamController extends Controller
@@ -105,5 +106,18 @@ class K3teamController extends Controller
         return response()->json([
             'message' => 'K3Team deleted successfully'
         ]);
+    }
+    public function koordinator()
+    {
+        $koordinator = Karyawan::where('band', 'II')->get();
+        //return view('k3team.index',compact('k3team','koordinator','ketua','sekretaris'));
+    }
+    public function ketua()
+    {
+        $ketua = Karyawan::where('band', 'III')->get(); 
+    }
+    public function sekretaris()
+    {
+        $sekretaris = Karyawan::where('band', '')->get();
     }
 }

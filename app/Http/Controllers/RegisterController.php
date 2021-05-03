@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegisterResource;
 use App\Models\Register;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        return Register::latest()->get();
+        $register = Register::latest()->get();
+        return RegisterResource::collection($register);
     }
 
  
@@ -28,16 +30,14 @@ class RegisterController extends Controller
     {
         request()->validate([
             'unit_kerja' => 'required',
-            'Lokasi' => 'required',
+            'lokasi' => 'required',
             'pengendalian' => 'required',
-            'kemungkinan_id' => 'required',
-            'konsekuensi_id' => 'required',
             'tingkat_resiko' => 'required',
             'status_regulasi' => '',
             'aspek_lingkungan' => '',
             'peluang' => 'required',
             'resiko' => 'required',
-            'resiko_diteloransi' => 'required',
+            'resiko_ditoleransi' => 'required',
             'cakupan_resiko'=> 'required',
             'status_program' => 'required',
             'program'=> 'required',
@@ -45,15 +45,19 @@ class RegisterController extends Controller
         ]);
         $register = Register::create([
             'unit_kerja'=> request('unit_kerja'),
-            'Lokasi'=> request('Lokasi'),
+            'activity_id' => request('activity_id'),
+            'lokasi'=> request('lokasi'),
+            'condition_id' => request('condition_id'),
+            'threat_id' => request('threat_id'),
             'pengendalian'=> request('pengendalian'),
-            'kemungkinan_id'=> request('kemungkinan_id'),
-            'konsekuensi_id'=> request('konsekuensi_id'),
+            'possibility_id'=> request('possibility_id'),
+            'consequence_id'=> request('consequence_id'),
+            'tingkat_resiko'=> request('tingkat_resiko'),
             'status_regulasi'=> request('peluang'),
             'aspek_lingkungan'=> request('aspek_lingkungan'),
             'peluang'=> request('peluang'),
             'resiko'=> request('resiko'),
-            'resiko_diteloransi'=> request('resiko_diteloransi'),
+            'resiko_ditoleransi'=> request('resiko_ditoleransi'),
             'cakupan_resiko'=> request('cakupan_resiko'),
             'status_program'=> request('status_program'),
             'program'=> request('program'),
@@ -98,14 +102,12 @@ class RegisterController extends Controller
             'unit_kerja' => 'required',
             'Lokasi' => 'required',
             'pengendalian' => 'required',
-            'kemungkinan_id' => 'required',
-            'konsekuensi_id' => 'required',
             'tingkat_resiko' => 'required',
             'status_regulasi' => '',
             'aspek_lingkungan' => '',
             'peluang' => 'required',
             'resiko' => 'required',
-            'resiko_diteloransi' => 'required',
+            'resiko_ditoleransi' => 'required',
             'cakupan_resiko'=> 'required',
             'status_program' => 'required',
             'program'=> 'required',
