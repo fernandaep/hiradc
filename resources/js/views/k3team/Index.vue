@@ -118,7 +118,7 @@
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selected"
+                              :required="!selectedkoordinator"
                               v-bind="attributes"
                               v-on="events"
                               ref="koordinatorReff"
@@ -132,7 +132,7 @@
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selected"
+                              :required="!selectedketua"
                               v-bind="attributes"
                               v-on="events"
                               ref="ketuaReff"
@@ -146,7 +146,7 @@
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selected"
+                              :required="!selectedsekretaris"
                               v-bind="attributes"
                               v-on="events"
                               ref="sekretarisReff"
@@ -349,8 +349,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.id =item.id;
           this.form.unit_kerja =item.unit_kerja;
           this.form.karyawan_nik = item.karyawan_nik;
-          this.selected = item.karyawan_nik;
-          this.selected = { label: item.karyawan, value: item.karyawan_nik };
+          this.selectedkoordinator = item.karyawan_nik;
+          this.selectedketua = item.karyawan_nik;
+          this.selectedsekretaris = item.karyawan_nik;
+          this.selectedketua = { label: item.karyawan, value: item.karyawan_nik };
+          this.selectedsekretaris = { label: item.karyawan, value: item.karyawan_nik };
          
         }
         else {
@@ -404,7 +407,7 @@ import { required, minLength } from "vuelidate/lib/validators";
 
       async update() {
          let id = this.form.id;
-        this.form.karyawan_nik = this.selectedkaryawan.value;
+        this.form.karyawan_nik = this.selectedkoordinator.value;
         this.form.karyawan_nik = this.selectedketua.value;
         this.form.karyawan_nik = this.selectedsekretaris.value;
         this.$v.form.$touch();

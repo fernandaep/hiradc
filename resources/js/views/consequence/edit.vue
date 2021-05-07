@@ -390,7 +390,7 @@ export default {
                 this.categories = cat;
             });
         },
-        async edit(item) {
+       /*  async edit(item) {
             //console.log("openModal");
                 this.form.nilai = item.nilai;
                 this.form.konsekuensi = item.konsekuensi;
@@ -410,7 +410,7 @@ export default {
                     label: item.category,
                     value: item.category_id
                 };
-        },
+        }, */
 
         async store() {
             try {

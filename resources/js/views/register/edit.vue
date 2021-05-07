@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">New Consequence</div>
+                    <div class="card-header">Edit Consequence</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
                             <div class="form-group row">
@@ -500,7 +500,6 @@ export default {
             conditions: [],
             threats: [],
             possibilities: [],
-            consequences: []
         };
     },
     mounted() {
@@ -563,41 +562,48 @@ export default {
                 this.consequences = cat;
             });
         },
-        async store() {
+
+        async update() {
+            this.$v.form.$touch();
+            if (this.$v.form.$anyError) {
+                return;
+            }
             try {
-                this.form.activity_id = this.selectedactivity.value;
-                this.form.condition_id = this.selectedcondition.value;
-                this.form.threat_id = this.selectedthreat.value;
-                this.form.possibility_id = this.selectedpossibility.value;
-                this.form.consequence_id = this.selectedconsequence.value;
-                let response = await axios.post("api/register", this.form);
-                // console.log(response.status);
-                if (response.status == 200) {
+                let id = this.form.id;
+                let updated = await axios.put("api/register/" + id, this.form);
+                if (updated.status == 200) {
+                    this.form.id = "";
+                    this.form.unit_kerja = "";
                     this.form.activity_id = "";
+                    this.form.lokasi = "";
                     this.form.condition_id = "";
                     this.form.threat_id = "";
+                    this.form.pengendalian = "";
                     this.form.possibility_id = "";
                     this.form.consequence_id = "";
-                    this.form.pengendalian = "";
-                    this.fosrm.tingkat_resiko = "";
-                    this.form.status_regulasi = "";
+                    this.form.tingkat_resiko = "";
                     this.form.aspek_lingkungan = "";
                     this.form.peluang = "";
                     this.form.resiko = "";
                     this.form.resiko_ditoleransi = "";
+                    this.form.cakupan_resiko = "";
+                    this.form.status_program = "";
                     this.form.program = "";
-                    this.form.lama_penyimpangan = "";
-                    this.form.product_image = "";
-                    this.form.dampak_sosial = "";
+                    this.hideModal();
                     this.$swal({
                         icon: "success",
-                        title: "Consequence Added successfully"
+                        title: "Register Updated successfully"
                     });
+                    this.loadData();
                 }
             } catch (e) {
-                console.log(e.response.data.errors);
+                this.$swal({
+                    icon: "Error",
+                    title: "Register Updated Failed " + e.response.data.errors
+                });
+                this.theErrors = e.response.data.errors;
             }
-        }
+        },
     }
 };
 </script>

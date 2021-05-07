@@ -24,7 +24,7 @@
                     <li class="nav-header">Master</li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'karyawan'}" >
-                            <i class="nav-icon fas fa-cogs"></i>
+                            <i class="nav-icon fas fa-address-card"></i>
                             <p>Karyawan</p>
                         </router-link>
                     </li>

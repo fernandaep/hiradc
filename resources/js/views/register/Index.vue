@@ -110,7 +110,7 @@
                                     <b-button
                                         variant="outline-danger"
                                         size="sm"
-                                        @click="deleteCondition(row.item.id)"
+                                        @click="deleteRegister(row.item.id)"
                                     >
                                         <i class="fa fa-trash"></i>
                                     </b-button>
@@ -330,86 +330,7 @@ export default {
         hideModal() {
             this.$refs["my-modal"].hide();
         },
-        /* validateState(name) {
-        const { $dirty, $error } = this.$v.form[name];
-        return $dirty ? !$error : null;
-      }, */
-        async store() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-            try {
-                let response = await axios.post("api/register", this.form);
-                //console.log(response.status);
-                if (response.status == 200) {
-                    this.form.id = "";
-                    this.form.unit_kerja = "";
-                    this.form.lokasi = "";
-                    this.form.pengendalian = "";
-                    this.form.possibility_id = "";
-                    this.form.consequence_id = "";
-                    this.form.tingkat_resiko = "";
-                    this.form.status_regulasi = "";
-                    this.form.aspek_lingkungan = "";
-                    this.form.resiko = "";
-                    this.form.resiko_ditoleransi = "";
-                    this.form.cakupan_resiko = "";
-                    this.form.status_program = "";
-                    this.form.program = "";
-                    this.hideModal();
-                    this.$swal({
-                        icon: "success",
-                        title: "Register Added successfully"
-                    });
-                    this.loadData();
-                }
-            } catch (e) {
-                console.log(e.response.data.errors);
-            }
-        },
-
-        async update() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
-            try {
-                let id = this.form.id;
-                let updated = await axios.put("api/register/" + id, this.form);
-                if (updated.status == 200) {
-                    this.form.nama = "";
-                    this.form.nama = "";
-                    this.form.id = "";
-                    this.form.lokasi = "";
-                    this.form.pengendalian = "";
-                    this.form.kemungkinan_id = "";
-                    this.form.konsekuensi_id = "";
-                    this.form.tingkat_resiko = "";
-                    this.form.status_regulasi = "";
-                    this.form.aspek_lingkungan = "";
-                    this.form.resiko = "";
-                    this.form.resiko_ditoleransi = "";
-                    this.form.cakupan_resiko = "";
-                    this.form.status_program = "";
-                    this.form.program = "";
-                    this.hideModal();
-                    this.$swal({
-                        icon: "success",
-                        title: "Register Updated successfully"
-                    });
-                    this.loadData();
-                }
-            } catch (e) {
-                this.$swal({
-                    icon: "Error",
-                    title: "Register Updated Failed " + e.response.data.errors
-                });
-                this.theErrors = e.response.data.errors;
-            }
-        },
-
-        deleRegister(id) {
+        deleteRegister(id) {
             this.$swal({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
