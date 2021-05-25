@@ -101,9 +101,7 @@
                           </tr>
                         </tbody>
                       </table>
-                   <!--  {{
-                      row.item.tim_detail
-                    }} -->
+                   
                   </b-card>
                 </template>
                 <template #cell(no)="row">

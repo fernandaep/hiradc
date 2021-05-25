@@ -63,7 +63,7 @@
                                     </b-form-group>
                                 </b-col>
                             </b-row>
-                            <br />
+                            <br>
                             <b-table
                                 id="my-table"
                                 :items="items"
@@ -82,6 +82,7 @@
                                 hover
                                 responsive
                             >
+                            
                                 <template #cell(no)="row">
                                     {{ row.index + 1 }}
                                 </template>

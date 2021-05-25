@@ -17,7 +17,10 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'nama' => $this->nama,
-            'vulnerability' => VulnerabilityResource::collection($this->vulnerability)
+            'vulnerability' => VulnerabilityResource::collection($this->vulnerability),
+            'condition' => ConditionResource::collection($this->condition),
+            'term' => TermResource::collection($this->term),
+            'consequence' => ConsequenceResource::collection($this->consequence)
         ];
         //return parent::toArray($request);
 
