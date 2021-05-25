@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-header">New Consequence</div>
                     <div class="card-body">
-                        <form action="#" method="post" @submit.prevent="store">
+                        <form action="#" method="post" @submit.prevent="update">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Category</label
@@ -16,7 +16,7 @@
                                         label-for="kategori"
                                     >
                                         <v-select
-                                            v-model="selected"
+                                            v-model="selectedcategory"
                                             :options="categories"
                                         >
                                             <template
@@ -24,7 +24,7 @@
                                             >
                                                 <input
                                                     class="vs__search"
-                                                    :required="!selected"
+                                                    :required="!selectedcategory"
                                                     v-bind="attributes"
                                                     v-on="events"
                                                     ref="kategoriReff"
@@ -312,10 +312,12 @@
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
 export default {
+    selected: "",
     data() {
         return {
             form: {
                 id: "",
+                category_id: "",
                 nilai: "",
                 konsekuensi: "",
                 financial: "",
@@ -364,88 +366,57 @@ export default {
             },
             items: [],
             theErrors: [],
-            selected: "",
+            selectedcategory: "",
             categories: []
         };
     },
     mounted() {
         this.loadData();
         this.getCategory();
-        /* this.edit(); */
     },
     methods: {
-        loadData() {
-            let id = this.form.id;
-            axios.get("api/consequence").then(response => {
-                this.items = Object.values(response.data);
-                //console.log(Object.values(response.data));
-            });
+        loadData(item) {
+            //let id = this.form.id;
+            //alert(id);
+            axios
+                .get(
+                    `http://127.0.0.1:8000/api/consequence/${this.$route.params.id}`
+                )
+                .then(response => {
+                    this.form.nilai = response.data.nilai;
+                    this.form.konsekuensi = response.data.konsekuensi;
+                    this.form.financial = response.data.financial;
+                    this.form.objective = response.data.objective;
+                    this.form.legal = response.data.legal;
+                    this.form.biaya = response.data.biaya;
+                    this.form.reputasi = response.data.reputasi;
+                    this.form.cakupan = response.data.cakupan;
+                    this.form.lama_pemulihan = response.data.lama_pemulihan;
+                    this.form.lama_penyimpangan = response.data.lama_penyimpangan;
+                    this.form.product_image = response.data.product_image;
+                    this.form.dampak_sosial = response.data.dampak_sosial;
+                    this.form.id = response.data.id;
+                    this.selectedcategory =  response.data.category_id;
+                    /* this.selectedcategory =  response.data.nama; */
+                    console.log(Object.values(response.data));
+                });    
         },
         getCategory() {
-            axios.get("api/category").then(response => {
+            axios.get("http://127.0.0.1:8000/api/category").then(response => {
                 this.categories = Object.values(response.data);
                 let cat = $.map(this.categories, function(t) {
-                    return { label: t.nama, value: t.id };
+                    return { label:t.nama, value:t.id };
                 });
                 this.categories = cat;
             });
         },
-       /*  async edit(item) {
-            //console.log("openModal");
-                this.form.nilai = item.nilai;
-                this.form.konsekuensi = item.konsekuensi;
-                this.form.financial = item.financial;
-                this.form.objective = item.objective;
-                this.form.legal = item.legal;
-                this.form.biaya = item.biaya;
-                this.form.reputasi = item.reputasi;
-                this.form.cakupan = item.cakupan;
-                this.form.lama_pemulihan = item.lama_pemulihan;
-                this.form.lama_penyimpangan = item.lama_penyimpangan;
-                this.form.product_image = item.product_image;
-                this.form.dampak_sosial = item.dampak_sosial;
-                this.form.category_id = item.category_id;
-                this.selected = item.category_id;
-                this.selected = {
-                    label: item.category,
-                    value: item.category_id
-                };
-        }, */
 
-        async store() {
-            try {
-                this.form.category_id = this.selected.value;
-                let response = await axios.post("api/consequence", this.form);
-                //console.log(response.status);
-                if (response.status == 200) {
-                    this.form.category_id = "";
-                    this.form.nilai = "";
-                    this.form.konsekuensi = "";
-                    this.form.financial = "";
-                    this.form.objective = "";
-                    this.form.legal = "";
-                    this.form.biaya = "";
-                    this.form.reputasi = "";
-                    this.form.cakupan = "";
-                    this.form.lama_pemulihan = "";
-                    this.form.lama_penyimpangan = "";
-                    this.form.product_image = "";
-                    this.form.dampak_sosial = "";
-                    this.$swal({
-                        icon: "success",
-                        title: "Consequence Added successfully"
-                    });
-                }
-            } catch (e) {
-                console.log(e.response.data.errors);
-            }
-        },
         async update() {
             let id = this.form.id;
-            this.form.category_id = this.selected.value;
+            this.form.category_id = this.selectedcategory.value;
             try {
                 let updated = await axios.put(
-                    "api/consequence/" + id,
+                   `http://127.0.0.1:8000/api/consequence/${this.$route.params.id}`,
                     this.form
                 );
                 if (updated.status == 200) {
@@ -461,7 +432,6 @@ export default {
                     this.form.lama_penyimpangan = "";
                     this.form.product_image = "";
                     this.form.dampak_sosial = "";
-                    this.hideModal();
                     this.$swal({
                         icon: "success",
                         title: "Consequence Updated successfully"

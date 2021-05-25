@@ -59,12 +59,12 @@
                             <p>Threat</p>
                         </router-link>
                     </li>
-                     <li class="nav-item">
+                     <!-- <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'vulnerability'}" >
                            <i class="nav-icon fas fa-hand-holding-medical"></i>
                             <p>Vulnerability</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'term'}" >
                            <i class="nav-icon fas fa-dharmachakra"></i>

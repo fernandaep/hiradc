@@ -109,8 +109,10 @@ class K3teamController extends Controller
     }
     public function koordinator()
     {
-        $koordinator = Karyawan::where('band', 'II')->get();
-        //return view('k3team.index',compact('k3team','koordinator','ketua','sekretaris'));
+        //$koordinator = Karyawan::get()->all();
+        return response()->json([
+            'message' => 'K3Team deleted successfully'
+        ]);
     }
     public function ketua()
     {

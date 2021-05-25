@@ -343,7 +343,7 @@ export default {
                 this.form.nama = item.nama;
                 this.form.term_id = item.term_id;
                 this.selected = item.term_id;
-                this.selected = { label: item.term, value: item.term_id };
+                this.selected = { label: item.kode, value: item.term_id };
             } else {
                 this.editMode = false;
                 this.selected = "";

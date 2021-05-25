@@ -301,8 +301,8 @@ import { required, minLength } from "vuelidate/lib/validators";
     mounted() {
       this.loadData();
       this.getKoordinator();
-      this.getKetua();
-      this.getSekretaris();
+    /*   this.getKetua();
+      this.getSekretaris(); */
 
     },
     methods: {
@@ -313,13 +313,13 @@ import { required, minLength } from "vuelidate/lib/validators";
         }); 
       },
       getKoordinator() {
-            axios.get("api/karyawan").then(response => {
+            axios.get("api/k3team/koordinator").then(response => {
                 this.karyawans = Object.values(response.data);
                 let cat = $.map(this.karyawans, function(t) {
                     return { label: t.nik, value: t.nik };
                 });
                 this.karyawans=cat; 
-                //console.log(this.karyawans);
+                console.log(this.karyawans);
             });
         },
         getKetua() {

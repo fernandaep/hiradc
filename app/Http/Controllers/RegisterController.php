@@ -99,18 +99,18 @@ class RegisterController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'unit_kerja' => 'required',
-            'Lokasi' => 'required',
-            'pengendalian' => 'required',
-            'tingkat_resiko' => 'required',
+            'unit_kerja' => '',
+            'lokasi' => '',
+            'pengendalian' => '',
+            'tingkat_resiko' => '',
             'status_regulasi' => '',
             'aspek_lingkungan' => '',
-            'peluang' => 'required',
-            'resiko' => 'required',
-            'resiko_ditoleransi' => 'required',
-            'cakupan_resiko'=> 'required',
-            'status_program' => 'required',
-            'program'=> 'required',
+            'peluang' => '',
+            'resiko' => '',
+            'resiko_ditoleransi' => '',
+            'cakupan_resiko'=> '',
+            'status_program' => '',
+            'program'=> '',
 
         ]);
         $register = Register::findOrFail($id);

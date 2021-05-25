@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-header">Edit Consequence</div>
                     <div class="card-body">
-                        <form action="#" method="post" @submit.prevent="store">
+                        <form action="#" method="post" @submit.prevent="update">
                             <div class="form-group row">
                                 <label
                                     for="unit_kerja"
@@ -432,6 +432,7 @@
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
 export default {
+    selected: "",
     data() {
         return {
             form: {
@@ -456,39 +457,6 @@ export default {
                     program: ""
                 }
             },
-            /*   validations: {
-                form: {
-                    category_id: {
-                        required
-                    },
-                    unit_kerja: {
-                        required
-                    },
-                    pengendalian: {
-                        required
-                    },
-                    tingkat_resiko: {
-                        required
-                    },
-                    status_regulasi: {
-                        required
-                    },
-                    aspek_lingkungan: {
-                        required
-                    },
-                    peluang: {
-                        required
-                    },
-                    resiko: {
-                        required
-                    },
-                    resiko_ditoleransi: "",
-                    program: "",
-                    lama_penyimpangan: "",
-                    product_image: "",
-                    dampak_sosial: ""
-                }
-            }, */
             items: [],
             theErrors: [],
             selectedactivity: "",
@@ -500,6 +468,7 @@ export default {
             conditions: [],
             threats: [],
             possibilities: [],
+            consequences: []
         };
     },
     mounted() {
@@ -511,14 +480,41 @@ export default {
         this.getConsequence();
     },
     methods: {
-        loadData() {
-            axios.get("api/registrasi").then(response => {
-                this.items = Object.values(response.data);
-                //console.log(Object.values(response.data));
-            });
+        loadData(item) {
+            axios
+                .get(
+                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`
+                )
+                .then(response => {
+                    this.form.id = response.data.id;
+                    this.form.unit_kerja = response.data.unit_kerja;
+                    this.selectedactivity = response.data.activity_id;
+                    /*  this.selectedactivity = { label: item.nama, value: item.activity_id }; */
+                    this.form.lokasi = response.data.lokasi;
+                    this.selectedcondition = response.data.condition_id;
+                    /* this.selectecondition = { label: item.nama, value: item.condition_id }; */
+                    this.selectedthreat = response.data.threat_id;
+                    /*  this.selectedthreat = { label: item.nama, value: item.threat_id }; */
+                    this.form.pengendalian = response.data.pengendalian;
+                    this.selectedpossibility = response.data.possibility_id;
+                    /* this.selectedpossibility = { label: item.nama, value: item.possibility_id }; */
+                    this.selectedconsequence = response.data.consequence_id;
+                    /* this.selectedconsequence = { label: item.nama, value: item.consequence_id }; */
+                    this.form.tingkat_resiko = response.data.tingkat_resiko;
+                    this.form.status_regulasi = response.data.status_regulasi;
+                    this.form.aspek_lingkungan = response.data.aspek_lingkungan;
+                    this.form.peluang = response.data.peluang;
+                    this.form.resiko = response.data.resiko;
+                    this.form.resiko_ditoleransi =
+                        response.data.resiko_ditoleransi;
+                    this.form.cakupan_resiko = response.data.cakupan_resiko;
+                    this.form.status_program = response.data.status_program;
+                    this.form.program = response.data.program;
+                    //console.log(Object.values(response.data));
+                });
         },
         getActivity() {
-            axios.get("api/activity").then(response => {
+            axios.get("http://127.0.0.1:8000/api/activity").then(response => {
                 this.activities = Object.values(response.data);
                 let cat = $.map(this.activities, function(t) {
                     return { label: t.nama, value: t.id };
@@ -527,7 +523,7 @@ export default {
             });
         },
         getCondition() {
-            axios.get("api/condition").then(response => {
+            axios.get("http://127.0.0.1:8000/api/condition").then(response => {
                 this.conditions = Object.values(response.data.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };
@@ -536,7 +532,7 @@ export default {
             });
         },
         getThreat() {
-            axios.get("api/threat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/threat").then(response => {
                 this.threats = Object.values(response.data.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
@@ -545,32 +541,40 @@ export default {
             });
         },
         getPosibility() {
-            axios.get("api/possibility").then(response => {
-                this.possibilities = Object.values(response.data);
-                let cat = $.map(this.possibilities, function(t) {
-                    return { label: t.nama, value: t.id };
+            axios
+                .get("http://127.0.0.1:8000/api/possibility")
+                .then(response => {
+                    this.possibilities = Object.values(response.data);
+                    let cat = $.map(this.possibilities, function(t) {
+                        return { label: t.nama, value: t.id };
+                    });
+                    this.possibilities = cat;
                 });
-                this.possibilities = cat;
-            });
         },
         getConsequence() {
-            axios.get("api/consequence").then(response => {
-                this.consequences = Object.values(response.data.data);
-                let cat = $.map(this.consequences, function(t) {
-                    return { label: t.nilai, value: t.id };
+            axios
+                .get("http://127.0.0.1:8000/api/consequence")
+                .then(response => {
+                    this.consequences = Object.values(response.data.data);
+                    let cat = $.map(this.consequences, function(t) {
+                        return { label: t.nilai, value: t.id };
+                    });
+                    this.consequences = cat;
                 });
-                this.consequences = cat;
-            });
         },
 
         async update() {
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
+            let id = this.form.id;
+            this.form.activity_id = this.selectedactivity.value;
+            this.form.condition_id = this.selectedcondition.value;
+            this.form.threat_id = this.selectedthreat.value;
+            this.form.possibility_id = this.selectedpossibility.value;
+            this.form.consequence_id = this.selectedconsequence.value;
             try {
-                let id = this.form.id;
-                let updated = await axios.put("api/register/" + id, this.form);
+                let updated = await axios.put(
+                   `http://127.0.0.1:8000/api/register/${this.$route.params.id}`,
+                    this.form
+                );
                 if (updated.status == 200) {
                     this.form.id = "";
                     this.form.unit_kerja = "";
@@ -582,6 +586,7 @@ export default {
                     this.form.possibility_id = "";
                     this.form.consequence_id = "";
                     this.form.tingkat_resiko = "";
+                    this.form.status_regulasi = "";
                     this.form.aspek_lingkungan = "";
                     this.form.peluang = "";
                     this.form.resiko = "";
@@ -603,7 +608,7 @@ export default {
                 });
                 this.theErrors = e.response.data.errors;
             }
-        },
+        }
     }
 };
 </script>

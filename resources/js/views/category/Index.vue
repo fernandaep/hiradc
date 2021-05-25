@@ -76,16 +76,77 @@
                 stacked="md"
                 small striped hover responsive
               >
+
+               <template #row-details="row">
+                  <b-card>
+                    <div class="ml-5 pr-5">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                              <th>No</th>
+                              <th>Nama</th>
+                              <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(value, key) in row.item.vulnerability" :key="key">
+                            <td>{{key + 1 }}</td>
+                            <td>{{value.nama}}</td>
+                            <td>
+                              <b-button variant="outline-danger" size="sm" @click="deleteVulnerability(value.id)">
+                                <i class="fa fa-trash"></i>
+                                </b-button>
+                              </td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                      </div>
+                  
+                  </b-card>
+                </template>
+
+                <template #row-detail="row">
+                  <b-card>
+                    <div class="ml-5 pr-5">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                              <th>No</th>
+                              <th>Nama</th>
+                              <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(value, key) in row.item.condition" :key="key">
+                            <td>{{key + 1 }}</td>
+                            <td>{{value.nama}}</td>
+                            <td>
+                              <b-button variant="outline-danger" size="sm" @click="deleteCondition(value.id)">
+                                <i class="fa fa-trash"></i>
+                                </b-button>
+                              </td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                      </div>
+                  
+                  </b-card>
+                </template>
+
+                
+
               <template #cell(no)="row">
                 {{ row.index + 1 }}
               </template>
-              <template #cell(created_at)="row">
-                {{ row.item.created_at | formatDate}}
-              </template>
-              <template #cell(updated_at)="row">
-                {{ row.item.updated_at | formatDate}}
-              </template>
                 <template #cell(actions)="row">
+                  <b-button variant="outline-info" size="sm" @click="row.toggleDetails" class="mr-1">
+                    <i class='fa fa-eye'></i>
+                  </b-button>
+                  <b-button variant="outline-success" size="sm" @click="openModal('tambahvulnerability' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
+                    <i class="fa fa-plus"></i>
+                  </b-button>
                   <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
                     <i class="fa fa-edit"></i>
                   </b-button>
@@ -93,9 +154,8 @@
                    <i class="fa fa-trash"></i>
                   </b-button>
                 </template>
-
-
               </b-table>
+              
 
               <b-row>
                  <b-col class="my-1">
@@ -111,6 +171,7 @@
               </b-row>
               <!-- Info modal -->
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
+                <div v-if="!detailMode && (!editMode || editMode)">
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
                     <b-form-group id="example-input-group-1" label="Name" label-for="nama">
@@ -141,6 +202,36 @@
                     </button>
                   </div>
                 </form>
+                </div>
+
+                <div v-else>
+                <form @submit.prevent="store2()" > 
+                  <div class="modal-body">
+                    <b-form-group id="vulnerabilitygroup" label="vulnerability" label-for="vulnerability">
+                    <v-select v-model="selectedVulnerability"  :options="vulnerabilities">
+                      <template #search="{attributes, events}">
+                          <input
+                            class="vs__search"
+                            :required="!selectedVulnerability"
+                            v-bind="attributes"
+                            v-on="events"
+                            ref="vulnerabilityReff"
+                          />
+                        </template>
+                    </v-select>
+                  </b-form-group>
+                </div>                
+
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">
+                    Add
+                  </button>
+                  <button type="button" class="btn btn-danger" @click="hideModal" >
+                    Close
+                  </button>
+                </div>
+                </form>
+                </div>
               </b-modal>
               
               </div>
@@ -161,10 +252,13 @@ import { required, minLength } from "vuelidate/lib/validators";
       return {
         perPage: 10,
         editMode:false,
+        detailMode:false,
         loading:false,
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
         filter: "",
+        selectedVulnerability:"",
+        vulnerabilities:[],
         items: [],
         fields: [
           {
@@ -181,18 +275,6 @@ import { required, minLength } from "vuelidate/lib/validators";
             key: 'nama',
             sortable: true
           },
-          {
-            key: 'created_at',
-            sortable: true,
-            tdClass:'text-right',
-            thClass:'text-center'
-          },
-          {
-            key: 'updated_at',
-            sortable: true,
-            tdClass:'text-right',
-            thClass:'text-center'
-          },
           { 
             key: 'actions', 
             label: 'Actions' ,
@@ -204,7 +286,7 @@ import { required, minLength } from "vuelidate/lib/validators";
         transProps: {
           name: 'flip-list'
         },
-        sortBy: 'created_at',
+        sortBy: 'nama',
         sortDesc: true,
         infoModal: {
           id: 'info-modal',
@@ -213,6 +295,10 @@ import { required, minLength } from "vuelidate/lib/validators";
         form: {
           id : '',
           nama : '',
+        },
+        form2: {
+          vulnerability_id:'',
+          category_id:'',
         },
       }
     },
@@ -226,28 +312,39 @@ import { required, minLength } from "vuelidate/lib/validators";
     },
     mounted() {
       this.loadData();
+      /* this.getVulnerability(); */
     },
     methods: {
      loadData() {
         axios.get("api/category").then((response) => {
-          this.items = Object.values(response.data);
-          //console.log(Object.values(response.data));
+          this.items = Object.values(response.data.data);
+          /* console.log(Object.values(response.data)); */
         }); 
       },
+   
       focusMyElement()
       {
-         this.$refs.namaReff.focus();
+          this.detailMode ? this.$refs.vulnerabilityReff.focus(): this.$refs.namaReff.focus();
       },
 
       openModal(tipe, title, button,item) {
         if(tipe=="edit") {
           this.editMode = true;
+           this.detailMode = false;
           this.form.id =item.id;
           this.form.nama =item.nama;
          
         }
+        else if(tipe=="tambahdetail")
+        {
+          this.editMode = false;
+          this.detailMode = true;
+          this.form2.category_id = item.id;
+          this.form2.vulnerability_id ='';
+        }
         else {
           this.editMode = false;
+          this.detailMode = false;
           this.form.nama ='';
         }
 
@@ -289,6 +386,37 @@ import { required, minLength } from "vuelidate/lib/validators";
           }
       },
 
+      async store2() {
+          let cek = await axios.get('api/vulnerability/'+this.form2.vulnerability_id);
+          //console.log(cek.data.success);
+          if(cek.data.success==false){
+             this.$swal({
+                icon: 'error',
+                title: 'Data Sudah Ada ! ! !'
+              });
+          }
+          else {
+             try {
+              let response =  await axios.post('api/vulnerability',this.form2)
+              //console.log(response);
+                if(response.status==200){
+                    this.form2.vulnerability_id = '';
+                    this.form2.category_id = '';
+                
+                    this.hideModal();
+                    this.$swal({
+                      icon: 'success',
+                      title: 'Tim Detail Added successfully'
+                    });
+                    this.loadData();
+                }
+            } catch (e) {
+              console.log(e.response.data.errors);
+            }
+          }
+         
+      },
+
       async update() {
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
@@ -327,6 +455,29 @@ import { required, minLength } from "vuelidate/lib/validators";
         }).then((result) => {
           if (result.isConfirmed) {
             axios.delete("api/category/"+id).then(response => {
+              this.$swal(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+              )
+              this.loadData();
+            });
+            
+          }
+        })
+      },
+      deleteVulnerability(id) { 
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.delete("api/vulnerability/"+id).then(response => {
               this.$swal(
                   'Deleted!',
                   'Your file has been deleted.',

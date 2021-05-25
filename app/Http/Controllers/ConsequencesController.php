@@ -81,7 +81,8 @@ class ConsequencesController extends Controller
      */
     public function show($id)
     {
-        $consequence = Consequence::whereCode($id)->first();
+        $consequence = Consequence::findOrFail($id);
+        return $consequence;
     }
 
     /**

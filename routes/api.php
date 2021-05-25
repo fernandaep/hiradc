@@ -22,6 +22,7 @@ Route::resource('term', TermController::class);
 Route::resource('consequence', ConsequencesController::class);
 Route::resource('k3team', K3teamController::class);
 Route::resource('register', RegisterController::class);
+Route::get('k3team/koordinator','App\Http\Controllers\K3teamController@koordinator')->name('k3team.koordinator');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
