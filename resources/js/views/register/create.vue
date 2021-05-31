@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">New Consequence</div>
+                    <div class="card-header">New Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
                             <div class="form-group row">
@@ -456,15 +456,30 @@ export default {
                     program: ""
                 }
             },
-            /*   validations: {
+              validations: {
                 form: {
-                    category_id: {
-                        required
-                    },
                     unit_kerja: {
                         required
                     },
+                    activity_id: {
+                        required
+                    },
+                    lokasi: {
+                        required
+                    },
+                    condition_id: {
+                        required
+                    },  
+                    threat_id: {
+                        required
+                    },
                     pengendalian: {
+                        required
+                    },
+                    possibility_id: {
+                        required
+                    },
+                    consequence_id: {
                         required
                     },
                     tingkat_resiko: {
@@ -483,12 +498,12 @@ export default {
                         required
                     },
                     resiko_ditoleransi: "",
-                    program: "",
-                    lama_penyimpangan: "",
+                    cakupan_resiko: "",
+                    status_program: "",
                     product_image: "",
-                    dampak_sosial: ""
+                    program: ""
                 }
-            }, */
+            },
             items: [],
             theErrors: [],
             selectedactivity: "",
@@ -573,25 +588,25 @@ export default {
                 let response = await axios.post("api/register", this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
+                    this.form.unit_kerja = "";
                     this.form.activity_id = "";
+                    this.form.lokasi = "";
                     this.form.condition_id = "";
                     this.form.threat_id = "";
+                    this.form.pengendalian = "";
                     this.form.possibility_id = "";
                     this.form.consequence_id = "";
-                    this.form.pengendalian = "";
-                    this.fosrm.tingkat_resiko = "";
+                    this.form.tingkat_resiko = "";
                     this.form.status_regulasi = "";
                     this.form.aspek_lingkungan = "";
                     this.form.peluang = "";
                     this.form.resiko = "";
                     this.form.resiko_ditoleransi = "";
-                    this.form.program = "";
-                    this.form.lama_penyimpangan = "";
-                    this.form.product_image = "";
-                    this.form.dampak_sosial = "";
+                    this.form.cakupan_resiko = "";
+                    this.form.status_program = "";
                     this.$swal({
                         icon: "success",
-                        title: "Consequence Added successfully"
+                        title: "Register Added successfully"
                     });
                 }
             } catch (e) {

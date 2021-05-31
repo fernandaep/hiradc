@@ -22,6 +22,7 @@ class TermResource extends JsonResource
             'istilah' => $this->istilah,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'threat' => ThreatResource::collection($this->threat)
         ];
         //return parent::toArray($request);
     }

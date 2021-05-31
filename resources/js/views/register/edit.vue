@@ -436,7 +436,6 @@ export default {
     data() {
         return {
             form: {
-                form: {
                     id: "",
                     unit_kerja: "",
                     activity_id: "",
@@ -455,7 +454,7 @@ export default {
                     cakupan_resiko: "",
                     status_program: "",
                     program: ""
-                }
+                
             },
             items: [],
             theErrors: [],
@@ -576,7 +575,6 @@ export default {
                     this.form
                 );
                 if (updated.status == 200) {
-                    this.form.id = "";
                     this.form.unit_kerja = "";
                     this.form.activity_id = "";
                     this.form.lokasi = "";

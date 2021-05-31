@@ -30,18 +30,23 @@ class RegisterController extends Controller
     {
         request()->validate([
             'unit_kerja' => 'required',
+            'activity_id' => 'required',
             'lokasi' => 'required',
+            'condition_id' => '',
+            'threat_id' => 'required',
             'pengendalian' => 'required',
+            'possibility_id' => 'required',
+            'consequence_id' => 'required',
             'tingkat_resiko' => 'required',
             'status_regulasi' => '',
             'aspek_lingkungan' => '',
             'peluang' => 'required',
             'resiko' => 'required',
             'resiko_ditoleransi' => 'required',
-            'cakupan_resiko'=> 'required',
+            'cakupan_resiko' => 'required',
             'status_program' => 'required',
-            'program'=> 'required',
-
+            'program' => 'required',
+           
         ]);
         $register = Register::create([
             'unit_kerja'=> request('unit_kerja'),
@@ -85,7 +90,8 @@ class RegisterController extends Controller
      */
     public function show($id)
     {
-        return Register::findorFail($id);
+        $register = Register::findOrFail($id);
+        return $register;
     }
 
   
@@ -99,18 +105,7 @@ class RegisterController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'unit_kerja' => '',
-            'lokasi' => '',
-            'pengendalian' => '',
-            'tingkat_resiko' => '',
-            'status_regulasi' => '',
-            'aspek_lingkungan' => '',
-            'peluang' => '',
-            'resiko' => '',
-            'resiko_ditoleransi' => '',
-            'cakupan_resiko'=> '',
-            'status_program' => '',
-            'program'=> '',
+
 
         ]);
         $register = Register::findOrFail($id);

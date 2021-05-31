@@ -76,20 +76,50 @@
                 stacked="md"
                 small striped hover responsive
               >
+
+              <template #row-details="row">
+                  <b-card>
+                    <div class="ml-5 pr-5">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                              <th>No</th>
+                              <th>Kode</th>
+                              <th>Istilah</th>
+                              <th>Nama</th>
+                              <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(value, key) in row.item.threat" :key="key">
+                            <td>{{key + 1 }}</td>
+                            <td>{{value.kode }}</td>
+                            <td>{{value.istilah }}</td>
+                            <td>{{value.nama }}</td>
+                            <td>
+                              <b-button variant="outline-danger" size="sm" @click="deleteThreat(value.id)">
+                                <i class="fa fa-trash"></i>
+                                </b-button>
+                              </td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                   </div>
+                  </b-card>
+                </template>
+
               <template #cell(no)="row">
-                {{ row.index + 1 }}
-              </template>
-               <template #cell(category_id)="row">
-                {{ row.item.category  }}
-              </template>
-              <template #cell(created_at)="row">
-                {{ row.item.created_at | formatDate}}
-              </template>
-              <template #cell(updated_at)="row">
-                {{ row.item.updated_at | formatDate}}
-              </template>
+                  {{ row.index + 1 }}
+                </template>
                 <template #cell(actions)="row">
-                  <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
+                   <b-button variant="outline-info" size="sm" @click="row.toggleDetails" class="mr-1">
+                    <i class='fa fa-eye'></i>
+                  </b-button>
+                   <b-button variant="outline-success" size="sm" @click="openModal('tambahthreat' , 'Tambah Threat', $event.target,row.item)" class="mr-1">
+                    <i class="fa fa-plus"></i>
+                  </b-button>
+                  <b-button variant="outline-warning" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target, row.item)" class="mr-1">
                     <i class="fa fa-edit"></i>
                   </b-button>
                   <b-button variant="outline-danger" size="sm" @click="deleteTerm(row.item.id)">
@@ -174,7 +204,7 @@
                   </div>
                 </form>
               </b-modal>
-              
+               
               </div>
             </div>
           </div>
@@ -260,6 +290,10 @@ import { required, minLength } from "vuelidate/lib/validators";
           istilah : '',
           
         },
+        form2: {
+          threat_id:'',
+          term_id : '',
+        },
       }
     },
     validations: {
@@ -311,6 +345,14 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.selected =item.category_id;
           this.selected={label:item.category,value:item.category_id}
           
+        }
+        else if(tipe=="tambahthreat")
+        {
+          this.editMode = false;
+          this.detailMode = true;
+          this.form2.term_id = item.id;
+          this.form2.threat_id ='';
+          this.form2.nama=''; 
         }
         else {
           this.editMode = false;
@@ -366,6 +408,38 @@ import { required, minLength } from "vuelidate/lib/validators";
           }
       },
 
+      async store2() {
+         
+          let cek = await axios.get('api/threat/'+this.form2.threat_id);
+          //console.log(cek.data.success);
+          if(cek.data.success==false){
+             this.$swal({
+                icon: 'error',
+                title: 'Data Sudah Ada ! ! !'
+              });
+          }
+          else {
+             try {
+              let response =  await axios.post('api/threat',this.form2)
+              //console.log(response);
+                if(response.status==200){
+                    this.form2.threat_id = '';
+                    this.form2.term_id = '';
+                
+                    this.hideModal();
+                    this.$swal({
+                      icon: 'success',
+                      title: 'Tim Detail Added successfully'
+                    });
+                    this.loadData();
+                }
+            } catch (e) {
+              console.log(e.response.data.errors);
+            }
+          }
+         
+      },
+
       async update() {
         let id = this.form.id;
         this.form.category_id = this.selected.value;
@@ -411,6 +485,29 @@ import { required, minLength } from "vuelidate/lib/validators";
         }).then((result) => {
           if (result.isConfirmed) {
             axios.delete("api/term/"+id).then(response => {
+              this.$swal(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+              )
+              this.loadData();
+            });
+            
+          }
+        })
+      },
+      deleteThreat(id) { 
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axios.delete("api/threat/"+id).then(response => {
               this.$swal(
                   'Deleted!',
                   'Your file has been deleted.',
