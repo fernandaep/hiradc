@@ -20,7 +20,7 @@ class CategoryResource extends JsonResource
             'vulnerability' => VulnerabilityResource::collection($this->vulnerability),
             'condition' => ConditionResource::collection($this->condition),
             'term' => TermResource::collection($this->term),
-            'consequence' => ConsequenceResource::collection($this->consequence)
+            'consequence' => ConsequenceResource::collection($this->consequence),
         ];
         //return parent::toArray($request);
 

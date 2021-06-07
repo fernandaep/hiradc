@@ -375,7 +375,7 @@ export default {
     methods: {
         loadData() {
             axios.get("api/consequence").then(response => {
-                this.items = Object.values(response.data.data);
+                this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });
         },
@@ -389,9 +389,9 @@ export default {
             });
         },
 
-        async store() {
+        async store5() {
             try {
-                this.form.category_id = this.selected.value;
+                /* this.form.category_id = this.selected.value; */
                 let response = await axios.post("api/consequence", this.form);
                 //console.log(response.status);
                 if (response.status == 200) {

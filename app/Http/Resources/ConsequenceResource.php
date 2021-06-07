@@ -17,7 +17,7 @@ class ConsequenceResource extends JsonResource
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,
-            'nama' => $this->category->nama,
+            /* 'nama' => $this->category->category, */
             'nilai' => $this->nilai,
             'konsekuensi' => $this->konsekuensi,
             'financial' => $this->financial,

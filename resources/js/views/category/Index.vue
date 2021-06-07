@@ -87,7 +87,7 @@
                               <th>Nama Vulnerability</th>
                               <th>Action</th>
                               <th>
-                                <b-button variant="outline-success" size="sm" @click="openModal('tambahvulnerability' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
+                                <b-button variant="outline-success" size="sm" @click="openModal('vulnerability' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
                                   <i class="fa fa-plus"></i>
                                 </b-button>
                               </th>
@@ -98,7 +98,7 @@
                             <td>{{key + 1 }}</td>
                             <td>{{value.nama}}</td>
                             <td>
-                           <b-button variant="outline-info" size="sm" @click="openModal('tambahvulnerability' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
+                           <b-button variant="outline-info" size="sm" @click="openModal('vulnerability' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
                               <i class="fa fa-edit"></i>
                             </b-button>
                               <b-button variant="outline-danger" size="sm" @click="deleteVulnerability(value.id)">
@@ -114,7 +114,7 @@
                       </table>
                       </div>
        
-                  <div class="ml-5 pr-5">
+                  <!-- <div class="ml-5 pr-5">
                       <table class="table">
                         <thead>
                           <tr>
@@ -156,6 +156,11 @@
                               <th>Kode</th>
                               <th>Istilah</th>
                               <th>Action</th>
+                              <th>
+                              <b-button variant="outline-success" size="sm" @click="openModal('term' , 'Tambah Term', $event.target,row.item)" class="mr-1">
+                               <i class="fa fa-plus"></i>
+                            </b-button>
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -164,17 +169,20 @@
                             <td>{{value.kode}}</td>
                             <td>{{value.istilah}}</td>
                             <td>
-                               <!-- <b-button variant="outline-success" size="sm" @click="openModal('tambahterm' , 'Tambah Term', $event.target,row.item)" class="mr-1">
-                               <i class="fa fa-plus"></i>
-                            </b-button> -->
+                               <b-button variant="outline-info" size="sm" @click="openModal('term' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
+                                <i class="fa fa-edit"></i>
+                              </b-button>
                               <b-button variant="outline-danger" size="sm" @click="deleteTerm(value.id)">
                                 <i class="fa fa-trash"></i>
                                 </b-button>
                               </td>
+                              <td>
+                                
+                              </td>
                           </tr>
                         </tbody>
                       </table>
-                      </div>
+                      </div>-->
 
                     
                       <div class="ml-5 pr-5">
@@ -189,12 +197,22 @@
                               <th>Legal</th>
                               <th>Biaya</th>
                               <th>Reputasi</th>
-                             <!--  <th>Cakupan</th>
+                              <th>Cakupan</th>
                               <th>Lama Pemulihan</th>
                               <th>Lama Penyimpangan</th>
                               <th>Product Image</th>
-                              <th>Dampak Sosial</th> -->
+                              <th>Dampak Sosial</th>
                               <th>Action</th>
+                              <th>
+                             <b-button variant="outline-success" size="sm">
+                                        <router-link
+                                        :to="{ name: 'category.createConsequence' }"
+                                        class="btn btn-outline-primary"
+                                    >
+                                        <i class="fas fa-plus"></i>
+                                    </router-link>
+                                    </b-button>
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -207,15 +225,23 @@
                             <td>{{value.legal}}</td>
                             <td>{{value.biaya}}</td>
                             <td>{{value.reputasi}}</td>
-                           <!--  <td>{{value.cakupan}}</td>
+                            <td>{{value.cakupan}}</td>
                             <td>{{value.lama_pemulihan}}</td>
                             <td>{{value.lama_penyimpangan}}</td>
                             <td>{{value.product_image}}</td>
-                            <td>{{value.dampak_sosial}}</td> -->
+                            <td>{{value.dampak_sosial}}</td>
                             <td>
-                               <b-button variant="outline-success" size="sm" @click="openModal('tambahconsequence' , 'Tambah Consequence', $event.target,row.item)" class="mr-1">
-                               <i class="fa fa-plus"></i>
-                            </b-button>
+                               <b-button variant="outline-info" size="sm">
+                                        <router-link
+                                            :to="{
+                                                name: 'category.editConsequence',
+                                                params: { id: row.item.id }
+                                            }"
+                                            class="btn btn-outline-primary"
+                                        >
+                                            <i class="fa fa-edit"></i> Edit
+                                        </router-link>
+                                    </b-button>
                               <b-button variant="outline-danger" size="sm" @click="deleteConsequence(value.id)">
                                 <i class="fa fa-trash"></i>
                                 </b-button>
@@ -224,7 +250,7 @@
                           </tr>
                         </tbody>
                       </table>
-                      </div>
+                      </div> 
                   </b-card>
                 </template>
 
@@ -235,9 +261,9 @@
                   <b-button variant="outline-info" size="sm" @click="row.toggleDetails" class="mr-1">
                     <i class='fa fa-eye'></i>
                   </b-button>
-                 <!--  <b-button variant="outline-success" size="sm" @click="openModal('tambahvulnerability' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
+                  <b-button variant="outline-success" size="sm" @click="openModal('vulnerability' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
                     <i class="fa fa-plus"></i>
-                  </b-button> -->
+                  </b-button>
                   <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
                     <i class="fa fa-edit"></i>
                   </b-button>
@@ -295,7 +321,7 @@
                 </form>
                 </div>
 
-                <div v-else>
+                 <div v-else>
                 <form @submit.prevent="store2()" > 
                   <div class="modal-body">
                     <b-form-group id="example-input-group-1" label="Name" label-for="nama">
@@ -326,8 +352,9 @@
                     </button>
                   </div>
                   </form>
+                  </div>
 
-                  <!-- <div v-else-if="type === 'condition'"> -->
+                  <!-- <div v-else>
                   <form @submit.prevent="store3()" > 
                     <div class="modal-body">
                       <b-form-group id="example-input-group-1" label="Nama" label-for="nama">
@@ -358,37 +385,18 @@
                       </button>
                     </div>
                     </form>
+                    </div> -->
                     
-                    
-                  
-<!-- <form @submit.prevent="store3()" > 
-                <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Name" label-for="nama">
-                      <b-form-input
-                        id="nama"
-                        name="nama"
-                        ref="namaReff"
-                        v-model="$v.form.nama.$model"
-                        :state="validateState('nama')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>  -->
-
-               <!--    <form @submit.prevent="store4()" > 
-                <div class="modal-body">
+                  <!-- <div v-else>
+                  <form @submit.prevent="store4()" > 
+                   <div class="modal-body">
                    <b-form-group id="example-input-group-1" label="kode" label-for="kode">
                       <b-form-input
                         id="kode"
                         name="kode"
                         ref="kodeReff"
-                        v-model="$v.form.kode.$model"
-                        :state="validateState('kode')"
+                        v-model="$v.form4.kode.$model"
+                       
                         aria-describedby="input-1-live-feedback"
                       ></b-form-input>
 
@@ -403,8 +411,8 @@
                         id="istilah"
                         name="istilah"
                         ref="istilahReff"
-                        v-model="$v.form.istilah.$model"
-                        :state="validateState('istilah')"
+                        v-model="$v.form4.istilah.$model"
+                       
                         aria-describedby="input-1-live-feedback"
                       ></b-form-input>
                       <b-form-invalid-feedback
@@ -413,19 +421,18 @@
                       </b-form-invalid-feedback>
                     </b-form-group>
                   </div>  
-                 -->
-                <!-- <div class="modal-footer">
+                
+                <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">
                     Add
                   </button>
                   <button type="button" class="btn btn-danger" @click="hideModal" >
                     Close
                   </button>
+                </div>      
+                </form>
                 </div> -->
-                
-                <!-- </form>
-                </form> -->
-                </div>
+
               </b-modal>
               
               </div>
@@ -433,7 +440,7 @@
           </div>
         </div>
      </div>
-  </div>
+ </div>
 </template>
 
 <script>
@@ -503,11 +510,13 @@ import { required, minLength } from "vuelidate/lib/validators";
           category_id:'',
           nama : '',
         },
-       /*  form4: {
+        form4: {
           terms_id:'',
           category_id:'',
+          kode:'',
+          istilah:'',
         },
-        form5: {
+        /* form5: {
           consequence_id:'',
           category_id:'',
         }, */
@@ -530,12 +539,22 @@ import { required, minLength } from "vuelidate/lib/validators";
         nama: {
           required,
           minLength: minLength(1)
-        }
+         }
+        },
+        form4: {
+        kode: {
+          required,
+          minLength: minLength(1)
+        },
+        istilah: {
+          required,
+          minLength: minLength(1)
+        },
       }
     },
+
     mounted() {
       this.loadData();
-      /* this.getVulnerability(); */
     },
     methods: {
      loadData() {
@@ -559,7 +578,7 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.nama =item.nama;
          
         }
-        else if(tipe=="tambahvulnerability")
+        else if(tipe=="vulnerability")
         {
           this.editMode = false;
           this.detailMode = true;
@@ -575,20 +594,22 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form3.condition_id ='';
           this.form3.nama ='';
         }
-        else if(tipe=="tambahdetail3")
-        {
-          this.editMode = false;
-          this.detailMode = true;
-          this.form3.category_id = item.id;
-          this.form3.term_id ='';
-        }
-        else if(tipe=="tambahdetail4")
+        else if(tipe=="term")
         {
           this.editMode = false;
           this.detailMode = true;
           this.form4.category_id = item.id;
-          this.form4.consequence_id ='';
+          this.form4.term_id ='';
+          this.form4.kode ='';
+          this.form4.istilah ='';
         }
+       /*  else if(tipe=="tambahdetail4")
+        {
+          this.editMode = false;
+          this.detailMode = true;
+          this.form5.category_id = item.id;
+          this.form5.consequence_id ='';
+        } */
         else {
           this.editMode = false;
           this.detailMode = false;
@@ -619,6 +640,14 @@ import { required, minLength } from "vuelidate/lib/validators";
         const { $dirty, $error } = this.$v.form3[name];
         return $dirty ? !$error : null;
       },
+      /* validateState(kode) {
+        const { $dirty, $error } = this.$v.form4[kode];
+        return $dirty ? !$error : null;
+      },
+      validateState(istilah) {
+        const { $dirty, $error } = this.$v.form4[istilah];
+        return $dirty ? !$error : null;
+      }, */
       async store() {
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
@@ -685,8 +714,8 @@ import { required, minLength } from "vuelidate/lib/validators";
               let response =  await axios.post('api/condition',this.form3)
               //console.log(response);
                 if(response.status==200){
-                    this.form2.condition_id = '';
-                    this.form2.category_id = '';
+                    this.form3.condition_id = '';
+                    this.form3.category_id = '';
                 
                     this.hideModal();
                     this.$swal({
@@ -701,8 +730,8 @@ import { required, minLength } from "vuelidate/lib/validators";
           }
          
       },
-      /* async store4() {
-          let cek = await axios.get('api/term/'+this.form2.term_id);
+      async store4() {
+          let cek = await axios.get('api/term/'+this.form4.term_id);
           //console.log(cek.data.success);
           if(cek.data.success==false){
              this.$swal({
@@ -715,9 +744,11 @@ import { required, minLength } from "vuelidate/lib/validators";
               let response =  await axios.post('api/term',this.form4)
               //console.log(response);
                 if(response.status==200){
-                    this.form2.term_id = '';
-                    this.form2.category_id = '';
-                
+                    this.form4.term_id = '';
+                    this.form4.category_id = '';
+                    this.form4.kode = '';
+                    this.form4.istilah = '';
+                    
                     this.hideModal();
                     this.$swal({
                       icon: 'success',
@@ -730,7 +761,7 @@ import { required, minLength } from "vuelidate/lib/validators";
             }
           }
          
-      }, */
+      },
 
       /* async store5() {
           let cek = await axios.get('api/consequence/'+this.form5.consequence_id);

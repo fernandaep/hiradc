@@ -100,6 +100,7 @@
                               <b-button variant="outline-danger" size="sm" @click="deleteThreat(value.id)">
                                 <i class="fa fa-trash"></i>
                                 </b-button>
+                                 
                               </td>
 
                           </tr>
@@ -116,9 +117,9 @@
                    <b-button variant="outline-info" size="sm" @click="row.toggleDetails" class="mr-1">
                     <i class='fa fa-eye'></i>
                   </b-button>
-                   <b-button variant="outline-success" size="sm" @click="openModal('tambahthreat' , 'Tambah Threat', $event.target,row.item)" class="mr-1">
-                    <i class="fa fa-plus"></i>
-                  </b-button>
+                  <b-button variant="outline-success" size="sm" @click="openModal('tambahthreat' , 'Tambah Vulnerability', $event.target,row.item)" class="mr-1">
+                     <i class="fa fa-plus"></i>
+                   </b-button>
                   <b-button variant="outline-warning" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target, row.item)" class="mr-1">
                     <i class="fa fa-edit"></i>
                   </b-button>
@@ -144,6 +145,7 @@
               </b-row>
               <!-- Info modal -->
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
+                <div v-if="!detailMode && (!editMode || editMode)">
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
                     <b-form-group id="kategorigroup" label="Kategori" label-for="kategori">
@@ -152,7 +154,7 @@
                             <input
                               class="vs__search"
                               :required="!selected"
-                              v-bind="attributes"
+                              v-bind="attributes" 
                               v-on="events"
                               ref="kategoriReff"
                             />
@@ -203,6 +205,41 @@
                     </button>
                   </div>
                 </form>
+                </div>
+                
+                <div v-else>
+                <form @submit.prevent="store2()" > 
+                  <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="Name" label-for="nama">
+                      <b-form-input
+                        id="nama"
+                        name="nama"
+                        ref="namaReff"
+                        v-model="$v.form2.nama.$model"
+                        
+                        aria-describedby="input-1-live-feedback"
+                      ></b-form-input>
+
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >This is a required field.
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @click="hideModal" >
+                      Close
+                    </button>
+                    <button type="submit" v-show="editMode" class="btn btn-primary">
+                      Update
+                    </button>
+                    <button type="submit" v-show="!editMode"  class="btn btn-primary">
+                      Create
+                    </button>
+                  </div>
+                  </form>
+                  </div>
+
               </b-modal>
                
               </div>
@@ -223,12 +260,14 @@ import { required, minLength } from "vuelidate/lib/validators";
       return {
         perPage: 10,
         editMode:false,
+        detailMode:false,
         loading:false,
         pageOptions: [5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
         selected:"",
         filter: "",
         items: [],
+        threats:[],
         categories:[],
         fields: [
           {
@@ -237,12 +276,12 @@ import { required, minLength } from "vuelidate/lib/validators";
             tdClass:'text-center',
             thClass:'text-center'
           },
-          /* {
+         /*  {
             key: 'id',
             sortable: true
           }, */
           {
-            key: 'category_id',
+            key: 'category',
             label: 'Kategori',
             sortable: true
           },
@@ -254,7 +293,7 @@ import { required, minLength } from "vuelidate/lib/validators";
             key: 'istilah',
             sortable: true
           },
-          /* {
+         /*  {
             key: 'created_at',
             sortable: true,
             tdClass:'text-right',
@@ -293,6 +332,7 @@ import { required, minLength } from "vuelidate/lib/validators";
         form2: {
           threat_id:'',
           term_id : '',
+          nama : '',
         },
       }
     },
@@ -309,6 +349,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           required,
           minLength: minLength(1)
         },
+        nama : {
+          required,
+          minLength: minLength(1)
+        },
+
       }
     },
     mounted() {
@@ -338,6 +383,7 @@ import { required, minLength } from "vuelidate/lib/validators";
         //console.log("openModal");
         if(tipe=="edit") {
           this.editMode = true;
+          this.detailMode = false;
           this.form.id =item.id;
           this.form.kode =item.kode;
           this.form.istilah =item.istilah;
@@ -352,10 +398,11 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.detailMode = true;
           this.form2.term_id = item.id;
           this.form2.threat_id ='';
-          this.form2.nama=''; 
+          this.form2.nama =''; 
         }
         else {
           this.editMode = false;
+          this.detailMode = false;
           this.selected ='';
           this.form.category_id ='';
           this.form.kode ='';
@@ -382,6 +429,11 @@ import { required, minLength } from "vuelidate/lib/validators";
         const { $dirty, $error } = this.$v.form[istilah];
         return $dirty ? !$error : null;
       },
+     /*  validateState(name) {
+        const { $dirty, $error } = this.$v.form[name];
+        return $dirty ? !$error : null;
+      },
+  */
       async store() {
          this.form.category_id = this.selected.value;
          this.$v.form.$touch();

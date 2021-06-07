@@ -8,8 +8,8 @@ import Threat from '../views/Threat/Index'
 import Vulnerability from '../views/Vulnerability/index'
 import Term from '../views/Term/Index'
 import Consequence from '../views/Consequence/Index'
-import createConsequence from '../views/Consequence/create'
-import editConsequence from '../views/Consequence/edit'
+import createConsequence from '../views/category/createConsequence'
+import editConsequence from '../views/category/editConsequence'
 import K3team from '../views/K3team/Index'
 import Register from '../views/Register/Index'
 import createRegister from '../views/Register/create'
@@ -36,6 +36,17 @@ export default
             path:'/category',
             name:'category',
             component: Category,
+        },
+        {
+            path:'/createconsequence/',
+            name:'category.createConsequence',
+            component: createConsequence,
+        },
+        {
+            path:'/editconsequence/:id',
+            name:'category.editConsequence',
+            component: editConsequence,
+            props: true,
         },
         {
             path:'/activity',
@@ -72,7 +83,7 @@ export default
             name:'consequence',
             component: Consequence,
         },
-        {
+        /* {
             path:'/createconsequence/',
             name:'consequence.create',
             component: createConsequence,
@@ -82,7 +93,7 @@ export default
             name:'consequence.edit',
             component: editConsequence,
             props: true,
-        },
+        }, */
         {
             path:'/k3team',
             name:'k3team',
