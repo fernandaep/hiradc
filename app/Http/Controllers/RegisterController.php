@@ -29,8 +29,7 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'unit_kerja' => 'required',
-            'activity_id' => 'required',
+            'activity' => 'required',
             'lokasi' => 'required',
             'condition_id' => '',
             'threat_id' => 'required',
@@ -49,8 +48,7 @@ class RegisterController extends Controller
            
         ]);
         $register = Register::create([
-            'unit_kerja'=> request('unit_kerja'),
-            'activity_id' => request('activity_id'),
+            'activity' => request('activity'),
             'lokasi'=> request('lokasi'),
             'condition_id' => request('condition_id'),
             'threat_id' => request('threat_id'),

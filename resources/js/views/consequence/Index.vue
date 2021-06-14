@@ -158,7 +158,7 @@ export default {
                     tdClass: "text-center",
                     thClass: "text-center"
                 },
-                {
+                /* {
                     key: "id",
                     sortable: true
                 },
@@ -171,7 +171,7 @@ export default {
                     key: "nama",
                     label: "nama",
                     sortable: true
-                },
+                }, */
                 {
                     key: "nilai",
                     label: "nilai",
@@ -232,7 +232,7 @@ export default {
                     label: "dampak_sosial",
                     sortable: true
                 },
-                {
+               /*  {
                     key: "created_at",
                     sortable: true,
                     tdClass: "text-right",
@@ -243,7 +243,7 @@ export default {
                     sortable: true,
                     tdClass: "text-right",
                     thClass: "text-center"
-                },
+                }, */
                 {
                     key: "actions",
                     label: "Actions",

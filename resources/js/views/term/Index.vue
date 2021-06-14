@@ -481,7 +481,7 @@ import { required, minLength } from "vuelidate/lib/validators";
                     this.hideModal();
                     this.$swal({
                       icon: 'success',
-                      title: 'Tim Detail Added successfully'
+                      title: 'Threat Added successfully'
                     });
                     this.loadData();
                 }

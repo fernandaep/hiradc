@@ -16,7 +16,9 @@ class RegisterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'unit_kerja' => $this->unit_kerja,
+            /* 'unit_kerja' => $this->unit_kerja, */
+            'category_id' => $this->category_id,
+            /* 'category' => $this->category->category, */
             'activity_id' => $this->activity_id,
             'activity' => $this->activity->nama,
             'lokasi' => $this->lokasi,
@@ -30,7 +32,7 @@ class RegisterResource extends JsonResource
             'possibilitynilai'  => $this->possibility->nilai,
             'possibilityketerangan'  => $this->possibility->keterangan,
             'consequence_id' => $this->consequence_id,
-            'consequence'  => $this->consequence->konsekuensi,
+            /* 'consequence'  => $this->consequence->konsekuensi, */
             'tingkat_resiko' => $this->tingkat_resiko,
             'status_regulasi' => $this->status_regulasi,
             'aspek_lingkungan' => $this->aspek_lingkungan,

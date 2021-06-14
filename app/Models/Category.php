@@ -30,4 +30,8 @@ class Category extends Model
     {
         return $this->hasMany(Consequence::class); 
     }
+    public function register()
+    {
+        return $this->hasMany(Register::class); 
+    }
 }

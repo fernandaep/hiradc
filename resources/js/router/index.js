@@ -2,14 +2,15 @@ import Home from '../views/Home'
 import Karyawan from '../views/Karyawan/Index'
 import Category from '../views/category/Index'
 import Activity from '../views/activity/index'
+import Asset from '../views/asset/index'
 import Possibility from '../views/Possibility/Index'
 import Condition from '../views/Condition/Index'
 import Threat from '../views/Threat/Index'
 import Vulnerability from '../views/Vulnerability/index'
 import Term from '../views/Term/Index'
 import Consequence from '../views/Consequence/Index'
-import createConsequence from '../views/category/createConsequence'
-import editConsequence from '../views/category/editConsequence'
+import createConsequence from '../views/consequence/create'
+import editConsequence from '../views/consequence/edit'
 import K3team from '../views/K3team/Index'
 import Register from '../views/Register/Index'
 import createRegister from '../views/Register/create'
@@ -37,7 +38,7 @@ export default
             name:'category',
             component: Category,
         },
-        {
+        /* {
             path:'/createconsequence/',
             name:'category.createConsequence',
             component: createConsequence,
@@ -47,11 +48,16 @@ export default
             name:'category.editConsequence',
             component: editConsequence,
             props: true,
-        },
+        }, */
         {
             path:'/activity',
             name:'activity',
             component: Activity,
+        },
+        {
+            path:'/asset',
+            name:'asset',
+            component: Asset,
         },
         {
             path:'/possibility',
@@ -83,7 +89,7 @@ export default
             name:'consequence',
             component: Consequence,
         },
-        /* {
+        {
             path:'/createconsequence/',
             name:'consequence.create',
             component: createConsequence,
@@ -93,7 +99,7 @@ export default
             name:'consequence.edit',
             component: editConsequence,
             props: true,
-        }, */
+        },
         {
             path:'/k3team',
             name:'k3team',

@@ -160,12 +160,8 @@ export default {
                     thClass: "text-center"
                 },
                 {
-                    key: "id",
-                    sortable: true
-                },
-                {
-                    key: "unit_kerja",
-                    label: "Unit Kerja",
+                    key: "category_id",
+                    label: "Kategori",
                     sortable: true
                 },
                 {

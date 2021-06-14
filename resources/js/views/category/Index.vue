@@ -114,7 +114,7 @@
                       </table>
                       </div>
        
-                  <!-- <div class="ml-5 pr-5">
+                  <div class="ml-5 pr-5">
                       <table class="table">
                         <thead>
                           <tr>
@@ -182,7 +182,7 @@
                           </tr>
                         </tbody>
                       </table>
-                      </div>-->
+                      </div>
 
                     
                       <div class="ml-5 pr-5">
@@ -559,7 +559,7 @@ import { required, minLength } from "vuelidate/lib/validators";
     methods: {
      loadData() {
         axios.get("api/category").then((response) => {
-          this.items = Object.values(response.data.data);
+          this.items = Object.values(response.data);
           /* console.log(Object.values(response.data)); */
         }); 
       },

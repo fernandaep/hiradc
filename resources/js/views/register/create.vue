@@ -6,7 +6,7 @@
                     <div class="card-header">New Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label
                                     for="unit_kerja"
                                     class="col-sm-2 col-form-label"
@@ -26,10 +26,10 @@
                                         {{ theErrors.unit_kerja[0] }}
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
-                                    >Activity</label
+                                    >Category</label
                                 >
                                 <div class="col-sm-10">
                                     <b-form-group
@@ -37,8 +37,8 @@
                                         label-for="activity"
                                     >
                                         <v-select
-                                            v-model="selectedactivity"
-                                            :options="activities"
+                                            v-model="selectedcategory"
+                                            :options="categories"
                                         >
                                             <template
                                                 #search="{attributes, events}"
@@ -46,17 +46,66 @@
                                                 <input
                                                     class="vs__search"
                                                     :required="
-                                                        !selectedactivity
+                                                        !selectedcategory
                                                     "
                                                     v-bind="attributes"
                                                     v-on="events"
-                                                    ref="activityReff"
+                                                    ref="categoryReff"
                                                 />
                                             </template>
                                         </v-select>
                                     </b-form-group>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label
+                                    for="activity"
+                                    class="col-sm-2 col-form-label"
+                                    >Activity</label
+                                >
+                                <div class="col-sm-10">
+                                    <input
+                                        type="text"
+                                        v-model="form.activity"
+                                        class="form-control"
+                                        id="activity"
+                                    />
+                                    <div
+                                        v-if="theErrors.lokasi"
+                                        class="mt2 text-danger"
+                                    >
+                                        {{ theErrors.lokasi[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                        <!--     <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
+                                    >Asset</label
+                                >
+                                <div class="col-sm-10">
+                                    <b-form-group
+                                        id="assetgroup"
+                                        label-for="asset"
+                                    >
+                                        <v-select
+                                            v-model="selectedasset"
+                                            :options="assets"
+                                        >
+                                            <template
+                                                #search="{attributes, events}"
+                                            >
+                                                <input
+                                                    class="vs__search"
+                                                    :required="!selectedasset"
+                                                    v-bind="attributes"
+                                                    v-on="events"
+                                                    ref="assetReff"
+                                                />
+                                            </template>
+                                        </v-select>
+                                    </b-form-group>
+                                </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label
                                     for="lokasi"
@@ -137,6 +186,34 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
+                                    >Dampak</label
+                                >
+                                <div class="col-sm-10">
+                                    <b-form-group
+                                        id="vulnerabilitygroup"
+                                        label-for="vulnerability"
+                                    >
+                                        <v-select
+                                            v-model="selectedvulnerability"
+                                            :options="vulnerabilities"
+                                        >
+                                            <template
+                                                #search="{attributes, events}"
+                                            >
+                                                <input
+                                                    class="vs__search"
+                                                    :required="!selectedvulnerability"
+                                                    v-bind="attributes"
+                                                    v-on="events"
+                                                    ref="vulnerabilityReff"
+                                                />
+                                            </template>
+                                        </v-select>
+                                    </b-form-group>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label
                                     for="pengendalian"
                                     class="col-sm-2 col-form-label"
@@ -194,7 +271,7 @@
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="consequencegroup"
-                                        label-for="threat"
+                                        label-for="consequnce"
                                     >
                                         <v-select
                                             v-model="selectedconsequence"
@@ -238,27 +315,24 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group row">
-                                <label
-                                    for="status_regulasi"
-                                    class="col-sm-2 col-form-label"
+                                <label class="col-sm-2 col-form-label"
                                     >Status Regulasi</label
                                 >
                                 <div class="col-sm-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.status_regulasi"
-                                        class="form-control"
-                                        id="status_regulasi"
-                                    />
-                                    <div
-                                        v-if="theErrors.status_regulasi"
-                                        class="mt2 text-danger"
+                                    <b-form-group
+                                        id="status_regulasigroup"
+                                        label-for="status_regulasi"
                                     >
-                                        {{ theErrors.status_regulasi[0] }}
-                                    </div>
+                                        <v-select
+                                            :options="['Legal', 'Tidak Legal']"
+                                            v-model="form.status_regulasi"
+                                        ></v-select>
+                                    </b-form-group>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label
                                     for="aspek_lingkungan"
@@ -302,7 +376,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label
+                             <label
                                     for="resiko"
                                     class="col-sm-2 col-form-label"
                                     >Resiko</label
@@ -322,46 +396,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label
-                                    for="resiko_ditoleransi"
-                                    class="col-sm-2 col-form-label"
+                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
                                     >Resiko Ditoleransi</label
                                 >
                                 <div class="col-sm-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.resiko_ditoleransi"
-                                        class="form-control"
-                                        id="resiko_ditoleransi"
-                                    />
-                                    <div
-                                        v-if="theErrors.resiko_ditoleransi"
-                                        class="mt2 text-danger"
+                                    <b-form-group
+                                        id="resiko_ditoleransigroup"
+                                        label-for="resiko_ditoleransi"
                                     >
-                                        {{ theErrors.resiko_ditoleransi[0] }}
-                                    </div>
+                                        <v-select
+                                            :options="['YA', 'TIDAK']"
+                                            v-model="form.resiko_ditoleransi"
+                                        ></v-select>
+                                    </b-form-group>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label
-                                    for="cakupan_resiko"
-                                    class="col-sm-2 col-form-label"
+                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
                                     >Cakupan Resiko</label
                                 >
                                 <div class="col-sm-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.cakupan_resiko"
-                                        class="form-control"
-                                        id="resiko_ditoleransi"
-                                    />
-                                    <div
-                                        v-if="theErrors.cakupan_resiko"
-                                        class="mt2 text-danger"
+                                    <b-form-group
+                                        id="cakupan_resikogroup"
+                                        label-for="cakupan_resiko"
                                     >
-                                        {{ theErrors.cakupan_resiko[0] }}
-                                    </div>
+                                        <v-select
+                                            :options="['Koorporat', 'Direktorat','Unit Kerja']"
+                                            v-model="form.cakupan_resiko"
+                                        ></v-select>
+                                    </b-form-group>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -393,7 +457,7 @@
                                 >
                                 <div class="col-sm-10">
                                     <input
-                                        type="text"
+                                        type="textbox"
                                         v-model="form.program"
                                         class="form-control"
                                         id="program"
@@ -437,11 +501,14 @@ export default {
             form: {
                 form: {
                     id: "",
-                    unit_kerja: "",
+                    /* unit_kerja: "", */
+                    activity:"",
+                    category_id: "",
                     activity_id: "",
                     lokasi: "",
                     condition_id: "",
                     threat_id: "",
+                    vulnerability_id:"",
                     pengendalian: "",
                     possibility_id: "",
                     consequence_id: "",
@@ -456,12 +523,12 @@ export default {
                     program: ""
                 }
             },
-              validations: {
+            validations: {
                 form: {
-                    unit_kerja: {
+                   /*  unit_kerja: {
                         required
-                    },
-                    activity_id: {
+                    }, */
+                    activity: {
                         required
                     },
                     lokasi: {
@@ -469,7 +536,7 @@ export default {
                     },
                     condition_id: {
                         required
-                    },  
+                    },
                     threat_id: {
                         required
                     },
@@ -506,23 +573,29 @@ export default {
             },
             items: [],
             theErrors: [],
-            selectedactivity: "",
+            selectedcategory: "",
+            selectedasset: "",
             selectedcondition: "",
             selectedthreat: "",
+            selectedvulnerability:'',
             selectedpossibility: "",
             selectedconsequence: "",
             activities: [],
+            assets: [],
             conditions: [],
             threats: [],
+            vulnerabilities: [],
             possibilities: [],
-            consequences: []
+            consequences: [],
+            categories: []
         };
     },
     mounted() {
         this.loadData();
-        this.getActivity();
+        this.getCategory();
         this.getCondition();
         this.getThreat();
+        this.getVulnerability();
         this.getPosibility();
         this.getConsequence();
     },
@@ -533,7 +606,16 @@ export default {
                 //console.log(Object.values(response.data));
             });
         },
-        getActivity() {
+        getCategory() {
+            axios.get("api/category").then(response => {
+                this.categories = Object.values(response.data);
+                let cat = $.map(this.categories, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                this.categories = cat;
+            });
+        },
+        /* getActivity() {
             axios.get("api/activity").then(response => {
                 this.activities = Object.values(response.data);
                 let cat = $.map(this.activities, function(t) {
@@ -542,6 +624,15 @@ export default {
                 this.activities = cat;
             });
         },
+        getAsset() {
+            axios.get("api/asset").then(response => {
+                this.assets = Object.values(response.data);
+                let cat = $.map(this.assets, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                this.assets = cat;
+            });
+        }, */
         getCondition() {
             axios.get("api/condition").then(response => {
                 this.conditions = Object.values(response.data.data);
@@ -560,11 +651,20 @@ export default {
                 this.threats = cat;
             });
         },
+        getVulnerability() {
+            axios.get("api/vulnerability").then(response => {
+                this.vulnerabilities = Object.values(response.data.data);
+                let cat = $.map(this.vulnerabilities, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                this.vulnerabilities = cat;
+            });
+        },
         getPosibility() {
             axios.get("api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
-                    return { label: t.nama, value: t.id };
+                    return {  label: t.nilai+' ( '+t.nama+' )', value: t.id };
                 });
                 this.possibilities = cat;
             });
@@ -573,26 +673,32 @@ export default {
             axios.get("api/consequence").then(response => {
                 this.consequences = Object.values(response.data.data);
                 let cat = $.map(this.consequences, function(t) {
-                    return { label: t.nilai, value: t.id };
+                    return { label: t.nilai+' - '+t.konsekuensi+'', value: t.id };
                 });
                 this.consequences = cat;
             });
         },
         async store() {
             try {
-                this.form.activity_id = this.selectedactivity.value;
+                this.form.category_id = this.selectedcategory.value;
+                /* this.form.activity_id = this.selectedactivity.value;
+                this.form.aset_id = this.selectedasset.value; */
                 this.form.condition_id = this.selectedcondition.value;
                 this.form.threat_id = this.selectedthreat.value;
+                this.form.vulnerability_id = this.selectedvulnerability.value;
                 this.form.possibility_id = this.selectedpossibility.value;
                 this.form.consequence_id = this.selectedconsequence.value;
                 let response = await axios.post("api/register", this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
-                    this.form.unit_kerja = "";
-                    this.form.activity_id = "";
+                    /* this.form.unit_kerja = ""; */
+                    this.form.category_id = "";
+                    this.form.activity = "";
+                    this.form.asset_id = "";
                     this.form.lokasi = "";
                     this.form.condition_id = "";
                     this.form.threat_id = "";
+                    this.form.vulnerability_id = "";
                     this.form.pengendalian = "";
                     this.form.possibility_id = "";
                     this.form.consequence_id = "";
