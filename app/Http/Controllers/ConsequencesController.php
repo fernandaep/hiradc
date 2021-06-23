@@ -85,6 +85,10 @@ class ConsequencesController extends Controller
         return $consequence;
     }
 
+    public function showkat($id)
+    {
+        return Consequence::where('category_id',$id)->get();
+    }
     /**
      * Update the specified resource in storage.
      *

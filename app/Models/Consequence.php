@@ -19,4 +19,8 @@ class Consequence extends Model
     {
         return $this->hasMany(Register::class); 
     }
+    public function mitigasi()
+    {
+        return $this->hasMany(Mitigasi::class); 
+    }
 }

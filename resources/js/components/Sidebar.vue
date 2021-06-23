@@ -53,6 +53,12 @@
                             <p>Kemungkinan</p>
                         </router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'mitigasi'}" >
+                            <i class="nav-icon fas fa-balance-scale"></i>
+                            <p>Mitigasi</p>
+                        </router-link>
+                    </li>
                     <li class="nav-header">Relasi</li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'condition'}" >

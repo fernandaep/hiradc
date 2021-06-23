@@ -4,6 +4,7 @@ import Category from '../views/category/Index'
 import Activity from '../views/activity/index'
 import Asset from '../views/asset/index'
 import Possibility from '../views/Possibility/Index'
+import Mitigasi from '../views/Mitigasi/Index'
 import Condition from '../views/Condition/Index'
 import Threat from '../views/Threat/Index'
 import Vulnerability from '../views/Vulnerability/index'
@@ -63,6 +64,11 @@ export default
             path:'/possibility',
             name:'possibility',
             component: Possibility,
+        },
+        {
+            path:'/mitigasi',
+            name:'mitigasi',
+            component: Mitigasi,
         },
         {
             path:'/condition',

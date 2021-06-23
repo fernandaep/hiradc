@@ -58,6 +58,12 @@ class conditionController extends Controller
         return Condition::findorFail($id);
     }
 
+    public function showkat($id)
+    {
+        return Condition::where('category_id',$id)->get();
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

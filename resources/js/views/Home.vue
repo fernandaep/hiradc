@@ -6,7 +6,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  Kemungkinan
+                  DASHBOARD
                 </h3>
                 
               </div>
@@ -209,10 +209,10 @@ import { required, minLength } from "vuelidate/lib/validators";
             key: 'id',
             sortable: true
           }, */
-          {
+        /*   {
             key: 'No',
             sortable: true
-          },
+          }, */
           {
             key: 'Unit Kerja',
             sortable: true

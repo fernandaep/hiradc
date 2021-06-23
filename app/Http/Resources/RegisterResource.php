@@ -18,12 +18,12 @@ class RegisterResource extends JsonResource
             'id' => $this->id,
             /* 'unit_kerja' => $this->unit_kerja, */
             'category_id' => $this->category_id,
-            /* 'category' => $this->category->category, */
+            /* 'category' => $this->category->nama, */
             'activity_id' => $this->activity_id,
-            'activity' => $this->activity->nama,
+            /* 'activity' => $this->activity->nama, */
             'lokasi' => $this->lokasi,
             'condition_id' => $this->condition_id,
-            'condition' => $this->condition->nama,
+            /* 'condition' => $this->condition->nama, */
             'threat_id' => $this->threat_id,
             'threat' => $this->threat->nama ,
             'pengendalian' => $this->pengendalian,

@@ -59,7 +59,10 @@ class ThreatController extends Controller
         return Threat::findorFail($id);
     }
 
-    
+    public function threatkat($id)
+    {
+        return Threat::where('term_id',$id)->get();
+    }
     /**
      * Update the specified resource in storage.
      *

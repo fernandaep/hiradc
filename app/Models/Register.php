@@ -34,4 +34,8 @@ class Register extends Model
     {
         return $this->belongsTo(Category::class); 
     }
+    public function mitigasi()
+    {
+        return $this->hasMany(Mitigasi::class); 
+    }
 }

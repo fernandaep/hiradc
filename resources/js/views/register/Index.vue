@@ -279,6 +279,7 @@ export default {
             },
             form: {
                 id: "",
+                category_id: "",
                 unit_kerja: "",
                 activity_id: "",
                 lokasi: "",
@@ -299,13 +300,13 @@ export default {
             }
         };
     },
-    validations: {
+    /* validations: {
         form: {
             unit_kerja: {
                 required,
             }
         }
-    },
+    }, */
     mounted() {
         this.loadData();
     },

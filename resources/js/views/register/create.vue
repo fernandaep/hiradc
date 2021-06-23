@@ -33,12 +33,14 @@
                                 >
                                 <div class="col-sm-10">
                                     <b-form-group
-                                        id="activitygroup"
-                                        label-for="activity"
+                                        id="categorygroup"
+                                        label-for="category"
                                     >
                                         <v-select
                                             v-model="selectedcategory"
                                             :options="categories"
+                                            @input="getCondition"
+                                            
                                         >
                                             <template
                                                 #search="{attributes, events}"
@@ -78,7 +80,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <!--     <div class="form-group row">
+                            <!--     <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Asset</label
                                 >
@@ -203,7 +205,9 @@
                                             >
                                                 <input
                                                     class="vs__search"
-                                                    :required="!selectedvulnerability"
+                                                    :required="
+                                                        !selectedvulnerability
+                                                    "
                                                     v-bind="attributes"
                                                     v-on="events"
                                                     ref="vulnerabilityReff"
@@ -246,6 +250,7 @@
                                         <v-select
                                             v-model="selectedpossibility"
                                             :options="possibilities"
+                                            @input="perkalian"
                                         >
                                             <template
                                                 #search="{attributes, events}"
@@ -276,6 +281,7 @@
                                         <v-select
                                             v-model="selectedconsequence"
                                             :options="consequences"
+                                            @input="perkalian"
                                         >
                                             <template
                                                 #search="{attributes, events}"
@@ -316,6 +322,7 @@
                                 </div>
                             </div>
 
+                        <div v-if="showlh">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Status Regulasi</label
@@ -354,6 +361,7 @@
                                     </div>
                                 </div>
                             </div>
+                        
                             <div class="form-group row">
                                 <label
                                     for="peluang"
@@ -376,7 +384,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                             <label
+                                <label
                                     for="resiko"
                                     class="col-sm-2 col-form-label"
                                     >Resiko</label
@@ -396,7 +404,8 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="form-group row">
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Resiko Ditoleransi</label
                                 >
@@ -412,7 +421,7 @@
                                     </b-form-group>
                                 </div>
                             </div>
-                             <div class="form-group row">
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Cakupan Resiko</label
                                 >
@@ -422,7 +431,11 @@
                                         label-for="cakupan_resiko"
                                     >
                                         <v-select
-                                            :options="['Koorporat', 'Direktorat','Unit Kerja']"
+                                            :options="[
+                                                'Koorporat',
+                                                'Direktorat',
+                                                'Unit Kerja'
+                                            ]"
                                             v-model="form.cakupan_resiko"
                                         ></v-select>
                                     </b-form-group>
@@ -449,7 +462,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label
                                     for="program"
                                     class="col-sm-2 col-form-label"
@@ -469,7 +482,7 @@
                                         {{ theErrors.program[0] }}
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-12 text-right">
                                     <input
@@ -502,17 +515,17 @@ export default {
                 form: {
                     id: "",
                     /* unit_kerja: "", */
-                    activity:"",
+                    activity: "",
                     category_id: "",
-                    activity_id: "",
+                    activity: "",
                     lokasi: "",
                     condition_id: "",
                     threat_id: "",
-                    vulnerability_id:"",
+                    vulnerability_id: "",
                     pengendalian: "",
                     possibility_id: "",
                     consequence_id: "",
-                    tingkat_resiko: "",
+                    tingkat_resiko: 0,
                     status_regulasi: "",
                     aspek_lingkungan: "",
                     peluang: "",
@@ -525,7 +538,7 @@ export default {
             },
             validations: {
                 form: {
-                   /*  unit_kerja: {
+                    /*  unit_kerja: {
                         required
                     }, */
                     activity: {
@@ -577,7 +590,7 @@ export default {
             selectedasset: "",
             selectedcondition: "",
             selectedthreat: "",
-            selectedvulnerability:'',
+            selectedvulnerability: "",
             selectedpossibility: "",
             selectedconsequence: "",
             activities: [],
@@ -587,7 +600,8 @@ export default {
             vulnerabilities: [],
             possibilities: [],
             consequences: [],
-            categories: []
+            categories: [],
+            showlh:false,
         };
     },
     mounted() {
@@ -595,13 +609,14 @@ export default {
         this.getCategory();
         this.getCondition();
         this.getThreat();
-        this.getVulnerability();
+        /* this.getVulnerability(); */
         this.getPosibility();
         this.getConsequence();
+        //this.perkalian();
     },
     methods: {
         loadData() {
-            axios.get("api/registrasi").then(response => {
+            axios.get("api/register").then(response => {
                 this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });
@@ -634,50 +649,106 @@ export default {
             });
         }, */
         getCondition() {
-            axios.get("api/condition").then(response => {
-                this.conditions = Object.values(response.data.data);
+            let id = this.selectedcategory.value;
+
+  
+            if(id ==6) {
+                this.showlh = true;
+            }
+            else {
+                this.showlh = false;
+            }
+            axios.get("api/condition/"+id+"/showkat").then(response => {
+                this.conditions = Object.values(response.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.conditions = cat;
             });
+            /* let id = this.selectedcategory.value; */
+            axios.get("api/vulnerability/"+id+"/showkat").then(response => {
+                this.vulnerabilities = Object.values(response.data);
+                let cat = $.map(this.vulnerabilities, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                this.vulnerabilities = cat;
+            });
+            axios.get("api/consequence/"+id+"/showkat").then(response => {
+                this.consequences = Object.values(response.data);
+                let cat = $.map(this.consequences, function(t) {
+                    return {
+                        label: t.nilai + " - " + t.konsekuensi + "",
+                        value: t.nilai
+                    };
+                });
+                this.consequences = cat;
+            });
         },
         getThreat() {
-            axios.get("api/threat").then(response => {
-                this.threats = Object.values(response.data.data);
+            let id = this.selectedcategory.value;
+            axios.get("api/threat/"+id+"/threatkat").then(response => {
+                this.threats = Object.values(response.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.threats = cat;
             });
         },
-        getVulnerability() {
-            axios.get("api/vulnerability").then(response => {
-                this.vulnerabilities = Object.values(response.data.data);
+        /* getVulnerability() {
+            let id = this.selectedcategory.value;
+            axios.get("api/vulnerability/"+id+"/showkat").then(response => {
+                this.vulnerabilities = Object.values(response.data);
                 let cat = $.map(this.vulnerabilities, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.vulnerabilities = cat;
             });
-        },
+        }, */
         getPosibility() {
             axios.get("api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
-                    return {  label: t.nilai+' ( '+t.nama+' )', value: t.id };
+                    return {
+                        label: t.nilai + " ( " + t.nama + " )",
+                        value: t.nilai
+                    };
                 });
                 this.possibilities = cat;
             });
         },
         getConsequence() {
-            axios.get("api/consequence").then(response => {
-                this.consequences = Object.values(response.data.data);
+            let id = this.selectedcategory.value;
+            axios.get("api/consequence/"+id+"/showkat").then(response => {
+                this.consequences = Object.values(response.data);
                 let cat = $.map(this.consequences, function(t) {
-                    return { label: t.nilai+' - '+t.konsekuensi+'', value: t.id };
+                    return {
+                        label: t.nilai + " - " + t.konsekuensi + "",
+                        value: t.nilai
+                    };
                 });
                 this.consequences = cat;
             });
         },
+
+        perkalian() {
+            this.form.possibility_id = this.selectedpossibility.value;
+            this.form.consequence_id = this.selectedconsequence.value;
+            if(this.form.possibility_id==null || this.form.consequence_id==null)
+            {
+                this.form.tingkat_resiko = 0;
+            }
+            else {
+                 this.form.tingkat_resiko = parseInt(this.form.possibility_id) * parseInt(this.form.consequence_id);
+            }
+            /* if(this.form.tingkat_resiko <= 5)
+            {
+                this.form.tingkat_resiko = "tinggi";
+            }
+            else {
+                 this.form.tingkat_resiko = "rendah");
+            } */   
+        },
+
         async store() {
             try {
                 this.form.category_id = this.selectedcategory.value;
