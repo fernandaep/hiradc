@@ -39,15 +39,16 @@ class RegisterController extends Controller
             'tingkat_resiko' => 'required',
             'status_regulasi' => '',
             'aspek_lingkungan' => '',
-            'peluang' => 'required',
-            'resiko' => 'required',
+            'peluang' => '',
+            'resiko' => '',
             'resiko_ditoleransi' => 'required',
             'cakupan_resiko' => 'required',
             'status_program' => 'required',
-            'program' => 'required',
+           
            
         ]);
         $register = Register::create([
+            'category_id' => request('category_id'),
             'activity' => request('activity'),
             'lokasi'=> request('lokasi'),
             'condition_id' => request('condition_id'),
@@ -63,7 +64,7 @@ class RegisterController extends Controller
             'resiko_ditoleransi'=> request('resiko_ditoleransi'),
             'cakupan_resiko'=> request('cakupan_resiko'),
             'status_program'=> request('status_program'),
-            'program'=> request('program'),
+            
         ]);
         
         if($register) {

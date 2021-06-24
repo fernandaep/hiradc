@@ -107,19 +107,16 @@ class K3teamController extends Controller
             'message' => 'K3Team deleted successfully'
         ]);
     }
-    public function koordinator()
+    public function koordinator($nik)
     {
-        //$koordinator = Karyawan::get()->all();
-        return response()->json([
-            'message' => 'K3Team deleted successfully'
-        ]);
+        return K3team::where('karyawan_nik','II',$nik)->get();
     }
-    public function ketua()
+    public function ketua($nik)
     {
-        $ketua = Karyawan::where('band', 'III')->get(); 
+        return K3team::where('karyawan_nik', 'III',$nik)->get(); 
     }
-    public function sekretaris()
+    public function sekretaris($nik)
     {
-        $sekretaris = Karyawan::where('band', '')->get();
+        return K3team::where('karyawan_nik', 'III',$nik)->get();
     }
 }

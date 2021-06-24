@@ -189,23 +189,23 @@ export default {
                     label: "Pengendalian",
                     sortable: true
                 },
-                {
+                /* {
                     key: "possibilitynama",
                     label: "Kemungkinan",
                     sortable: true
-                },
+                }, */
                 {
                     key: "possibilitynilai",
                     label: "Nilai",
                     sortable: true
                 },
-                {
+                /* {
                     key: "possibilityketerangan",
                     label: "Keterangan",
                     sortable: true
-                },
+                }, */
                 {
-                    key: "consequence",
+                    key: "consequence_id",
                     label: "Konsekuensi",
                     sortable: true
                 },
@@ -244,10 +244,10 @@ export default {
                     key: "status_program",
                     sortable: true
                 },
-                {
+               /*  {
                     key: "program",
                     sortable: true
-                },
+                }, */
                 {
                     key: "created_at",
                     sortable: true,

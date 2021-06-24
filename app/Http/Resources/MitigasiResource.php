@@ -17,13 +17,14 @@ class MitigasiResource extends JsonResource
         return [
             'id' => $this->id,
             'register_id' => $this->register_id,
-            /* 'register' => $this->register->kegiatan, */
+            'register' => $this->register->activity,
             'program_mitigasi' => $this->program_mitigasi,
             'possibility_id' => $this->possibility_id,
-            'possibilitynama'  => $this->possibility->nama,
-            'possibilitynilai'  => $this->possibility->nilai,
-            'possibilityketerangan'  => $this->possibility->keterangan,
+            /* 'possibilitynama'  => $this->possibility->nama, */
+            /* 'possibilitynilai'  => $this->possibility->nilai,
+            'possibilityketerangan'  => $this->possibility->keterangan, */
             'consequence_id' => $this->consequence_id,
+            /* 'consequencenilai'  => $this->consequence->nilai, */
             'tingkat_resiko' => $this->tingkat_resiko,
             'aspek_lingkungan' => $this->aspek_lingkungan,
             'resiko_ditoleransi' => $this->resiko_ditoleransi,

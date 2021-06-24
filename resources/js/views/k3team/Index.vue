@@ -127,7 +127,7 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_koordinator" label="NIK Ketua" label-for="nik">
+                    <b-form-group id="nik_ketua" label="NIK Ketua" label-for="nik">
                       <v-select v-model="selectedketua"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
@@ -141,7 +141,7 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_koordinator" label="NIK Sekretaris" label-for="nik">
+                    <b-form-group id="nik_sekretaris" label="NIK Sekretaris" label-for="nik">
                       <v-select v-model="selectedsekretaris"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
@@ -278,14 +278,14 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
         form: {
           id : '',
-          karyawan_id :'',
+          karyawan_nik :'',
           unit_kerja : '',
         },
       }
     },
     validations: {
       form: {
-        karyawan_id: {
+        karyawan_nik: {
         required,
         },
         nama: {
@@ -313,7 +313,8 @@ import { required, minLength } from "vuelidate/lib/validators";
         }); 
       },
       getKoordinator() {
-            axios.get("api/k3team/koordinator").then(response => {
+        let nik= this.form.karyawan_nik;
+            axios.get("api/k3team/"+nik+"/koordinator").then(response => {
                 this.karyawans = Object.values(response.data);
                 let cat = $.map(this.karyawans, function(t) {
                     return { label: t.nik, value: t.nik };
@@ -323,7 +324,8 @@ import { required, minLength } from "vuelidate/lib/validators";
             });
         },
         getKetua() {
-            axios.get("api/karyawan").then(response => {
+          let nik= this.form.karyawan_nik;
+            axios.get("api/k3team/"+nik+"/ketua").then(response => {
                 this.karyawans = Object.values(response.data);
                 let cat = $.map(this.karyawans, function(t) {
                     return { label: t.nik, value: t.nik };
@@ -333,7 +335,8 @@ import { required, minLength } from "vuelidate/lib/validators";
             });
         },
         getSekretaris() {
-            axios.get("api/karyawan").then(response => {
+          let nik= this.form.karyawan_nik;
+            axios.get("api/k3team/"+nik+"/sekretaris").then(response => {
                 this.karyawans = Object.values(response.data);
                 let cat = $.map(this.karyawans, function(t) {
                     return { label: t.nik, value: t.nik };
