@@ -487,6 +487,7 @@ export default {
                 .then(response => {
                     this.form.id = response.data.id;
                     this.form.unit_kerja = response.data.unit_kerja;
+                    
                     this.selectedactivity = response.data.activity_id;
                     /*  this.selectedactivity = { label: item.nama, value: item.activity_id }; */
                     this.form.lokasi = response.data.lokasi;

@@ -6,27 +6,6 @@
                     <div class="card-header">New Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
-                            <!-- <div class="form-group row">
-                                <label
-                                    for="unit_kerja"
-                                    class="col-sm-2 col-form-label"
-                                    >unit kerja</label
-                                >
-                                <div class="col-sm-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.unit_kerja"
-                                        class="form-control"
-                                        id="unit_kerja"
-                                    />
-                                    <div
-                                        v-if="theErrors.unit_kerja"
-                                        class="mt2 text-danger"
-                                    >
-                                        {{ theErrors.unit_kerja[0] }}
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Kategori</label
@@ -62,7 +41,7 @@
                                 <label
                                     for="activity"
                                     class="col-sm-2 col-form-label"
-                                    >Kegiatan</label
+                                    >{{ labelactivity }}</label
                                 >
                                 <div class="col-sm-10">
                                     <input
@@ -79,34 +58,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--     <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"
-                                    >Asset</label
-                                >
-                                <div class="col-sm-10">
-                                    <b-form-group
-                                        id="assetgroup"
-                                        label-for="asset"
-                                    >
-                                        <v-select
-                                            v-model="selectedasset"
-                                            :options="assets"
-                                        >
-                                            <template
-                                                #search="{attributes, events}"
-                                            >
-                                                <input
-                                                    class="vs__search"
-                                                    :required="!selectedasset"
-                                                    v-bind="attributes"
-                                                    v-on="events"
-                                                    ref="assetReff"
-                                                />
-                                            </template>
-                                        </v-select>
-                                    </b-form-group>
-                                </div>
-                            </div> -->
+                            
                             <div class="form-group row">
                                 <label
                                     for="lokasi"
@@ -159,9 +111,10 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"
-                                    >Threat</label
-                                >
+                                <label class="col-sm-2 col-form-label">
+                                    {{ labelthreat }}
+                                </label>
+
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="threatgroup"
@@ -312,6 +265,7 @@
                                         v-model="form.tingkat_resiko"
                                         class="form-control"
                                         id="tingkat_resiko"
+                                        readonly
                                     />
                                     <div
                                         v-if="theErrors.tingkat_resiko"
@@ -344,7 +298,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row"> 
+                                <div class="form-group row">
                                     <label
                                         for="aspek_lingkungan"
                                         class="col-sm-2 col-form-label"
@@ -458,6 +412,7 @@
                                         v-model="form.status_program"
                                         class="form-control"
                                         id="resiko_ditoleransi"
+                                        readonly
                                     />
                                     <div
                                         v-if="theErrors.status_program"
@@ -467,27 +422,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="form-group row">
-                                <label
-                                    for="program"
-                                    class="col-sm-2 col-form-label"
-                                    >Program</label
-                                >
-                                <div class="col-sm-10">
-                                    <input
-                                        type="textbox"
-                                        v-model="form.program"
-                                        class="form-control"
-                                        id="program"
-                                    />
-                                    <div
-                                        v-if="theErrors.program"
-                                        class="mt2 text-danger"
-                                    >
-                                        {{ theErrors.program[0] }}
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="row">
                                 <div class="col-12 text-right">
                                     <input
@@ -598,6 +532,8 @@ export default {
             possibilities: [],
             consequences: [],
             categories: [],
+            labelthreat: "threat",
+            labelactivity: "Activity",
             showlh: false
         };
     },
@@ -605,7 +541,7 @@ export default {
         this.loadData();
         this.getCategory();
         this.getCondition();
-        this.getThreat();
+        /* this.getThreat(); */
         /* this.getVulnerability(); */
         this.getPosibility();
         this.getConsequence();
@@ -627,32 +563,27 @@ export default {
                 this.categories = cat;
             });
         },
-        /* getActivity() {
-            axios.get("api/activity").then(response => {
-                this.activities = Object.values(response.data);
-                let cat = $.map(this.activities, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                this.activities = cat;
-            });
-        },
-        getAsset() {
-            axios.get("api/asset").then(response => {
-                this.assets = Object.values(response.data);
-                let cat = $.map(this.assets, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                this.assets = cat;
-            });
-        }, */
         getCondition() {
             let id = this.selectedcategory.value;
 
-            if (id == 6) {
-                this.showlh = true;
-            } else {
+            if (id == 2) {
                 this.showlh = false;
+                this.labelactivity = "Kegiatan";
+                this.labelthreat = "Potensi Bahaya";
+            } else if (id == 6) {
+                this.showlh = true;
+                this.labelactivity = "Kegiatan";
+                this.labelthreat = "Aspek Lingkungan";
+            } else if (id == 7) {
+                this.showlh = false;
+                this.labelactivity = "Asset";
+                this.labelthreat = "Ancaman Keamanan";
+            } 
+            else {
+                this.showlh = false;
+                this.labelthreat = "Threat";
             }
+
             axios.get("api/condition/" + id + "/showkat").then(response => {
                 this.conditions = Object.values(response.data);
                 let cat = $.map(this.conditions, function(t) {
@@ -678,26 +609,16 @@ export default {
                 });
                 this.consequences = cat;
             });
-        },
-        getThreat() {
-            axios.get("api/threat").then(response => {
-                this.threats = Object.values(response.data.data);
+             axios.get("api/threat/"+id+"/threatkat").then(response => {
+                this.threats = Object.values(response.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
                 });
+                console.log(Object.values(response.data));
                 this.threats = cat;
             });
         },
-        /* getVulnerability() {
-            let id = this.selectedcategory.value;
-            axios.get("api/vulnerability/"+id+"/showkat").then(response => {
-                this.vulnerabilities = Object.values(response.data);
-                let cat = $.map(this.vulnerabilities, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                this.vulnerabilities = cat;
-            });
-        }, */
+        
         getPosibility() {
             axios.get("api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
@@ -753,58 +674,69 @@ export default {
             } else {
                 this.form.tingkat_resiko = "Sangat Tinggi";
             }
+            this.status();
+            this.regulasi();
         },
 
         status() {
             if (
-                (this.form.tingkat_resiko >= 20 &&
-                    this.form.tingkat_resiko <= 25) ||
-                this.form.cakupan_resiko == "Koorporat"
+                this.form.tingkat_resiko == "Sangat Tinggi" &&
+                (this.form.cakupan_resiko == "Koorporat" ||
+                    this.form.cakupan_resiko == "Direktorat" ||
+                    this.form.cakupan_resiko == "Unit Kerja")
             ) {
                 this.form.status_program = "PMK";
             } else if (
-                (this.form.tingkat_resiko >= 10 &&
-                    this.form.tingkat_resiko <= 16) ||
+                this.form.tingkat_resiko == "Tinggi" &&
                 this.form.cakupan_resiko == "Direktorat"
             ) {
                 this.form.status_program = "PMK";
             } else if (
-                (this.form.tingkat_resiko >= 10 &&
-                    this.form.tingkat_resiko <= 16) ||
+                this.form.tingkat_resiko == "Tinggi" &&
                 this.form.cakupan_resiko == "Unit Kerja"
             ) {
                 this.form.status_program = "PUK";
             } else if (
-                (this.form.tingkat_resiko >= 5 &&
-                    this.form.tingkat_resiko <= 9) ||
-                this.form.cakupan_resiko == "Unit Kerja"
+                (this.form.tingkat_resiko == "Sedang" ||
+                    this.form.tingkat_resiko == "Rendah") &&
+                (this.form.cakupan_resiko == "Koorporat" ||
+                    this.form.cakupan_resiko == "Direktorat" ||
+                    this.form.cakupan_resiko == "Unit Kerja")
             ) {
-                this.form.status_program = "pengendalian resiko";
+                this.form.status_program = "Pengendalian Resiko";
             } else {
-                this.form.status_program = "asas";
+                this.form.status_program = "";
             }
         },
 
         regulasi() {
-            if (this.form.status_regulasi == "Tidak Legal") {
+            if (this.form.status_regulasi == "Legal") {
+                this.form.aspek_lingkungan = "Penting";
+            } 
+            else if (
+                (this.form.tingkat_resiko == "Sedang" ||
+                    this.form.tingkat_resiko == "Rendah") &&
+                (this.form.status_regulasi == "Tidak Penting") 
+            ) {
                 this.form.aspek_lingkungan = "Tidak Penting";
-            {
-                if (
-                    this.form.tingkat_resiko >= 1 &&
-                    this.form.tingkat_resiko <= 9
-                ) {
-                    this.form.aspek_lingkungan = "Tidak Penting";
-                } else
-                    this.form.tingkat_resiko >= 10 &&
-                        this.form.tingkat_resiko <= 16;
-                {
-                    this.form.aspek_lingkungan = "Penting";
-                }
             }
+            else if (
+                (this.form.tingkat_resiko == "Tinggi" ||
+                    this.form.tingkat_resiko == "Sangat Tinggi") &&
+                (this.form.status_regulasi == "Tidak Legal") 
+            ) {
+                this.form.aspek_lingkungan = "Penting";
+            }else if (
+                this.form.status_regulasi == "Tidak Legal"
+            ) {
+                this.form.aspek_lingkungan = "Tidak Penting";
             }
             else {
-                this.form.aspek_lingkungan = "Penting";
+                this.form.aspek_lingkungan = "";
             }
+            
+            
+       
         },
 
         /*  resikoditoleransi(){

@@ -555,7 +555,7 @@ export default {
                 this.form.possibility_id == null ||
                 this.form.consequence_id == null
             ) {
-               this.form.tingkat_resiko = parseInt(this.form.possibility_id) * parseInt(this.form.consequence_id);
+               this.form.tingkat_resiko = 0;
             } else {
                 this.form.tingkat_resiko =
                     parseInt(this.form.possibility_id) * parseInt(this.form.consequence_id);
