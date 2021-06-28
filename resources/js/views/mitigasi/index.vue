@@ -239,6 +239,7 @@
                                             <v-select
                                                 v-model="selectedconsequence"
                                                 :options="consequences"
+                                                @input="perkalian"
                                             >
                                                 <template
                                                     #search="{attributes, events}"
@@ -525,7 +526,7 @@ export default {
         },
         getPossibility() {
             axios.get("api/possibility").then(response => {
-                this.possibilities = Object.values(response.data);
+                this.possibilities = Object.values(response.data.data);
                 let cat = $.map(this.possibilities, function(t) {
                     return {
                         label: t.nilai + " ( " + t.nama + " )",

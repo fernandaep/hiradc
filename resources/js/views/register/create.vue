@@ -631,6 +631,7 @@ export default {
                 this.possibilities = cat;
             });
         },
+
         getConsequence() {
             let id = this.selectedcategory.value;
             axios.get("api/consequence/" + id + "/showkat").then(response => {
@@ -734,9 +735,6 @@ export default {
             else {
                 this.form.aspek_lingkungan = "";
             }
-            
-            
-       
         },
 
         /*  resikoditoleransi(){
