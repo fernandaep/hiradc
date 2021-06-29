@@ -107,13 +107,13 @@ class K3teamController extends Controller
             'message' => 'K3Team deleted successfully'
         ]);
     }
-    public function koordinator($nik)
+    public function KaDept($nik)
     {
-        return K3team::where('karyawan_nik','II',$nik)->get();
+        return K3team::where('karyawan_nik','I',$nik)->get();
     }
-    public function ketua($nik)
+    public function kaUnit($nik)
     {
-        return K3team::where('karyawan_nik', 'III',$nik)->get(); 
+        return K3team::where('karyawan_nik', 'II',$nik)->get(); 
     }
     public function sekretaris($nik)
     {

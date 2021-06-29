@@ -6,7 +6,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  Team K3 
+                  Unit Kerja 
                 </h3>
                 
               </div>
@@ -113,7 +113,7 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="nik_koordinator" label="NIK Koordinator" label-for="nik">
+                    <b-form-group id="nik_koordinator" label="NIK Ka.Dept" label-for="nik">
                       <v-select v-model="selectedkoordinator"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
@@ -127,7 +127,7 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_ketua" label="NIK Ketua" label-for="nik">
+                    <b-form-group id="nik_ketua" label="NIK Ka.Unit" label-for="nik">
                       <v-select v-model="selectedketua"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input
@@ -141,7 +141,7 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_sekretaris" label="NIK Sekretaris" label-for="nik">
+                    <b-form-group id="nik_sekretaris" label="NIK PIC Unit" label-for="nik">
                       <v-select v-model="selectedsekretaris"  :options="karyawans">
                         <template #search="{attributes, events}">
                             <input

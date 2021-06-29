@@ -93,7 +93,7 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'k3team'}" >
                             <i class="nav-icon fas fa-handshake"></i>
-                            <p>Team K3</p>
+                            <p>Unit Kerja</p>
                         </router-link>
                     </li>
                      <li class="nav-item">

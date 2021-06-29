@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 <label
                                     for="lokasi"
@@ -310,6 +310,7 @@
                                             v-model="form.aspek_lingkungan"
                                             class="form-control"
                                             id="aspek_lingkungan"
+                                            readonly
                                         />
                                         <div
                                             v-if="theErrors.aspek_lingkungan"
@@ -364,40 +365,47 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"
+                                <label
+                                    for="status_program"
+                                    class="col-sm-2 col-form-label"
                                     >Resiko Ditoleransi</label
                                 >
                                 <div class="col-sm-10">
-                                    <b-form-group
-                                        id="resiko_ditoleransigroup"
-                                        label-for="resiko_ditoleransi"
+                                    <input
+                                        type="text"
+                                        v-model="form.resiko_ditoleransi"
+                                        class="form-control"
+                                        id="resiko_ditoleransi"
+                                        readonly
+                                    />
+                                    <div
+                                        v-if="theErrors.resiko_ditoleransi"
+                                        class="mt2 text-danger"
                                     >
-                                        <v-select
-                                            :options="['YA', 'TIDAK']"
-                                            v-model="form.resiko_ditoleransi"
-                                        ></v-select>
-                                    </b-form-group>
+                                        {{ theErrors.resiko_ditoleransi[0] }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"
+                                <label
+                                    for="status_program"
+                                    class="col-sm-2 col-form-label"
                                     >Cakupan Resiko</label
                                 >
                                 <div class="col-sm-10">
-                                    <b-form-group
-                                        id="cakupan_resikogroup"
-                                        label-for="cakupan_resiko"
+                                    <input
+                                        type="text"
+                                        v-model="form.cakupan_resiko"
+                                        class="form-control"
+                                        id="cakupan_resiko"
+                                        readonly
+                                    />
+                                    <div
+                                        v-if="theErrors.cakupan_resiko"
+                                        class="mt2 text-danger"
                                     >
-                                        <v-select
-                                            :options="[
-                                                'Koorporat',
-                                                'Direktorat',
-                                                'Unit Kerja'
-                                            ]"
-                                            v-model="form.cakupan_resiko"
-                                            @input="status"
-                                        ></v-select>
-                                    </b-form-group>
+                                        {{ theErrors.cakupan_resiko[0] }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -578,8 +586,7 @@ export default {
                 this.showlh = false;
                 this.labelactivity = "Asset";
                 this.labelthreat = "Ancaman Keamanan";
-            } 
-            else {
+            } else {
                 this.showlh = false;
                 this.labelthreat = "Threat";
             }
@@ -609,8 +616,8 @@ export default {
                 });
                 this.consequences = cat;
             });
-             axios.get("api/threat/"+id+"/threatkat").then(response => {
-                this.threats = Object.values(response.data);
+            axios.get("api/threat").then(response => {
+                this.threats = Object.values(response.data.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
                 });
@@ -618,7 +625,7 @@ export default {
                 this.threats = cat;
             });
         },
-        
+
         getPosibility() {
             axios.get("api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
@@ -675,21 +682,46 @@ export default {
             } else {
                 this.form.tingkat_resiko = "Sangat Tinggi";
             }
+            this.cakupan();
+            this.resiko();
             this.status();
             this.regulasi();
+        },
+
+        cakupan() {
+            if (this.form.tingkat_resiko == "Sangat Tinggi") {
+                this.form.cakupan_resiko = "Koorporat/Direktorat";
+            } else if (
+                this.form.tingkat_resiko == "Tinggi" ||
+                this.form.tingkat_resiko == "Sedang" ||
+                this.form.tingkat_resiko == "Rendah"
+            ) {
+                this.form.cakupan_resiko = "Unit Kerja";
+            } else {
+                this.form.cakupan_resiko = "";
+            }
+        },
+
+        resiko() {
+            if (
+                this.form.tingkat_resiko == "Sangat Tinggi" ||
+                this.form.tingkat_resiko == "Tinggi"
+                ){
+                this.form.resiko_ditoleransi = "Ya";
+            } else if (
+                this.form.tingkat_resiko == "Sedang" ||
+                this.form.tingkat_resiko == "Rendah"
+                ){
+                this.form.resiko_ditoleransi = "Tidak";
+            } else {
+                this.form.resiko_ditoleransi = "";
+            }
         },
 
         status() {
             if (
                 this.form.tingkat_resiko == "Sangat Tinggi" &&
-                (this.form.cakupan_resiko == "Koorporat" ||
-                    this.form.cakupan_resiko == "Direktorat" ||
-                    this.form.cakupan_resiko == "Unit Kerja")
-            ) {
-                this.form.status_program = "PMK";
-            } else if (
-                this.form.tingkat_resiko == "Tinggi" &&
-                this.form.cakupan_resiko == "Direktorat"
+                this.form.cakupan_resiko == "Koorporat/Direktorat"
             ) {
                 this.form.status_program = "PMK";
             } else if (
@@ -700,11 +732,10 @@ export default {
             } else if (
                 (this.form.tingkat_resiko == "Sedang" ||
                     this.form.tingkat_resiko == "Rendah") &&
-                (this.form.cakupan_resiko == "Koorporat" ||
-                    this.form.cakupan_resiko == "Direktorat" ||
+                (this.form.cakupan_resiko == "Koorporat/Direktorat" ||
                     this.form.cakupan_resiko == "Unit Kerja")
             ) {
-                this.form.status_program = "Pengendalian Resiko";
+                this.form.status_program = "Pengendalian Operasional";
             } else {
                 this.form.status_program = "";
             }
@@ -713,46 +744,28 @@ export default {
         regulasi() {
             if (this.form.status_regulasi == "Legal") {
                 this.form.aspek_lingkungan = "Penting";
-            } 
-            else if (
+            } else if (
                 (this.form.tingkat_resiko == "Sedang" ||
                     this.form.tingkat_resiko == "Rendah") &&
-                (this.form.status_regulasi == "Tidak Penting") 
-            ) {
-                this.form.aspek_lingkungan = "Tidak Penting";
-            }
-            else if (
-                (this.form.tingkat_resiko == "Tinggi" ||
-                    this.form.tingkat_resiko == "Sangat Tinggi") &&
-                (this.form.status_regulasi == "Tidak Legal") 
-            ) {
-                this.form.aspek_lingkungan = "Penting";
-            }else if (
                 this.form.status_regulasi == "Tidak Legal"
             ) {
                 this.form.aspek_lingkungan = "Tidak Penting";
-            }
-            else {
+            } else if (
+                (this.form.tingkat_resiko == "Tinggi" ||
+                    this.form.tingkat_resiko == "Sangat Tinggi") &&
+                this.form.status_regulasi == "Tidak Legal"
+            ) {
+                this.form.aspek_lingkungan = "Penting";
+            } else if (this.form.status_regulasi == "Tidak Legal") {
+                this.form.aspek_lingkungan = "Tidak Penting";
+            } else {
                 this.form.aspek_lingkungan = "";
             }
         },
 
-        /*  resikoditoleransi(){
-            if(this.form.tingkat_resiko >=1 && this.form.tingkat_resiko <=4 )
-            {
-                this.form.status_program = <option value="YA" disabled> </option>
-            }
-            else if(this.form.tingkat_resiko >=5 && this.form.tingkat_resiko <=25 )
-            {
-                this.form.status_program = "";
-            }
-        }, */
-
         async store() {
             try {
                 this.form.category_id = this.selectedcategory.value;
-                /* this.form.activity_id = this.selectedactivity.value;
-                this.form.aset_id = this.selectedasset.value; */
                 this.form.condition_id = this.selectedcondition.value;
                 this.form.threat_id = this.selectedthreat.value;
                 this.form.vulnerability_id = this.selectedvulnerability.value;
@@ -761,7 +774,6 @@ export default {
                 let response = await axios.post("api/register", this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
-                    /* this.form.unit_kerja = ""; */
                     this.form.category_id = "";
                     this.form.activity = "";
                     this.form.asset_id = "";
