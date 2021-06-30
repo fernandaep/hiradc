@@ -389,7 +389,7 @@ export default {
             });
         },
 
-        async store5() {
+        async store() {
             try {
                 /* this.form.category_id = this.selected.value; */
                 let response = await axios.post("api/consequence", this.form);

@@ -16,23 +16,19 @@ class RegisterResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            /* 'unit_kerja' => $this->unit_kerja, */
             'category_id' => $this->category_id,
-            /* 'category' => $this->category->nama, */
+            'category' => $this->category->nama,
             'activity' => $this->activity,
-            /* 'activity' => $this->activity->nama, */
             'lokasi' => $this->lokasi,
             'condition_id' => $this->condition_id,
-            /* 'condition' => $this->condition->nama, */
+            'condition' => $this->condition->nama,
             'threat_id' => $this->threat_id,
             'threat' => $this->threat->nama ,
             'pengendalian' => $this->pengendalian,
             'possibility_id' => $this->possibility_id,
-            /* 'possibilitynama'  => $this->possibility->nama,
-            'possibilitynilai'  => $this->possibility->nilai,
-            'possibilityketerangan'  => $this->possibility->keterangan, */
+           'possibilitynilai'  => $this->possibility->nilai, 
             'consequence_id' => $this->consequence_id,
-            /* 'consequence'  => $this->consequence->nilai, */
+            /* 'consequencenilai'  => $this->consequence->nilai, */
             'tingkat_resiko' => $this->tingkat_resiko,
             'status_regulasi' => $this->status_regulasi,
             'aspek_lingkungan' => $this->aspek_lingkungan,

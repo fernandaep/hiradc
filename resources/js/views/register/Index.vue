@@ -11,7 +11,7 @@
                         </div>
                         <div class="card-body">
                             <b-row class="p-20">
-                                <b-col>
+                                <b-col lg="2">
                                     <router-link
                                         :to="{ name: 'register.create' }"
                                         class="btn btn-outline-primary"
@@ -19,7 +19,26 @@
                                         <i class="fas fa-plus"></i> Add New
                                     </router-link>
                                 </b-col>
-                                <b-col sm="4" md="2" class="my-1">
+                                <b-col lg="2" sm="4" md="2" class="my-1">
+                                    <b-form-group
+                                        label="Year"
+                                        label-for="per-year-select"
+                                        label-cols-sm="8"
+                                        label-cols-md="8"
+                                        label-cols-lg="6"
+                                        label-align-sm="right"
+                                        label-size="sm"
+                                        class="mb-0"
+                                    >
+                                        <b-form-select
+                                            id="per-year-select"
+                                            v-model="filter"
+                                            :options="year"
+                                            size="sm"
+                                        ></b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Per page"
                                         label-for="per-page-select"
@@ -38,7 +57,7 @@
                                         ></b-form-select>
                                     </b-form-group>
                                 </b-col>
-                                <b-col lg="8" class="my-1">
+                                <b-col lg="5" class="my-1">
                                     <b-form-group
                                         label="Filter"
                                         label-for="filter-input"
@@ -85,6 +104,108 @@
                                 hover
                                 responsive
                             >
+                                <template #row-details="row">
+                                    <b-card>
+                                        <div class="ml-5 pr-5">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>
+                                                            Program Mitigasi
+                                                        </th>
+                                                        <th>Kemungkinan</th>
+                                                        <th>Konsekuensi</th>
+                                                        <th>Tingkat Resiko</th>
+                                                        <th>
+                                                            Aspek Lingkungan
+                                                        </th>
+                                                        <th>
+                                                            Resiko Ditoleransi
+                                                        </th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="(value,
+                                                        key) in row.item
+                                                            .mitigasi"
+                                                        :key="key"
+                                                    >
+                                                        <td>{{ key + 1 }}</td>
+                                                        <td>
+                                                            {{
+                                                                value.program_mitigasi
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.possibility_id
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.consequence_id
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.tingkat_resiko
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.aspek_lingkungan
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.resiko_ditoleransi
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            <b-button
+                                                                variant="outline-info"
+                                                                size="sm"
+                                                                @click="
+                                                                    openModal(
+                                                                        'mitigasi',
+                                                                        'Edit ID : ' +
+                                                                            row
+                                                                                .item
+                                                                                .id,
+                                                                        $event.target,
+                                                                        row.item
+                                                                    )
+                                                                "
+                                                                class="mr-1"
+                                                            >
+                                                                <i
+                                                                    class="fa fa-edit"
+                                                                ></i>
+                                                            </b-button>
+                                                            <b-button
+                                                                variant="outline-danger"
+                                                                size="sm"
+                                                                @click="
+                                                                    deleteMitigasi(
+                                                                        value.id
+                                                                    )
+                                                                "
+                                                            >
+                                                                <i
+                                                                    class="fa fa-trash"
+                                                                ></i>
+                                                            </b-button>
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </b-card>
+                                </template>
                                 <template #cell(no)="row">
                                     {{ row.index + 1 }}
                                 </template>
@@ -95,7 +216,30 @@
                                     {{ row.item.updated_at | formatDate }}
                                 </template>
                                 <template #cell(actions)="row">
-                                   <b-button variant="outline-info" size="sm">
+                                    <b-button
+                                        variant="outline-info"
+                                        size="sm"
+                                        @click="row.toggleDetails"
+                                        class="mr-1"
+                                    >
+                                        <i class="fa fa-eye"></i>
+                                    </b-button>
+                                    <b-button
+                                        variant="outline-success"
+                                        size="sm"
+                                        @click="
+                                            openModal(
+                                                'mitigasi',
+                                                'Tambah Mitigasi',
+                                                $event.target,
+                                                row.item
+                                            )
+                                        "
+                                        class="mr-1"
+                                    >
+                                        <i class="fa fa-plus"></i>
+                                    </b-button>
+                                    <b-button variant="outline-info" size="sm">
                                         <router-link
                                             :to="{
                                                 name: 'register.edit',
@@ -106,7 +250,7 @@
                                             <i class="fa fa-edit"></i> Edit
                                         </router-link>
                                     </b-button>
-                    
+
                                     <b-button
                                         variant="outline-danger"
                                         size="sm"
@@ -129,6 +273,214 @@
                                     ></b-pagination>
                                 </b-col>
                             </b-row>
+                            <b-modal
+                                @shown="focusMyElement"
+                                ref="my-modal"
+                                :id="infoModal.id"
+                                :title="infoModal.title"
+                                @hide="resetInfoModal"
+                                hide-footer
+                            >
+                                <form
+                                    @submit.prevent="
+                                        editMode ? update() : store2()
+                                    "
+                                >
+                                    <div class="modal-body">
+                                        <b-form-group
+                                            id="example-input-group-1"
+                                            label="Program Mitigasi"
+                                            label-for="program_mitigasi"
+                                        >
+                                            <!-- <b-form-input
+                                                id="program_mitigasi"
+                                                name="program_mitigasi"
+                                                ref="program_mitigasiReff"
+                                                v-model="
+                                                    $v.form2.program_mitigasi
+                                                        .$model
+                                                "
+                                                :state="
+                                                    validateState(
+                                                        'program_mitigasi'
+                                                    )
+                                                "
+                                                aria-describedby="input-1-live-feedback"
+                                            ></b-form-input> -->
+
+                                            <b-form-invalid-feedback
+                                                id="input-1-live-feedback"
+                                                >This is a required field.
+                                            </b-form-invalid-feedback>
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="possibilitygroup"
+                                            label="Kemungkinan"
+                                            label-for="possibility"
+                                        >
+                                            <v-select
+                                                v-model="selectedpossibility"
+                                                :options="possibilities"
+                                                @input="perkalian"
+                                            >
+                                                <template
+                                                    #search="{attributes, events}"
+                                                >
+                                                    <input
+                                                        class="vs__search"
+                                                        :required="
+                                                            !selectedpossibility
+                                                        "
+                                                        v-bind="attributes"
+                                                        v-on="events"
+                                                        ref="possibilityReff"
+                                                    />
+                                                </template>
+                                            </v-select>
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="consequencegroup"
+                                            label="Konsekuensi"
+                                            label-for="consequence"
+                                        >
+                                            <v-select
+                                                v-model="selectedconsequence"
+                                                :options="consequences"
+                                                @input="perkalian"
+                                            >
+                                                <template
+                                                    #search="{attributes, events}"
+                                                >
+                                                    <input
+                                                        class="vs__search"
+                                                        :required="
+                                                            !selectedconsequence
+                                                        "
+                                                        v-bind="attributes"
+                                                        v-on="events"
+                                                        ref="consequencesReff"
+                                                    />
+                                                </template>
+                                            </v-select>
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="example-input-group-1"
+                                            label="Tingkat Resiko"
+                                            label-for="tingkat_resiko"
+                                            ><!-- 
+                                            <b-form-input
+                                                id="tingkat_resiko"
+                                                name="tingkat_resiko"
+                                                ref="tingkat_resikoReff"
+                                                v-model="
+                                                    $v.form2.tingkat_resiko
+                                                        .$model
+                                                "
+                                                :state="
+                                                    validateState(
+                                                        'tingkat_resiko'
+                                                    )
+                                                "
+                                                aria-describedby="input-1-live-feedback"
+                                            ></b-form-input> -->
+                                            <b-form-invalid-feedback
+                                                id="input-1-live-feedback"
+                                                >This is a required field.
+                                            </b-form-invalid-feedback>
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="example-input-group-1"
+                                            label="Aspek Lingkungan"
+                                            label-for="aspek_lingkungan"
+                                        >
+                                            <!-- <v-select
+                                                :options="[
+                                                    'Penting',
+                                                    'Tidak Penting'
+                                                ]"
+                                                v-model="
+                                                    $v.form2.aspek_lingkungan
+                                                        .$model
+                                                "
+                                                :state="
+                                                    validateState(
+                                                        'aspek_lingkungan'
+                                                    )
+                                                "
+                                            ></v-select> -->
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="example-input-group-1"
+                                            label="Resiko Ditoleransi"
+                                            label-for="resiko_ditoleransi"
+                                        >
+                                            <!--  <v-select
+                                                :options="['YA', 'TIDAK']"
+                                                v-model="
+                                                    $v.form2.resiko_ditoleransi
+                                                        .$model
+                                                "
+                                                :state="
+                                                    validateState(
+                                                        'resiko_ditoleransi'
+                                                    )
+                                                "
+                                            ></v-select> -->
+                                        </b-form-group>
+
+                                        <b-form-group
+                                            id="example-input-group-1"
+                                            label="Keterangan"
+                                            label-for="keterangan"
+                                        >
+                                            <!-- <b-form-input
+                                                id="keterangan"
+                                                name="keterangan"
+                                                ref="keteranganReff"
+                                                v-model="
+                                                    $v.form.keterangan.$model
+                                                "
+                                                :state="
+                                                    validateState('keterangan')
+                                                "
+                                                aria-describedby="input-1-live-feedback"
+                                            ></b-form-input> -->
+                                            <b-form-invalid-feedback
+                                                id="input-1-live-feedback"
+                                                >This is a required field.
+                                            </b-form-invalid-feedback>
+                                        </b-form-group>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger"
+                                            @click="hideModal"
+                                        >
+                                            Close
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            v-show="editMode"
+                                            class="btn btn-primary"
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            v-show="!editMode"
+                                            class="btn btn-primary"
+                                        >
+                                            Create
+                                        </button>
+                                    </div>
+                                </form>
+                            </b-modal>
                         </div>
                     </div>
                 </div>
@@ -147,11 +499,23 @@ export default {
         return {
             perPage: 10,
             editMode: false,
+            detailMode: false,
             loading: false,
             pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
             currentPage: 1,
             filter: "",
+            selectedpossibility: "",
+            selectedconsequence: "",
+            possibilities: [],
+            consequences: [],
             items: [],
+            year: [
+                { value: "2020", text: "2020" },
+                { value: "2021", text: "2021" },
+                { value: "2022", text: "2022" },
+                { value: "2023", text: "2023" },
+                { value: "2024", text: "2024" }
+            ],
             fields: [
                 {
                     key: "no",
@@ -160,7 +524,7 @@ export default {
                     thClass: "text-center"
                 },
                 {
-                    key: "category_id",
+                    key: "category",
                     label: "Kategori",
                     sortable: true
                 },
@@ -179,7 +543,7 @@ export default {
                     label: "Kondisi",
                     sortable: true
                 },
-                 {
+                {
                     key: "threat",
                     label: "Threat",
                     sortable: true
@@ -195,8 +559,8 @@ export default {
                     sortable: true
                 }, */
                 {
-                    key: "possibilitynilai",
-                    label: "Nilai",
+                    key: "possibility_id",
+                    label: "Kemungkinan",
                     sortable: true
                 },
                 /* {
@@ -244,7 +608,7 @@ export default {
                     key: "status_program",
                     sortable: true
                 },
-               /*  {
+                /*  {
                     key: "program",
                     sortable: true
                 }, */
@@ -284,7 +648,7 @@ export default {
                 activity_id: "",
                 lokasi: "",
                 condition_id: "",
-                threat_id:"",
+                threat_id: "",
                 pengendalian: "",
                 possibility_id: "",
                 consequence_id: "",
@@ -297,6 +661,16 @@ export default {
                 cakupan_resiko: "",
                 status_program: "",
                 program: ""
+            },
+            form2: {
+                id: "",
+                program_mitigasi: "",
+                possibility_id: "",
+                consequence_id: "",
+                tingkat_resiko: 0,
+                aspek_lingkungan: "",
+                resiko_ditoleransi: "",
+                keterangan: ""
             }
         };
     },
@@ -309,13 +683,84 @@ export default {
     }, */
     mounted() {
         this.loadData();
+        this.getPossibility();
+        this.getConsequence();
     },
     methods: {
         loadData() {
             axios.get("api/register").then(response => {
                 this.items = Object.values(response.data.data);
-                console.log(Object.values(response.data));
+                console.log(Object.values(response.data.data));
             });
+        },
+        getPossibility() {
+            axios.get("api/possibility").then(response => {
+                this.possibilities = Object.values(response.data.data);
+                let cat = $.map(this.possibilities, function(t) {
+                    return {
+                        label: t.nilai + " ( " + t.nama + " )",
+                        value: t.nilai
+                    };
+                });
+                this.possibilities = cat;
+            });
+        },
+        getConsequence() {
+            axios.get("api/consequence").then(response => {
+                this.consequences = Object.values(response.data.data);
+                let cat = $.map(this.consequences, function(t) {
+                    return {
+                        label: t.nilai + " - " + t.konsekuensi + "",
+                        value: t.nilai
+                    };
+                });
+                this.consequences = cat;
+            });
+        },
+        focusMyElement() {
+            this.detailMode
+                ? this.$refs.program_mitigasiReff.focus()
+                : this.$refs.program_mitigasiReff.focus();
+        },
+        perkalian() {
+            this.form2.possibility_id = this.selectedpossibility.value;
+            this.form2.consequence_id = this.selectedconsequence.value;
+            if (
+                this.form2.possibility_id == null ||
+                this.form2.consequence_id == null
+            ) {
+                this.form2.tingkat_resiko = 0;
+            } else {
+                this.form2.tingkat_resiko =
+                    parseInt(this.form2.possibility_id) *
+                    parseInt(this.form2.consequence_id);
+            }
+        },
+        openModal(tipe, title, button, item) {
+            if (tipe == "edit") {
+                this.editMode = true;
+                this.form2.id = item.id;
+                this.form2.program_mitigasi = item.program_mitigasi;
+                this.form2.possibility_id = item.possibility_id;
+                this.form2.consequence_id = item.consequence_id;
+                this.form2.tingkat_resiko = item.tingkat_resiko;
+                this.form2.aspek_lingkungan = item.aspek_lingkungan;
+                this.form2.resiko_ditoleransi = item.resiko_ditoleransi;
+                this.form2.keterangan = item.keterangan;
+            } else {
+                this.editMode = false;
+
+                this.form2.program_mitigasi = "";
+                this.form2.possibility_id = "";
+                this.form2.consequence_id = "";
+                this.form2.tingkat_resiko = "";
+                this.form2.aspek_lingkungan = "";
+                this.form2.resiko_ditoleransi = "";
+                this.form2.keterangan = "";
+            }
+
+            this.infoModal.title = title;
+            this.$root.$emit("bv::show::modal", this.infoModal.id, button);
         },
 
         resetInfoModal() {
@@ -326,6 +771,58 @@ export default {
         },
         hideModal() {
             this.$refs["my-modal"].hide();
+        },
+        validateState(program_mitigasi) {
+            const { $dirty, $error } = this.$v.form2[program_mitigasi];
+            return $dirty ? !$error : null;
+        },
+
+        validateState(tingkat_resiko) {
+            const { $dirty, $error } = this.$v.form2[tingkat_resiko];
+            return $dirty ? !$error : null;
+        },
+        validateState(aspek_lingkungan) {
+            const { $dirty, $error } = this.$v.form2[aspek_lingkungan];
+            return $dirty ? !$error : null;
+        },
+        validateState(resiko_ditoleransi) {
+            const { $dirty, $error } = this.$v.form2[resiko_ditoleransi];
+            return $dirty ? !$error : null;
+        },
+        validateState(keterangan) {
+            const { $dirty, $error } = this.$v.form2[keterangan];
+            return $dirty ? !$error : null;
+        },
+        async store2() {
+            this.form2.register_id = this.selectedregister.value;
+            this.form2.possibility_id = this.selectedpossibility.value;
+            this.form2.consequence_id = this.selectedconsequence.value;
+            this.$v.form2.$touch();
+            if (this.$v.form2.$anyError) {
+                return;
+            }
+            try {
+                let response = await axios.post("api/mitigasi", this.form2);
+                //console.log(response.status);
+                if (response.status == 200) {
+                    this.form2.register_id = "";
+                    this.form2.program_mitigasi = "";
+                    this.form2.possibility_id = "";
+                    this.form2.consequence_id = "";
+                    this.form2.tingkat_resiko = "";
+                    this.form2.aspek_lingkungan = "";
+                    this.form2.resiko_ditoleransi = "";
+                    /* this.form.keterangan =''; */
+                    this.hideModal();
+                    this.$swal({
+                        icon: "success",
+                        title: "Mitigasi Added successfully"
+                    });
+                    this.loadData();
+                }
+            } catch (e) {
+                console.log(e.response.data.errors);
+            }
         },
         deleteRegister(id) {
             this.$swal({
@@ -350,6 +847,29 @@ export default {
             });
         }
     },
+    deleteMitigasi(id) {
+        this.$swal({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(result => {
+            if (result.isConfirmed) {
+                axios.delete("api/mitigasi/" + id).then(response => {
+                    this.$swal(
+                        "Deleted!",
+                        "Your file has been deleted.",
+                        "success"
+                    );
+                    this.loadData();
+                });
+            }
+        });
+    },
+
     computed: {
         rows() {
             return this.items.length;
