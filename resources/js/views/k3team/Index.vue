@@ -113,62 +113,61 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="nik_koordinator" label="NIK Ka.Dept" label-for="nik">
-                      <v-select v-model="selectedkoordinator"  :options="karyawans">
+                     <b-form-group id="unit_kerja" label="Unit Kerja" label-for="unitkerja">
+                      <v-select v-model="selectedunitkerja"  :options="unitkerja" >
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selectedkoordinator"
+                              :required="!selectedunitkerja"
                               v-bind="attributes"
                               v-on="events"
-                              ref="koordinatorReff"
+                              ref="unitkerjaReff"
                             />
                           </template>
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_ketua" label="NIK Ka.Unit" label-for="nik">
-                      <v-select v-model="selectedketua"  :options="karyawans">
+                    <b-form-group id="nik_dept" label="NIK Ka.Dept" label-for="kadept">
+                      <v-select v-model="selectedkadept"  :options="kadept">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selectedketua"
+                              :required="!selectedkadept"
                               v-bind="attributes"
                               v-on="events"
-                              ref="ketuaReff"
+                              ref="kadeptReff"
                             />
                           </template>
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_sekretaris" label="NIK PIC Unit" label-for="nik">
-                      <v-select v-model="selectedsekretaris"  :options="karyawans">
+                    <b-form-group id="nik_kaunit" label="NIK Ka.Unit" label-for="kaunit">
+                      <v-select v-model="selectedkaunit"  :options="kaunit">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selectedsekretaris"
+                              :required="!selectedkaunit"
                               v-bind="attributes"
                               v-on="events"
-                              ref="sekretarisReff"
+                              ref="kaunitReff"
                             />
                           </template>
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="example-input-group-1" label="Unit Kerja" label-for="unit_kerja">
-                      <b-form-input
-                        id="unit_kerja"
-                        name="unit_kerja"
-                        ref="unit_kerjaReff"
-                        v-model="$v.form.unit_kerja.$model"
-                        :state="validateState('unit_kerja')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
+                    <b-form-group id="nik_pic" label="NIK PIC Unit" label-for="pic">
+                      <v-select v-model="selectedpic"  :options="pic">
+                        <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!selectedpic"
+                              v-bind="attributes"
+                              v-on="events"
+                              ref="picReff"
+                            />
+                          </template>
+                      </v-select>
 
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
                     </b-form-group>
                   </div>
                   <div class="modal-footer">
@@ -206,9 +205,14 @@ import { required, minLength } from "vuelidate/lib/validators";
         loading:false,
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
-        selectedkoordinator:"",
-        selectedketua:"",
-        selectedsekretaris:"",
+        selectedkadept:"",
+        selectedkaunit:'',
+        selectedunitkerja:"",
+        unitkerja:[],
+        kadept:[],
+        kaunit:[],
+        pic:[],
+        selectedpic:"",
         filter: "",
         items: [],
         karyawans:[],
@@ -224,40 +228,24 @@ import { required, minLength } from "vuelidate/lib/validators";
             sortable: true
           },
           {
-            key: "karyawan_nik",
-            label: "NIK",
+            key: "unit_kerja",
+            label: "Unit Kerja",
             sortable: true
           },
            {
-            key: "nama",
-            label: "Nama",
+            key: "kadept",
+            label: "Kepala Departemen",
             sortable: true
           },
           {
-            key: "nip",
-            label: "NIP",
+            key: "kaunit",
+            label: "Kepala Unit",
             sortable: true
           },
           {
-           key: "nama",
-           label: "nama",
+           key: "pic",
+           label: "PIC",
            sortable: true
-          },
-          {
-            key: 'unit_kerja',
-            sortable: true
-          },
-          {
-            key: 'created_at',
-            sortable: true,
-            tdClass:'text-right',
-            thClass:'text-center'
-          },
-          {
-            key: 'updated_at',
-            sortable: true,
-            tdClass:'text-right',
-            thClass:'text-center'
           },
           { 
             key: 'actions', 
@@ -279,7 +267,6 @@ import { required, minLength } from "vuelidate/lib/validators";
         form: {
           id : '',
           karyawan_nik :'',
-          unit_kerja : '',
         },
       }
     },
@@ -288,21 +275,14 @@ import { required, minLength } from "vuelidate/lib/validators";
         karyawan_nik: {
         required,
         },
-        nama: {
-          required,
-          minLength: minLength(3)
-        },
-        unit_kerja: {
-          required,
-          minLength: minLength(1)
-        }
       }
     },
     mounted() {
       this.loadData();
-      this.getKoordinator();
-    /*   this.getKetua();
-      this.getSekretaris(); */
+      this.getUnit();
+      this.getKedep();
+      this.getKaunit();
+      this.getPIC();
 
     },
     methods: {
@@ -312,37 +292,48 @@ import { required, minLength } from "vuelidate/lib/validators";
           console.log(Object.values(response.data));
         }); 
       },
-      getKoordinator() {
+       getUnit() {
+         let nik= this.form.karyawan_nik;
+            axios.get("api/karyawan").then(response => {
+                this.unitkerja = Object.values(response.data);
+                let cat = $.map(this.unitkerja, function(t) {
+                    return { label: t.unit + "", value: t.nik};
+                });
+                this.unitkerja=cat; 
+                console.log(this.unitkerja);
+            });
+        },
+      getKedep() {
         let nik= this.form.karyawan_nik;
-            axios.get("api/k3team/"+nik+"/koordinator").then(response => {
-                this.karyawans = Object.values(response.data);
-                let cat = $.map(this.karyawans, function(t) {
-                    return { label: t.nik, value: t.nik };
+            axios.get("api/karyawan").then(response => {
+                this.kadept = Object.values(response.data);
+                let cat = $.map(this.kadept, function(t) {
+                    return { label: t.dep + "", value: t.nik };
                 });
-                this.karyawans=cat; 
-                console.log(this.karyawans);
+                this.kadept=cat; 
+                console.log(this.kadept);
             });
         },
-        getKetua() {
+        getKaunit() {
           let nik= this.form.karyawan_nik;
-            axios.get("api/k3team/"+nik+"/ketua").then(response => {
-                this.karyawans = Object.values(response.data);
-                let cat = $.map(this.karyawans, function(t) {
-                    return { label: t.nik, value: t.nik };
+            axios.get("api/karyawan").then(response => {
+                this.kaunit = Object.values(response.data);
+                let cat = $.map(this.kaunit, function(t) {
+                    return { label: t.nik +" - " + t.unit + "", value: t.nik };
                 });
-                this.karyawans=cat; 
-                //console.log(this.karyawans);
+                this.kaunit=cat; 
+                console.log(this.kaunit);
             });
         },
-        getSekretaris() {
+        getPIC() {
           let nik= this.form.karyawan_nik;
-            axios.get("api/k3team/"+nik+"/sekretaris").then(response => {
-                this.karyawans = Object.values(response.data);
-                let cat = $.map(this.karyawans, function(t) {
-                    return { label: t.nik, value: t.nik };
+            axios.get("api/karyawan").then(response => {
+                this.pic = Object.values(response.data);
+                let cat = $.map(this.pic, function(t) {
+                    return { label: t.nik +" - " + t.nama + "", value: t.nik };
                 });
-                this.karyawans=cat; 
-                //console.log(this.karyawans);
+                this.pic=cat; 
+                console.log(this.pic);
             });
         },
 
@@ -352,11 +343,14 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.id =item.id;
           this.form.unit_kerja =item.unit_kerja;
           this.form.karyawan_nik = item.karyawan_nik;
-          this.selectedkoordinator = item.karyawan_nik;
-          this.selectedketua = item.karyawan_nik;
-          this.selectedsekretaris = item.karyawan_nik;
-          this.selectedketua = { label: item.karyawan, value: item.karyawan_nik };
-          this.selectedsekretaris = { label: item.karyawan, value: item.karyawan_nik };
+          this.selectedunitkerja= item.karyawan_nik;
+           this.selectedunitkerja = { label: item.unit, value: item.unit };
+          this.selectedkadept = item.karyawan_nik;
+          this.selectedkadept = { label: item.dept, value: item.dept };
+          this.selectedkaunit = item.karyawan_nik;
+          this.selectedkadept = { label: item.unit, value: item.unit };
+          this.selectedpic = item.karyawan_nik;
+         this.selectedkadept = { label: item.nama, value: item.nama };
          
         }
         else {
@@ -438,7 +432,7 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
       focusMyElement()
             {
-              this.$refs.unit_kerjaReff.focus();
+              this.$refs.unitkerjaReff.focus();
             },
       deleteK3team(id) { 
         this.$swal({

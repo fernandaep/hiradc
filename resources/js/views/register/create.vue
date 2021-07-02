@@ -754,7 +754,7 @@ export default {
                 this.form.aspek_lingkungan = "Penting";
             }
             
-            else {
+            else  {
                 if(this.labelresiko=="Rendah" || this.labelresiko=="Sedang")
                 {
                     this.form.aspek_lingkungan = "Tidak Penting";
@@ -764,7 +764,7 @@ export default {
                     this.form.aspek_lingkungan = "Penting";
                 }
             }
-            
+          
         },
 
         async store() {

@@ -31,7 +31,6 @@ class K3teamController extends Controller
     {
         request()->validate([
             'karyawan_nik' => request('karyawan_nik'),
-            'unit_kerja' => 'required',
         ]);
         $k3team= K3team::create([
             'unit_kerja'=> request('unit_kerja'),
@@ -107,6 +106,15 @@ class K3teamController extends Controller
             'message' => 'K3Team deleted successfully'
         ]);
     }
+
+    public function getUnit($nik)
+    {
+        return K3team::where('karyawan_nik',$nik)->get();
+    }
+
+
+
+
     public function KaDept($nik)
     {
         return K3team::where('karyawan_nik','I',$nik)->get();

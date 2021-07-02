@@ -19,6 +19,7 @@ class K3TeamResource extends JsonResource
             'karyawan_nik' => $this->karyawan_nik,
             'nip' => $this->karyawan->nik,
             'nama' => $this->karyawan->nama,
+            'unitkerja' => $this->karyawan->unit,
             'unit_kerja' => $this->unit_kerja,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

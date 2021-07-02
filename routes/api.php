@@ -30,7 +30,7 @@ Route::get('condition/{id}/showkat',[conditionController::class,'showkat'])->nam
 Route::get('threat/{id}/threatkat',[ThreatController::class,'threatkat'])->name('threat.threatkat');
 Route::get('vulnerability/{id}/showkat',[VulnerabilityController::class,'showkat'])->name('vulnerability.showkat');
 Route::get('consequence/{id}/showkat',[ConsequencesController::class,'showkat'])->name('consequence.showkat');
-Route::get('k3team/{nik}/koordinator',[K3teamController::class,'koordinator'])->name('k3team.koordinator');
+Route::get('k3team/{nik}/getUnit',[K3teamController::class,'getUnit'])->name('k3team.getUnit');
 Route::get('k3team/{nik}/ketua',[K3teamController::class,'ketua'])->name('k3team.ketua');
 Route::get('k3team/{nik}/sekretaris',[K3teamController::class,'sekretaris'])->name('k3team.sekretaris');
 

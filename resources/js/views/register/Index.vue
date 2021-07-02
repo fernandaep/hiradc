@@ -120,6 +120,7 @@
                                                         <th>
                                                             Aspek Lingkungan
                                                         </th>
+                                                        <th>Keterangan</th>
                                                         <th>
                                                             Resiko Ditoleransi
                                                         </th>
@@ -162,6 +163,11 @@
                                                         <td>
                                                             {{
                                                                 value.resiko_ditoleransi
+                                                            }}
+                                                        </td>
+                                                        <td>
+                                                            {{
+                                                                value.keterangan
                                                             }}
                                                         </td>
                                                         <td>
@@ -281,205 +287,221 @@
                                 @hide="resetInfoModal"
                                 hide-footer
                             >
-                                <form
-                                    @submit.prevent="
-                                        editMode ? update() : store2()
+                                <div
+                                    v-if="
+                                        !detailMode && (!editMode || editMode)
                                     "
                                 >
-                                    <div class="modal-body">
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Program Mitigasi"
-                                            label-for="program_mitigasi"
-                                        >
-                                            <!-- <b-form-input
-                                                id="program_mitigasi"
-                                                name="program_mitigasi"
-                                                ref="program_mitigasiReff"
-                                                v-model="
-                                                    $v.form2.program_mitigasi
-                                                        .$model
-                                                "
-                                                :state="
-                                                    validateState(
-                                                        'program_mitigasi'
-                                                    )
-                                                "
-                                                aria-describedby="input-1-live-feedback"
-                                            ></b-form-input> -->
-
-                                            <b-form-invalid-feedback
-                                                id="input-1-live-feedback"
-                                                >This is a required field.
-                                            </b-form-invalid-feedback>
-                                        </b-form-group>
-
-                                        <b-form-group
-                                            id="possibilitygroup"
-                                            label="Kemungkinan"
-                                            label-for="possibility"
-                                        >
-                                            <v-select
-                                                v-model="selectedpossibility"
-                                                :options="possibilities"
-                                                @input="perkalian"
+                                    <form
+                                        @submit.prevent="
+                                            editMode ? update() : store2()
+                                        "
+                                    >
+                                        <div class="modal-body">
+                                            <b-form-group
+                                                id="example-input-group-1"
+                                                label="Program Mitigasi"
+                                                label-for="program_mitigasi"
                                             >
-                                                <template
-                                                    #search="{attributes, events}"
-                                                >
-                                                    <input
-                                                        class="vs__search"
-                                                        :required="
-                                                            !selectedpossibility
-                                                        "
-                                                        v-bind="attributes"
-                                                        v-on="events"
-                                                        ref="possibilityReff"
-                                                    />
-                                                </template>
-                                            </v-select>
-                                        </b-form-group>
+                                                <!-- <b-form-input
+                                                    id="program_mitigasi"
+                                                    name="program_mitigasi"
+                                                    ref="program_mitigasiReff"
+                                                    v-model="
+                                                        $v.form2
+                                                            .program_mitigasi
+                                                            .$model
+                                                    "
+                                                    :state="
+                                                        validateState(
+                                                            'program_mitigasi'
+                                                        )
+                                                    "
+                                                    aria-describedby="input-1-live-feedback"
+                                                ></b-form-input> -->
 
-                                        <b-form-group
-                                            id="consequencegroup"
-                                            label="Konsekuensi"
-                                            label-for="consequence"
-                                        >
-                                            <v-select
-                                                v-model="selectedconsequence"
-                                                :options="consequences"
-                                                @input="perkalian"
+                                                <b-form-invalid-feedback
+                                                    id="input-1-live-feedback"
+                                                    >This is a required field.
+                                                </b-form-invalid-feedback>
+                                            </b-form-group>
+
+                                            <b-form-group
+                                                id="possibilitygroup"
+                                                label="Kemungkinan"
+                                                label-for="possibility"
                                             >
-                                                <template
-                                                    #search="{attributes, events}"
+                                                <v-select
+                                                    v-model="
+                                                        selectedpossibility
+                                                    "
+                                                    :options="possibilities"
+                                                    @input="perkalian"
                                                 >
-                                                    <input
-                                                        class="vs__search"
-                                                        :required="
-                                                            !selectedconsequence
-                                                        "
-                                                        v-bind="attributes"
-                                                        v-on="events"
-                                                        ref="consequencesReff"
-                                                    />
-                                                </template>
-                                            </v-select>
-                                        </b-form-group>
+                                                    <template
+                                                        #search="{attributes, events}"
+                                                    >
+                                                        <input
+                                                            class="vs__search"
+                                                            :required="
+                                                                !selectedpossibility
+                                                            "
+                                                            v-bind="attributes"
+                                                            v-on="events"
+                                                            ref="possibilityReff"
+                                                        />
+                                                    </template>
+                                                </v-select>
+                                            </b-form-group>
 
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Tingkat Resiko"
-                                            label-for="tingkat_resiko"
-                                            ><!-- 
-                                            <b-form-input
-                                                id="tingkat_resiko"
-                                                name="tingkat_resiko"
-                                                ref="tingkat_resikoReff"
-                                                v-model="
-                                                    $v.form2.tingkat_resiko
-                                                        .$model
-                                                "
-                                                :state="
-                                                    validateState(
-                                                        'tingkat_resiko'
-                                                    )
-                                                "
-                                                aria-describedby="input-1-live-feedback"
-                                            ></b-form-input> -->
-                                            <b-form-invalid-feedback
-                                                id="input-1-live-feedback"
-                                                >This is a required field.
-                                            </b-form-invalid-feedback>
-                                        </b-form-group>
+                                            <b-form-group
+                                                id="consequencegroup"
+                                                label="Konsekuensi"
+                                                label-for="consequence"
+                                            >
+                                                <v-select
+                                                    v-model="
+                                                        selectedconsequence
+                                                    "
+                                                    :options="consequences"
+                                                    @input="perkalian"
+                                                >
+                                                    <template
+                                                        #search="{attributes, events}"
+                                                    >
+                                                        <input
+                                                            class="vs__search"
+                                                            :required="
+                                                                !selectedconsequence
+                                                            "
+                                                            v-bind="attributes"
+                                                            v-on="events"
+                                                            ref="consequencesReff"
+                                                        />
+                                                    </template>
+                                                </v-select>
+                                            </b-form-group>
 
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Aspek Lingkungan"
-                                            label-for="aspek_lingkungan"
-                                        >
-                                            <!-- <v-select
-                                                :options="[
-                                                    'Penting',
-                                                    'Tidak Penting'
-                                                ]"
-                                                v-model="
-                                                    $v.form2.aspek_lingkungan
-                                                        .$model
-                                                "
-                                                :state="
-                                                    validateState(
-                                                        'aspek_lingkungan'
-                                                    )
-                                                "
-                                            ></v-select> -->
-                                        </b-form-group>
+                                            <b-form-group
+                                                id="example-input-group-1"
+                                                label="Tingkat Resiko"
+                                                label-for="tingkat_resiko"
+                                            >
+                                                <!-- <b-form-input
+                                                    id="tingkat_resiko"
+                                                    name="tingkat_resiko"
+                                                    ref="tingkat_resikoReff"
+                                                    v-model="
+                                                        $v.form2.tingkat_resiko
+                                                            .$model
+                                                    "
+                                                    :state="
+                                                        validateState(
+                                                            'tingkat_resiko'
+                                                        )
+                                                    "
+                                                    aria-describedby="input-1-live-feedback"
+                                                ></b-form-input> -->
+                                                <b-form-invalid-feedback
+                                                    id="input-1-live-feedback"
+                                                    >This is a required field.
+                                                </b-form-invalid-feedback>
+                                            </b-form-group>
 
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Resiko Ditoleransi"
-                                            label-for="resiko_ditoleransi"
-                                        >
-                                            <!--  <v-select
-                                                :options="['YA', 'TIDAK']"
-                                                v-model="
-                                                    $v.form2.resiko_ditoleransi
-                                                        .$model
-                                                "
-                                                :state="
-                                                    validateState(
-                                                        'resiko_ditoleransi'
-                                                    )
-                                                "
-                                            ></v-select> -->
-                                        </b-form-group>
+                                            <b-form-group
+                                                id="example-input-group-1"
+                                                label="Aspek Lingkungan"
+                                                label-for="aspek_lingkungan"
+                                            >
+                                               <!--  <v-select
+                                                    :options="[
+                                                        'Penting',
+                                                        'Tidak Penting'
+                                                    ]"
+                                                    v-model="
+                                                        $v.form2
+                                                            .aspek_lingkungan
+                                                            .$model
+                                                    "
+                                                    :state="
+                                                        validateState(
+                                                            'aspek_lingkungan'
+                                                        )
+                                                    "
+                                                ></v-select> -->
+                                            </b-form-group>
 
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Keterangan"
-                                            label-for="keterangan"
-                                        >
-                                            <!-- <b-form-input
-                                                id="keterangan"
-                                                name="keterangan"
-                                                ref="keteranganReff"
-                                                v-model="
-                                                    $v.form.keterangan.$model
-                                                "
-                                                :state="
-                                                    validateState('keterangan')
-                                                "
-                                                aria-describedby="input-1-live-feedback"
-                                            ></b-form-input> -->
-                                            <b-form-invalid-feedback
-                                                id="input-1-live-feedback"
-                                                >This is a required field.
-                                            </b-form-invalid-feedback>
-                                        </b-form-group>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger"
-                                            @click="hideModal"
-                                        >
-                                            Close
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            v-show="editMode"
-                                            class="btn btn-primary"
-                                        >
-                                            Update
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            v-show="!editMode"
-                                            class="btn btn-primary"
-                                        >
-                                            Create
-                                        </button>
-                                    </div>
-                                </form>
+                                            <b-form-group
+                                                id="example-input-group-1"
+                                                label="Resiko Ditoleransi"
+                                                label-for="resiko_ditoleransi"
+                                            >
+                                               <!--  <v-select
+                                                    :options="['YA', 'TIDAK']"
+                                                    v-model="
+                                                        $v.form2
+                                                            .resiko_ditoleransi
+                                                            .$model
+                                                    "
+                                                    :state="
+                                                        validateState(
+                                                            'resiko_ditoleransi'
+                                                        )
+                                                    "
+                                                ></v-select> -->
+                                            </b-form-group>
+
+                                            <b-form-group
+                                                id="example-input-group-1"
+                                                label="Keterangan"
+                                                label-for="keterangan"
+                                            >
+                                               <!--  <b-form-input
+                                                    id="keterangan"
+                                                    name="keterangan"
+                                                    ref="keteranganReff"
+                                                    v-model="
+                                                        $v.form.keterangan
+                                                            .$model
+                                                    "
+                                                    :state="
+                                                        validateState(
+                                                            'keterangan'
+                                                        )
+                                                    "
+                                                    aria-describedby="input-1-live-feedback"
+                                                ></b-form-input> -->
+                                                <b-form-invalid-feedback
+                                                    id="input-1-live-feedback"
+                                                    >This is a required field.
+                                                </b-form-invalid-feedback>
+                                            </b-form-group>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger"
+                                                @click="hideModal"
+                                            >
+                                                Close
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                v-show="editMode"
+                                                class="btn btn-primary"
+                                            >
+                                                Update
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                v-show="!editMode"
+                                                class="btn btn-primary"
+                                            >
+                                                Create
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </b-modal>
                         </div>
                     </div>
@@ -508,6 +530,7 @@ export default {
             selectedconsequence: "",
             possibilities: [],
             consequences: [],
+            mitigasis: [],
             items: [],
             year: [
                 { value: "2020", text: "2020" },
@@ -641,29 +664,9 @@ export default {
                 id: "info-modal",
                 title: ""
             },
-            form: {
-                id: "",
-                category_id: "",
-                unit_kerja: "",
-                activity_id: "",
-                lokasi: "",
-                condition_id: "",
-                threat_id: "",
-                pengendalian: "",
-                possibility_id: "",
-                consequence_id: "",
-                tingkat_resiko: "",
-                status_regulasi: "",
-                aspek_lingkungan: "",
-                peluang: "",
-                resiko: "",
-                resiko_ditoleransi: "",
-                cakupan_resiko: "",
-                status_program: "",
-                program: ""
-            },
             form2: {
-                id: "",
+                register_id: "",
+                mitigasi_id:"",
                 program_mitigasi: "",
                 possibility_id: "",
                 consequence_id: "",
@@ -674,13 +677,42 @@ export default {
             }
         };
     },
-    /* validations: {
+    validations: {
         form: {
             unit_kerja: {
-                required,
+                required
             }
         }
-    }, */
+    },
+    form2: {
+        program_mitigasi: {
+            required,
+            minLength: minLength(3)
+        },
+        possibility_id: {
+            required
+        },
+        consequence_id: {
+            required
+        },
+        tingkat_resiko: {
+            required,
+            minLength: minLength(1)
+        },
+        aspek_lingkungan: {
+            required,
+            minLength: minLength(2)
+        },
+        resiko_ditoleransi: {
+            required,
+            minLength: minLength(2)
+        },
+        keterangan: {
+            required,
+            minLength: minLength(2)
+        }
+    },
+
     mounted() {
         this.loadData();
         this.getPossibility();
@@ -695,7 +727,7 @@ export default {
         },
         getPossibility() {
             axios.get("api/possibility").then(response => {
-                this.possibilities = Object.values(response.data.data);
+                this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
                     return {
                         label: t.nilai + " ( " + t.nama + " )",
@@ -737,19 +769,21 @@ export default {
             }
         },
         openModal(tipe, title, button, item) {
-            if (tipe == "edit") {
-                this.editMode = true;
+            if (tipe == "mitigasi") {
+                this.editMode = false;
+          this.detailMode = true;
                 this.form2.id = item.id;
-                this.form2.program_mitigasi = item.program_mitigasi;
-                this.form2.possibility_id = item.possibility_id;
-                this.form2.consequence_id = item.consequence_id;
-                this.form2.tingkat_resiko = item.tingkat_resiko;
-                this.form2.aspek_lingkungan = item.aspek_lingkungan;
-                this.form2.resiko_ditoleransi = item.resiko_ditoleransi;
-                this.form2.keterangan = item.keterangan;
+                this.form2.register_id = item.id;
+                this.form2.mitigasi_id =''
+                this.form2.program_mitigasi = '';
+                this.form2.possibility_id = '';
+                this.form2.consequence_id = '';
+                this.form2.tingkat_resiko = '';
+                this.form2.aspek_lingkungan = '';
+                this.form2.resiko_ditoleransi = '';
+                this.form2.keterangan = '';
             } else {
                 this.editMode = false;
-
                 this.form2.program_mitigasi = "";
                 this.form2.possibility_id = "";
                 this.form2.consequence_id = "";
