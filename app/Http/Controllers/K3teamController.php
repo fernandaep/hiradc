@@ -29,9 +29,7 @@ class K3teamController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'karyawan_nik' => request('karyawan_nik'),
-        ]);
+       
         $k3team= K3team::create([
             'unit_kerja'=> request('unit_kerja'),
         ]);
@@ -71,9 +69,7 @@ class K3teamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'unit_kerja' => 'required',
-        ]);
+       
         $k3team = K3team::findOrFail($id);
         $k3team->update($request->all());
 

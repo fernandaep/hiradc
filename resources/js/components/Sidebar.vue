@@ -21,14 +21,22 @@
                             <p>Home</p>
                         </router-link>
                     </li>
-                    <li class="nav-header">Master</li>
+
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                            Master
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    <ul class="nav nav-treeview">   
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'karyawan'}" >
                             <i class="nav-icon fas fa-address-card"></i>
                             <p>Karyawan</p>
                         </router-link>
                     </li>
-                    
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'category'}" >
                             <i class="nav-icon fas fa-cogs"></i>
@@ -59,7 +67,17 @@
                             <p>Mitigasi</p>
                         </router-link>
                     </li>
-                    <li class="nav-header">Relasi</li>
+                     </ul>
+                  </li>
+                   <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                            Relasi
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    <ul class="nav nav-treeview">  
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'condition'}" >
                             <i class="nav-icon fas fa-building"></i>
@@ -101,6 +119,8 @@
                             <i class="nav-icon fas fa-registered"></i>
                             <p>register</p>
                         </router-link>
+                    </li>
+                    </ul>
                     </li>
                 </ul>
             </nav>

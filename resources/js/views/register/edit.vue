@@ -262,16 +262,17 @@
                                 <div class="col-sm-10">
                                     <input
                                         type="text"
-                                        v-model="form.tingkat_resiko"
+                                        v-model="resiko"
                                         class="form-control"
                                         id="tingkat_resiko"
                                         readonly
+                                        @change="perkalian"
                                     />
                                     <div
                                         v-if="theErrors.tingkat_resiko"
                                         class="mt2 text-danger"
                                     >
-                                        {{ theErrors.tingkat_resiko[0] }}
+                                        {{ theErrors.resiko[0] }}
                                     </div>
                                 </div>
                             </div>
@@ -461,6 +462,7 @@ export default {
             form: {
                 form: {
                     id: "",
+                    /* unit_kerja: "", */
                     activity: "",
                     category_id: "",
                     activity: "",
@@ -471,7 +473,7 @@ export default {
                     pengendalian: "",
                     possibility_id: "",
                     consequence_id: "",
-                    tingkat_resiko: 0,
+                    tingkat_resiko: "",
                     status_regulasi: "",
                     aspek_lingkungan: "",
                     peluang: "",
@@ -483,6 +485,9 @@ export default {
             },
             validations: {
                 form: {
+                    /*  unit_kerja: {
+                        required
+                    }, */
                     activity: {
                         required
                     },
@@ -538,7 +543,9 @@ export default {
             categories: [],
             labelthreat: "threat",
             labelactivity: "Activity",
-            showlh: false
+            showlh: false,
+            resiko:"",
+            hasilkali:0
         };
     },
     mounted() {
@@ -549,6 +556,7 @@ export default {
         /* this.getVulnerability(); */
         this.getPosibility();
         this.getConsequence();
+        //this.perkalian();
     },
     methods: {
         loadData() {
@@ -561,7 +569,7 @@ export default {
                     this.form.activity = response.data.activity;
                     this.form.lokasi = response.data.lokasi;
                     this.selectedcondition = response.data.condition_id;
-                    /* this.selectecondition = { label: item.nama, value: item.condition_id }; */
+                   /*  this.selectecondition = { label: item.nama, value: item.condition_id }; */
                     this.selectedthreat = response.data.threat_id;
                     /*  this.selectedthreat = { label: item.nama, value: item.threat_id }; */
                     this.form.pengendalian = response.data.pengendalian;
@@ -612,7 +620,7 @@ export default {
             }
 
             axios.get("api/condition/" + id + "/showkat").then(response => {
-                this.conditions = Object.values(response.data);
+                this.conditions = Object.values(response.data.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };
                 });
@@ -620,14 +628,14 @@ export default {
             });
             /* let id = this.selectedcategory.value; */
             axios.get("api/vulnerability/" + id + "/showkat").then(response => {
-                this.vulnerabilities = Object.values(response.data);
+                this.vulnerabilities = Object.values(response.data.data);
                 let cat = $.map(this.vulnerabilities, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.vulnerabilities = cat;
             });
             axios.get("api/consequence/" + id + "/showkat").then(response => {
-                this.consequences = Object.values(response.data);
+                this.consequences = Object.values(response.data.data);
                 let cat = $.map(this.consequences, function(t) {
                     return {
                         label: t.nilai + " - " + t.konsekuensi + "",
@@ -637,7 +645,7 @@ export default {
                 this.consequences = cat;
             });
             axios.get("api/threat").then(response => {
-                this.threats = Object.values(response.data);
+                this.threats = Object.values(response.data.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
                 });
@@ -680,41 +688,46 @@ export default {
                 this.form.possibility_id == null ||
                 this.form.consequence_id == null
             ) {
-                this.form.tingkat_resiko = 0;
+                this.hasilkali = 0;
             } else {
-                this.form.tingkat_resiko =
+                this.hasilkali=
                     parseInt(this.form.possibility_id) *
                     parseInt(this.form.consequence_id);
             }
 
-            if (this.form.tingkat_resiko <= 4) {
-                this.form.tingkat_resiko = this.form.tingkat_resiko+" "+"-" +" "+"Rendah";
+            if (this.hasilkali <= 4) {
+                this.labelresiko = "Rendah";
+               
             } else if (
-                this.form.tingkat_resiko >= 5 &&
-                this.form.tingkat_resiko <= 9
+                this.hasilkali >= 5 &&
+                this.hasilkali <= 9
             ) {
-                this.form.tingkat_resiko = this.form.tingkat_resiko+" "+"-" +" "+"Sedang";
+                this.labelresiko = "Sedang";
             } else if (
-                this.form.tingkat_resiko >= 10 &&
-                this.form.tingkat_resiko <= 16
+                this.hasilkali >= 10 &&
+                this.hasilkali <= 16
             ) {
-                this.form.tingkat_resiko = this.form.tingkat_resiko+" "+"-" +" "+"Tinggi";
+                this.labelresiko = "Tinggi";
             } else {
-                this.form.tingkat_resiko = this.form.tingkat_resiko+" "+"-" +" "+"Sangat Tinggi";
+               this.labelresiko = "Sangat Tinggi";
             }
+
+            this.resiko = this.hasilkali + " - " + this.labelresiko; 
+            this.form.tingkat_resiko = this.labelresiko;
+            
             this.cakupan();
-            this.resiko();
+            this.cekresiko();
             this.status();
             this.regulasi();
         },
 
         cakupan() {
-            if (this.form.tingkat_resiko ==this.form.tingkat_resiko+" "+"-" +" "+"Sangat Tinggi") {
+            if (this.labelresiko == "Sangat Tinggi") {
                 this.form.cakupan_resiko = "Koorporat/Direktorat";
             } else if (
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Tinggi" ||
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sedang" ||
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Rendah"
+                this.labelresiko == "Tinggi" ||
+                this.labelresiko == "Sedang" ||
+                this.labelresiko == "Rendah"
             ) {
                 this.form.cakupan_resiko = "Unit Kerja";
             } else {
@@ -722,15 +735,15 @@ export default {
             }
         },
 
-        resiko() {
+        cekresiko() {
             if (
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sangat Tinggi" ||
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Tinggi"
+                this.labelresiko == "Sangat Tinggi" ||
+                this.labelresiko == "Tinggi"
                 ){
                 this.form.resiko_ditoleransi = "Ya";
             } else if (
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sedang" ||
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Rendah"
+                this.labelresiko == "Sedang" ||
+                this.labelresiko == "Rendah"
                 ){
                 this.form.resiko_ditoleransi = "Tidak";
             } else {
@@ -740,20 +753,20 @@ export default {
 
         status() {
             if (
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sangat Tinggi" &&
+                this.labelresiko == "Sangat Tinggi" &&
                 this.form.cakupan_resiko == "Koorporat/Direktorat"
             ) {
                 this.form.status_program = "PMK";
             } else if (
-                this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Tinggi" &&
+                this.labelresiko == "Tinggi" &&
                 this.form.cakupan_resiko == "Unit Kerja"
             ) {
                 this.form.status_program = "PUK";
             } else if (
-                (this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sedang" ||
-                    this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Rendah") &&
+                (this.labelresiko == "Sedang" ||
+                    this.labelresiko == "Rendah") &&
                 (this.form.cakupan_resiko == "Koorporat/Direktorat" ||
-                    this.form.cakupan_resiko == "Unit Kerja")
+                this.form.cakupan_resiko == "Unit Kerja")
             ) {
                 this.form.status_program = "Pengendalian Operasional";
             } else {
@@ -764,24 +777,21 @@ export default {
         regulasi() {
             if (this.form.status_regulasi == "Legal") {
                 this.form.aspek_lingkungan = "Penting";
-            } else if (
-                (this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sedang" ||
-                    this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Rendah") &&
-                this.form.status_regulasi == "Tidak Legal"
-            ) {
-                this.form.aspek_lingkungan = "Tidak Penting";
-            } else if (
-                (this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Tinggi" ||
-                    this.form.tingkat_resiko == this.form.tingkat_resiko+" "+"-" +" "+"Sangat Tinggi") &&
-                this.form.status_regulasi == "Tidak Legal"
-            ) {
-                this.form.aspek_lingkungan = this.form.tingkat_resiko+" "+"-" +" "+"Penting";
-            } else if (this.form.status_regulasi == this.form.tingkat_resiko+" "+"-" +" "+"Tidak Legal") {
-                this.form.aspek_lingkungan = "Tidak Penting";
-            } else {
-                this.form.aspek_lingkungan = "";
             }
+            
+            else  {
+                if(this.labelresiko=="Rendah" || this.labelresiko=="Sedang")
+                {
+                    this.form.aspek_lingkungan = "Tidak Penting";
+                }
+                else if(this.labelresiko=="Tinggi" || this.labelresiko=="Sangat Tinggi")
+                {
+                    this.form.aspek_lingkungan = "Penting";
+                }
+            }
+          
         },
+
         async store() {
             try {
                 this.form.category_id = this.selectedcategory.value;

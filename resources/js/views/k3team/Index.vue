@@ -127,29 +127,29 @@
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_dept" label="NIK Ka.Dept" label-for="kadept">
-                      <v-select v-model="selectedkadept"  :options="kadept">
+                    <b-form-group id="nik_dept" label="NIK Koordinator" label-for="koordinator">
+                      <v-select v-model="selectedkoordinator"  :options="koordinator">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selectedkadept"
+                              :required="!selectedkoordinator"
                               v-bind="attributes"
                               v-on="events"
-                              ref="kadeptReff"
+                              ref="koordinatorReff"
                             />
                           </template>
                       </v-select>
 
                     </b-form-group>
-                    <b-form-group id="nik_kaunit" label="NIK Ka.Unit" label-for="kaunit">
-                      <v-select v-model="selectedkaunit"  :options="kaunit">
+                    <b-form-group id="nik_ketua" label="NIK ketua" label-for="kaunit">
+                      <v-select v-model="selectedketua"  :options="ketua">
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
-                              :required="!selectedkaunit"
+                              :required="!selectedketua"
                               v-bind="attributes"
                               v-on="events"
-                              ref="kaunitReff"
+                              ref="ketuaReff"
                             />
                           </template>
                       </v-select>
@@ -205,12 +205,12 @@ import { required, minLength } from "vuelidate/lib/validators";
         loading:false,
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
-        selectedkadept:"",
-        selectedkaunit:'',
+        selectedkoordinator:"",
+        selectedketua:'',
         selectedunitkerja:"",
         unitkerja:[],
-        kadept:[],
-        kaunit:[],
+        koordinator:[],
+        ketua:[],
         pic:[],
         selectedpic:"",
         filter: "",
@@ -233,12 +233,12 @@ import { required, minLength } from "vuelidate/lib/validators";
             sortable: true
           },
            {
-            key: "kadept",
+            key: "koordinator",
             label: "Kepala Departemen",
             sortable: true
           },
           {
-            key: "kaunit",
+            key: "ketua",
             label: "Kepala Unit",
             sortable: true
           },
@@ -270,18 +270,13 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
       }
     },
-    validations: {
-      form: {
-        karyawan_nik: {
-        required,
-        },
-      }
-    },
+    
+    
     mounted() {
       this.loadData();
       this.getUnit();
       this.getKedep();
-      this.getKaunit();
+      this.getketua();
       this.getPIC();
 
     },
@@ -306,23 +301,23 @@ import { required, minLength } from "vuelidate/lib/validators";
       getKedep() {
         let nik= this.form.karyawan_nik;
             axios.get("api/karyawan").then(response => {
-                this.kadept = Object.values(response.data);
-                let cat = $.map(this.kadept, function(t) {
+                this.koordinator = Object.values(response.data);
+                let cat = $.map(this.koordinator, function(t) {
                     return { label: t.dep + "", value: t.nik };
                 });
-                this.kadept=cat; 
-                console.log(this.kadept);
+                this.koordinator=cat; 
+                console.log(this.koordinator);
             });
         },
-        getKaunit() {
+        getketua() {
           let nik= this.form.karyawan_nik;
             axios.get("api/karyawan").then(response => {
-                this.kaunit = Object.values(response.data);
-                let cat = $.map(this.kaunit, function(t) {
+                this.ketua = Object.values(response.data);
+                let cat = $.map(this.ketua, function(t) {
                     return { label: t.nik +" - " + t.unit + "", value: t.nik };
                 });
-                this.kaunit=cat; 
-                console.log(this.kaunit);
+                this.ketua=cat; 
+                console.log(this.ketua);
             });
         },
         getPIC() {
@@ -345,12 +340,12 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.karyawan_nik = item.karyawan_nik;
           this.selectedunitkerja= item.karyawan_nik;
            this.selectedunitkerja = { label: item.unit, value: item.unit };
-          this.selectedkadept = item.karyawan_nik;
-          this.selectedkadept = { label: item.dept, value: item.dept };
-          this.selectedkaunit = item.karyawan_nik;
-          this.selectedkadept = { label: item.unit, value: item.unit };
+          this.selectedkoordinator = item.karyawan_nik;
+          this.selectedkoordinator = { label: item.dept, value: item.dept };
+          this.selectedketua = item.karyawan_nik;
+          this.selectedkoordinator = { label: item.unit, value: item.unit };
           this.selectedpic = item.karyawan_nik;
-         this.selectedkadept = { label: item.nama, value: item.nama };
+         this.selectedkoordinator = { label: item.nama, value: item.nama };
          
         }
         else {
@@ -377,9 +372,10 @@ import { required, minLength } from "vuelidate/lib/validators";
         return $dirty ? !$error : null;
       },
       async store() {
-         this.form.karyawan_nik = this.selectedkoordinator.value;
+          this.form.karyawan_nik = this.selectedunitkerja.value;
+          this.form.karyawan_nik = this.selectedkoordinator.value;
           this.form.karyawan_nik = this.selectedketua.value;
-           this.form.karyawan_nik = this.selectedsekretaris.value;
+          this.form.karyawan_nik = this.selectedpic.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -389,7 +385,6 @@ import { required, minLength } from "vuelidate/lib/validators";
              //console.log(response.status);
               if(response.status==200){
                 this.form.karyawan_nik = "";
-                  this.form.nama = '';
                   this.hideModal();
                   this.$swal({
                     icon: 'success',

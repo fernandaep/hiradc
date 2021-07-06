@@ -101,9 +101,9 @@
                                                 name: 'consequence.edit',
                                                 params: { id: row.item.id }
                                             }"
-                                            class="btn btn-outline-primary"
+                                            
                                         >
-                                            <i class="fa fa-edit"></i> Edit
+                                            <i class="fa fa-edit"></i>
                                         </router-link>
                                     </b-button>
                                     <b-button

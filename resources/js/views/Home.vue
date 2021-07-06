@@ -12,11 +12,7 @@
               </div>
               <div class="card-body">
               <b-row class="p-20">
-                <b-col>
-                  <b-button variant="outline-success" size="sm" @click="openModal('save' , 'SAVE', $event.target)"> 
-                  Add New <i class="fas fa-plus"></i>
-                  </b-button>
-                </b-col>
+               
                  <b-col sm="4" md="2" class="my-1">
                   <b-form-group
                     label="Per page"

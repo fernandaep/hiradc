@@ -35,7 +35,7 @@ class MitigasiController extends Controller
             'tingkat_resiko'=> request('tingkat_resiko'),
             'aspek_lingkungan'=> request('aspek_lingkungan'),
             'resiko_ditoleransi'=> request('resiko_ditoleransi'),
-            /* 'keterangan' => request('keterangan'), */
+            'keterangan' => request('keterangan'),
         ]);
         
         if($mitigasi) {

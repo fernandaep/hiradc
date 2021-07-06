@@ -40,7 +40,7 @@ class RegisterResource extends JsonResource
             'program' => $this->program,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'mitigasi' => mitigasiResource::collection($this->mitigasi),
+            'mitigasi' => MitigasiResource::collection($this->mitigasi),
         ];
     }
 }
