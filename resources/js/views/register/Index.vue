@@ -314,6 +314,7 @@
                                                     validateState('register')
                                                 "
                                                 aria-describedby="input-1-live-feedback"
+                                                readonly
                                             ></b-form-input>
 
                                             <b-form-invalid-feedback

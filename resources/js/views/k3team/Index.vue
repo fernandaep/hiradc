@@ -8,7 +8,6 @@
                 <h3 class="card-title">
                   Unit Kerja 
                 </h3>
-                
               </div>
               <div class="card-body">
               <b-row class="p-20">
@@ -113,15 +112,15 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                     <b-form-group id="unit_kerja" label="Unit Kerja" label-for="unitkerja">
-                      <v-select v-model="selectedunitkerja"  :options="unitkerja" >
+                     <b-form-group id="unit_kerja" label="Unit Kerja" label-for="unit_kerja">
+                      <v-select v-model="selectedunitkerja"  :options="karyawans" @input="getkoor" >
                         <template #search="{attributes, events}">
                             <input
                               class="vs__search"
                               :required="!selectedunitkerja"
                               v-bind="attributes"
                               v-on="events"
-                              ref="unitkerjaReff"
+                              ref="unit_kerjaReff"
                             />
                           </template>
                       </v-select>
@@ -208,7 +207,7 @@ import { required, minLength } from "vuelidate/lib/validators";
         selectedkoordinator:"",
         selectedketua:'',
         selectedunitkerja:"",
-        unitkerja:[],
+        unit_kerja:[],
         koordinator:[],
         ketua:[],
         pic:[],
@@ -234,12 +233,12 @@ import { required, minLength } from "vuelidate/lib/validators";
           },
            {
             key: "koordinator",
-            label: "Kepala Departemen",
+            label: "Koordinator",
             sortable: true
           },
           {
             key: "ketua",
-            label: "Kepala Unit",
+            label: "Ketua",
             sortable: true
           },
           {
@@ -267,71 +266,68 @@ import { required, minLength } from "vuelidate/lib/validators";
         form: {
           id : '',
           karyawan_nik :'',
+         /*  unit_kerja :'',
+          koordinator :'',
+          ketua :'',
+          pic :'', */
         },
-      }
+      };
     },
     
     
     mounted() {
       this.loadData();
-      this.getUnit();
-      this.getKedep();
-      this.getketua();
-      this.getPIC();
+      this.getUnitkerja();
+      this.getkoor();
+ 
 
     },
     methods: {
      loadData() {
         axios.get("api/k3team").then((response) => {
           this.items = Object.values(response.data.data);
-          console.log(Object.values(response.data));
+          //console.log(Object.values(response.data));
         }); 
       },
-       getUnit() {
-         let nik= this.form.karyawan_nik;
-            axios.get("api/karyawan").then(response => {
-                this.unitkerja = Object.values(response.data);
-                let cat = $.map(this.unitkerja, function(t) {
-                    return { label: t.unit + "", value: t.nik};
+       getUnitkerja() {
+         let nik = this.form.karyawan_nik.value;
+            axios.get("api/karyawan/" + nik + "/getunit").then(response => {
+                this.karyawans = Object.values(response.data);
+                let cat = $.map(this.karyawans, function(t) {
+                    return {label: t.unit +" - " + t.nama +"", value: t.nik};
                 });
-                this.unitkerja=cat; 
-                console.log(this.unitkerja);
+                this.karyawans=cat; 
+                //console.log(this.karyawans);
             });
         },
-      getKedep() {
-        let nik= this.form.karyawan_nik;
-            axios.get("api/karyawan").then(response => {
+      getkoor() {
+       let nik= this.selectedunitkerja.value;
+            axios.get("api/karyawan/" + nik + "/getkoor").then(response => {
                 this.koordinator = Object.values(response.data);
                 let cat = $.map(this.koordinator, function(t) {
-                    return { label: t.dep + "", value: t.nik };
+                    return { label: t.band +" - " + t.nama + "", value: t.nik };
                 });
                 this.koordinator=cat; 
                 console.log(this.koordinator);
             });
-        },
-        getketua() {
-          let nik= this.form.karyawan_nik;
-            axios.get("api/karyawan").then(response => {
+            axios.get("api/karyawan/" + nik + "/getketua").then(response => {
                 this.ketua = Object.values(response.data);
                 let cat = $.map(this.ketua, function(t) {
-                    return { label: t.nik +" - " + t.unit + "", value: t.nik };
+                    return { label: t.band +" - " + t.nama + "", value: t.nik };
                 });
                 this.ketua=cat; 
-                console.log(this.ketua);
+                //console.log(this.ketua);
             });
-        },
-        getPIC() {
-          let nik= this.form.karyawan_nik;
-            axios.get("api/karyawan").then(response => {
+             axios.get("api/karyawan/" + nik + "/getpic").then(response => {
                 this.pic = Object.values(response.data);
                 let cat = $.map(this.pic, function(t) {
                     return { label: t.nik +" - " + t.nama + "", value: t.nik };
                 });
                 this.pic=cat; 
-                console.log(this.pic);
+                //console.log(this.pic);
             });
         },
-
+       
       openModal(tipe, title, button,item) {
         if(tipe=="edit") {
           this.editMode = true;
@@ -373,9 +369,6 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
       async store() {
           this.form.karyawan_nik = this.selectedunitkerja.value;
-          this.form.karyawan_nik = this.selectedkoordinator.value;
-          this.form.karyawan_nik = this.selectedketua.value;
-          this.form.karyawan_nik = this.selectedpic.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -427,7 +420,7 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
       focusMyElement()
             {
-              this.$refs.unitkerjaReff.focus();
+              this.$refs.unit_kerjaReff.focus();
             },
       deleteK3team(id) { 
         this.$swal({

@@ -22,6 +22,23 @@ class KaryawanController extends Controller
         return Karyawan::findorFail($id);
     }
 
+    public function getunit($nik)
+    {
+        return Karyawan::where('unit','  ',$nik)->get();
+    }
+
+    public function getkoor($nik)
+    {
+        return Karyawan::where('band','II' ,$nik)->get();
+    }
+    public function getketua($nik)
+    {
+        return Karyawan::where('band','III',$nik)->get();
+    }
+    public function getpic($nik)
+    {
+        return Karyawan::where('band','IV',$nik)->get();
+    }
     /**
      * Show the form for editing the specified resource.
      *

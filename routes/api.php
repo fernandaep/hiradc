@@ -30,9 +30,10 @@ Route::get('condition/{id}/showkat',[conditionController::class,'showkat'])->nam
 Route::get('threat/{id}/threatkat',[ThreatController::class,'threatkat'])->name('threat.threatkat');
 Route::get('vulnerability/{id}/showkat',[VulnerabilityController::class,'showkat'])->name('vulnerability.showkat');
 Route::get('consequence/{id}/showkat',[ConsequencesController::class,'showkat'])->name('consequence.showkat');
-Route::get('k3team/{nik}/getUnit',[K3teamController::class,'getUnit'])->name('k3team.getUnit');
-Route::get('k3team/{nik}/ketua',[K3teamController::class,'ketua'])->name('k3team.ketua');
-Route::get('k3team/{nik}/sekretaris',[K3teamController::class,'sekretaris'])->name('k3team.sekretaris');
+Route::get('karyawan/{nik}/getkoor',[KaryawanController::class,'getkoor'])->name('karyawan.getkoor');
+Route::get('karyawan/{nik}/getunit',[KaryawanController::class,'getunit'])->name('karyawan.getunit');
+Route::get('karyawan/{nik}/getketua',[KaryawanController::class,'getketua'])->name('karyawan.getketua');
+Route::get('karyawan/{nik}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
