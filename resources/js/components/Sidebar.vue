@@ -43,12 +43,12 @@
                             <p>Kategori</p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'asset'}" >
                            <i class="nav-icon fas fa-archive"></i>
                             <p>Asset</p>
                         </router-link>
-                    </li>
+                    </li> -->
                      <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'activity'}" >
                            <i class="nav-icon fas fa-archive"></i>
@@ -67,8 +67,15 @@
                             <p>Mitigasi</p>
                         </router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'unit'}" >
+                           <i class="nav-icon fas fa-archive"></i>
+                            <p>Unit Kerja</p>
+                        </router-link>
+                    </li>
                      </ul>
                   </li>
+                   
                    <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>

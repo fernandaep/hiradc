@@ -17,10 +17,11 @@ class K3TeamResource extends JsonResource
         return [
             'id' => $this->id,
             'nik' => $this->karyawan_nik,
-            'unit_kerja' => $this->karyawan->unit,
+            'unit'=> $this->unit_id,
+            'unit_kerja' => $this->unit->unit_kerja,
             'koordinator' => $this->karyawan->nik,
             'ketua' => $this->karyawan->nik,
-            'pic' => $this->karyawan->pic,
+            'pic' => $this->karyawan->nik,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

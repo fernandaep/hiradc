@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="card-header">New Register</div>
                     <div class="card-body">
-                        <form action="#" method="post" @submit.prevent="store">
+                        <form action="#" method="post" @submit.prevent="update">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Kategori</label
@@ -591,8 +591,8 @@ export default {
         
         },
         getCategory() {
-            axios.get("api/category").then(response => {
-                this.categories = Object.values(response.data);
+            axios.get("http://127.0.0.1:8000/api/category").then(response => {
+                this.categories = Object.values(response.data.data);
                 let cat = $.map(this.categories, function(t) {
                     return { label: t.nama, value: t.id };
                 });
@@ -619,7 +619,7 @@ export default {
                 this.labelthreat = "Threat";
             }
 
-            axios.get("api/condition/" + id + "/showkat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/condition/").then(response => {
                 this.conditions = Object.values(response.data.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };
@@ -627,14 +627,14 @@ export default {
                 this.conditions = cat;
             });
             /* let id = this.selectedcategory.value; */
-            axios.get("api/vulnerability/" + id + "/showkat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/vulnerability/").then(response => {
                 this.vulnerabilities = Object.values(response.data.data);
                 let cat = $.map(this.vulnerabilities, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.vulnerabilities = cat;
             });
-            axios.get("api/consequence/" + id + "/showkat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/consequence/").then(response => {
                 this.consequences = Object.values(response.data.data);
                 let cat = $.map(this.consequences, function(t) {
                     return {
@@ -644,7 +644,7 @@ export default {
                 });
                 this.consequences = cat;
             });
-            axios.get("api/threat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/threat").then(response => {
                 this.threats = Object.values(response.data.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
@@ -655,7 +655,7 @@ export default {
         },
 
         getPosibility() {
-            axios.get("api/possibility").then(response => {
+            axios.get("http://127.0.0.1:8000/api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
                     return {
@@ -669,7 +669,7 @@ export default {
 
         getConsequence() {
             let id = this.selectedcategory.value;
-            axios.get("api/consequence/" + id + "/showkat").then(response => {
+            axios.get("http://127.0.0.1:8000/api/consequence/").then(response => {
                 this.consequences = Object.values(response.data);
                 let cat = $.map(this.consequences, function(t) {
                     return {
@@ -792,7 +792,7 @@ export default {
           
         },
 
-        async store() {
+        async update() {
             try {
                 this.form.category_id = this.selectedcategory.value;
                 this.form.condition_id = this.selectedcondition.value;
@@ -800,12 +800,11 @@ export default {
                 this.form.vulnerability_id = this.selectedvulnerability.value;
                 this.form.possibility_id = this.selectedpossibility.value;
                 this.form.consequence_id = this.selectedconsequence.value;
-                let response = await axios.post("api/register", this.form);
+                let response = await axios.put(`http://127.0.0.1:8000/api/register/${this.$route.params.id}`,this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
                     this.form.category_id = "";
                     this.form.activity = "";
-                    this.form.asset_id = "";
                     this.form.lokasi = "";
                     this.form.condition_id = "";
                     this.form.threat_id = "";

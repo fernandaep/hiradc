@@ -14,4 +14,8 @@ class K3team extends Model
     {
         return $this->belongsTo(Karyawan::class); 
     }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class); 
+    }
 }

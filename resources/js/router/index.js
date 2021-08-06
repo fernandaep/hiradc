@@ -16,6 +16,7 @@ import K3team from '../views/K3team/Index'
 import Register from '../views/Register/Index'
 import createRegister from '../views/Register/create'
 import editRegister from '../views/Register/edit'
+import Unit from '../views/Unit/Index'
 
 
 
@@ -74,6 +75,11 @@ export default
             path:'/condition',
             name:'condition',
             component: Condition,
+        },
+        {
+            path:'/unit',
+            name:'unit',
+            component: Unit,
         },
         {
             path:'/threat',

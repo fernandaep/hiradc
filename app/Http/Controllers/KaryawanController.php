@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Karyawan;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -22,15 +24,15 @@ class KaryawanController extends Controller
         return Karyawan::findorFail($id);
     }
 
-    public function getunit($nik)
+    public function getkoor($id)
     {
-        return Karyawan::where('unit','  ',$nik)->get();
+        $id = Unit::select('unit_kerja')->get();
+        return karyawan::where([
+            ['band', '=','II'],
+            ['unit', '=', $id],
+            ])->get();
     }
 
-    public function getkoor($nik)
-    {
-        return Karyawan::where('band','II' ,$nik)->get();
-    }
     public function getketua($nik)
     {
         return Karyawan::where('band','III',$nik)->get();
