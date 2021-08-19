@@ -162,7 +162,7 @@
                                             <v-select
                                                 v-model="selectedunitkerja"
                                                 :options="units"
-                                                @change="getkoor"
+                                                @input="getkoor"
                                     
                                             >
                                                 <template
@@ -181,8 +181,8 @@
                                             </v-select>
                                         </b-form-group>
                                         <b-form-group
-                                            id="nik_dept"
-                                            label="NIK Koordinator"
+                                            id="koordinator"
+                                            label="Koordinator"
                                             label-for="koordinator"
                                         >
                                             <v-select
@@ -205,9 +205,9 @@
                                             </v-select>
                                         </b-form-group>
                                         <b-form-group
-                                            id="nik_ketua"
+                                            id="ketua"
                                             label="NIK ketua"
-                                            label-for="kaunit"
+                                            label-for="ketua"
                                         >
                                             <v-select
                                                 v-model="selectedketua"
@@ -229,8 +229,8 @@
                                             </v-select>
                                         </b-form-group>
                                         <b-form-group
-                                            id="nik_pic"
-                                            label="NIK PIC Unit"
+                                            id="pic"
+                                            label="PIC Unit"
                                             label-for="pic"
                                         >
                                             <v-select
@@ -359,11 +359,10 @@ export default {
             },
             form: {
                 id: "",
-                karyawan_nik: ""
-                /*  unit_kerja :'',
-          koordinator :'',
-          ketua :'',
-          pic :'', */
+                unit_kerja:"",
+                koordinator: "",
+                ketua:"",
+                pic:"",
             }
         };
     },
@@ -371,12 +370,12 @@ export default {
     mounted() {
         this.loadData();
         this.getUnitkerja();
-        this.getkoor();
+
     },
     methods: {
         loadData() {
             axios.get("api/k3team").then(response => {
-                this.items = Object.values(response.data.data);
+                this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });
         },
@@ -385,7 +384,7 @@ export default {
                 this.units = Object.values(response.data);
                 //console.log(this.units);
                 let cat = $.map(this.units, function(t) {
-                    return { label: t.unit_kerja, value: t.id};
+                    return { label: t.unit_kerja, value: t.unit_kerja};
                 });
                 this.units = cat;
                 //console.log(this.karyawans);
@@ -393,35 +392,37 @@ export default {
            
         },
         getkoor() {
-            let id = this.selectedunitkerja.value;
+            let id = this.selectedunitkerja.label;
             axios.get("api/karyawan/" + id + "/getkoor").then(response => {
                 this.koordinator = Object.values(response.data);
-                console.log(this.koordinator)
+                console.log(this.koordinator);
                 let cat = $.map(this.koordinator, function(t) {
                     return {
                         label: t.band +" - " + t.nama + "",
-                        value: t.id
+                        value: t.nama
                     };
                 });
                 this.koordinator = cat;
-                //console.log(this.koordinator);
-            });
-             /* axios.get("api/karyawan/" + nik + "/getketua").then(response => {
+              
+                //getketua
+                axios.get("api/karyawan/" + id + "/getketua").then(response => {
                 this.ketua = Object.values(response.data);
-                let cat = $.map(this.ketua, function(t) {
-                    return { label: t.band +" - " + t.nama + "", value: t.nik };
+                let cat2 = $.map(this.ketua, function(t) {
+                    return { label: t.band +" - " + t.nama + "", value: t.nama };
                 });
-                this.ketua=cat; 
-                //console.log(this.ketua);
-            });
-             axios.get("api/karyawan/" + nik + "/getpic").then(response => {
+                this.ketua=cat2; 
+                
+
+                //getpic
+                axios.get("api/karyawan/" + id + "/getpic").then(response => {
                 this.pic = Object.values(response.data);
                 let cat = $.map(this.pic, function(t) {
-                    return { label: t.nik +" - " + t.nama + "", value: t.nik };
+                    return { label: t.band +" - " + t.nama + "", value: t.nama };
                 });
                 this.pic=cat; 
-                //console.log(this.pic);
-            }); */
+            });
+            })        
+            });
         },
 
         openModal(tipe, title, button, item) {
@@ -429,29 +430,29 @@ export default {
                 this.editMode = true;
                 this.form.id = item.id;
                 this.form.unit_kerja = item.unit_kerja;
-                this.form.karyawan_nik = item.karyawan_nik;
-                this.selectedunitkerja = item.karyawan_nik;
-                this.selectedunitkerja = { label: item.unit, value: item.unit };
-                this.selectedkoordinator = item.karyawan_nik;
+                this.selectedunitkerja = item.unit_kerja;
+                this.selectedunitkerja = { label: item.unit_kerja, value: item.kerja };
+                this.selectedkoordinator = item.koordinator;
                 this.selectedkoordinator = {
-                    label: item.dept,
-                    value: item.dept
+                    label: item.koordinator,
+                    value: item.koordinator
                 };
-                this.selectedketua = item.karyawan_nik;
-                this.selectedkoordinator = {
-                    label: item.unit,
-                    value: item.unit
+                this.selectedketua = item.ketua;
+                this.selectedketua = {
+                    label: item.ketua,
+                    value: item.ketua
                 };
-                this.selectedpic = item.karyawan_nik;
-                this.selectedkoordinator = {
-                    label: item.nama,
-                    value: item.nama
+                this.selectedpic = item.pic;
+                this.selectedpic = {
+                    label: item.pic,
+                    value: item.pic
                 };
             } else {
                 this.editMode = false;
                 this.form.unit_kerja = "";
-                this.form.karyawan_nik = "";
-                this.form.nama = "";
+                this.form.koordinator = "";
+                this.form.ketua = "";
+                this.form.pic = "";
             }
 
             this.infoModal.title = title;
@@ -470,17 +471,23 @@ export default {
             const { $dirty, $error } = this.$v.form[unit_kerja];
             return $dirty ? !$error : null;
         },
+        
         async store() {
-            this.form.karyawan_nik = this.selectedunitkerja.value;
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
+            this.form.unit_kerja=this.selectedunitkerja.value;
+            this.form.koordinator=this.selectedkoordinator.value;
+            this.form.ketua=this.selectedketua.value;
+            this.form.pic=this.selectedpic.value;
             try {
                 let response = await axios.post("api/k3team", this.form);
                 //console.log(response.status);
                 if (response.status == 200) {
-                    this.form.karyawan_nik = "";
+                    this.form.unit_id="";
+                    this.form.karyawan_nik="",
+                    this.form.unit_kerja = "";
+                    this.form.koordinator = "";
+                    this.form.ketua = "";
+                    this.form.pic = "";
+
                     this.hideModal();
                     this.$swal({
                         icon: "success",
@@ -495,17 +502,17 @@ export default {
 
         async update() {
             let id = this.form.id;
-            this.form.karyawan_nik = this.selectedkoordinator.value;
-            this.form.karyawan_nik = this.selectedketua.value;
-            this.form.karyawan_nik = this.selectedsekretaris.value;
-            this.$v.form.$touch();
-            if (this.$v.form.$anyError) {
-                return;
-            }
+            this.form.unit_kerja=this.selectedunitkerja.value;
+            this.form.koordinator=this.selectedkoordinator.value;
+            this.form.ketua=this.selectedketua.value;
+            this.form.pic=this.selectedpic.value;
             try {
                 let updated = await axios.put("api/k3team/" + id, this.form);
                 if (updated.status == 200) {
                     this.form.unit_kerja = "";
+                    this.form.koordinator = "";
+                    this.form.ketua = "";
+                    this.form.pic = "";
                     this.hideModal();
                     this.$swal({
                         icon: "success",

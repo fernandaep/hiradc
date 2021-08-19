@@ -35,8 +35,8 @@ Route::get('vulnerability/{id}/showkat',[VulnerabilityController::class,'showkat
 Route::get('consequence/{id}/showkat',[ConsequencesController::class,'showkat'])->name('consequence.showkat');
 Route::get('karyawan/{id}/getkoor',[KaryawanController::class,'getkoor'])->name('karyawan.getkoor');
 Route::get('karyawan/getunit',[KaryawanController::class,'getunit'])->name('karyawan.getunit');
-Route::get('karyawan/{nik}/getketua',[KaryawanController::class,'getketua'])->name('karyawan.getketua');
-Route::get('karyawan/{nik}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
+Route::get('karyawan/{id}/getketua',[KaryawanController::class,'getketua'])->name('karyawan.getketua');
+Route::get('karyawan/{id}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -308,10 +308,7 @@
                                                 name="register_id"
                                                 ref="registerReff"
                                                 v-model="
-                                                    $v.form2.register.$model
-                                                "
-                                                :state="
-                                                    validateState('register')
+                                                    $v.form2.kegiatan.$model
                                                 "
                                                 aria-describedby="input-1-live-feedback"
                                                 readonly
@@ -679,7 +676,8 @@ export default {
                 tingkat_resiko: 0,
                 aspek_lingkungan: "",
                 resiko_ditoleransi: "",
-                keterangan: ""
+                keterangan: "",
+                kegiatan:"",
             }
         };
     },
@@ -803,6 +801,7 @@ export default {
                 this.detailMode = true;
                 this.form2.id = item.id;
                 this.form2.register_id = item.id;
+                this.form2.kegiatan = item.kegiatan;
                 this.form2.mitigasi_id = "";
                 this.form2.program_mitigasi = "";
                 this.form2.possibility_id = "";

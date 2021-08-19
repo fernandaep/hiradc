@@ -15,15 +15,15 @@ class K3TeamResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            /* 'id' => $this->id,
             'nik' => $this->karyawan_nik,
-            'unit'=> $this->unit_id,
-            'unit_kerja' => $this->unit->unit_kerja,
+            'unit'=> $this->unit->unit_kerja,
+            'unit_kerja' => $this->category->nama,
             'koordinator' => $this->karyawan->nik,
             'ketua' => $this->karyawan->nik,
             'pic' => $this->karyawan->nik,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'updated_at' => $this->updated_at, */
         ];
     } 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Karyawan;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -26,20 +25,26 @@ class KaryawanController extends Controller
 
     public function getkoor($id)
     {
-        $id = Unit::select('unit_kerja')->get();
-        return karyawan::where([
+        //return $id;
+        return karyawan::where([ 
             ['band', '=','II'],
             ['unit', '=', $id],
             ])->get();
     }
 
-    public function getketua($nik)
+    public function getketua($id)
     {
-        return Karyawan::where('band','III',$nik)->get();
+        return karyawan::where([ 
+            ['band', '=','III'],
+            ['unit', '=', $id],
+            ])->get();
     }
-    public function getpic($nik)
+    public function getpic($id)
     {
-        return Karyawan::where('band','IV',$nik)->get();
+        return karyawan::where([ 
+            ['band', '=','IV'],
+            ['unit', '=', $id],
+            ])->get();
     }
     /**
      * Show the form for editing the specified resource.

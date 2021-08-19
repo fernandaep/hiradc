@@ -619,7 +619,7 @@ export default {
                 this.labelthreat = "Threat";
             }
 
-            axios.get("http://127.0.0.1:8000/api/condition/").then(response => {
+            axios.get("http://127.0.0.1:8000/api/condition").then(response => {
                 this.conditions = Object.values(response.data.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };

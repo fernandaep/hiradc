@@ -16,6 +16,7 @@ class KaryawanResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'karyawan_nik'=> $this->karyawan_nik,
             'unit'=> $this->unit_id,
             'unit_kerja' => $this->unit->unit_kerja,
             'created_at' => $this->created_at,

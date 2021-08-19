@@ -16,8 +16,7 @@ class K3teamController extends Controller
      */
     public function index()
     {
-        $k3team = K3team::latest()->get();
-        return K3TeamResource::collection($k3team);
+        return K3team::latest()->get();
     }
 
 
@@ -31,8 +30,10 @@ class K3teamController extends Controller
     {
        
         $k3team= K3team::create([
-            'karyawan_nik' => request('karyawan_nik'),
             'unit_kerja'=> request('unit_kerja'),
+            'koordinator'=> request('koordinator'),
+            'ketua'=> request('ketua'),
+            'pic'=> request('pic'),
         ]);
         
         if($k3team) {
@@ -104,16 +105,5 @@ class K3teamController extends Controller
         ]);
     }
 
-    public function KaDept($nik)
-    {
-        return K3team::where('karyawan_nik','I',$nik)->get();
-    }
-    public function kaUnit($nik)
-    {
-        return K3team::where('karyawan_nik', 'II',$nik)->get(); 
-    }
-    public function sekretaris($nik)
-    {
-        return K3team::where('karyawan_nik', 'III',$nik)->get();
-    }
+  
 }
