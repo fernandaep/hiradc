@@ -14,6 +14,10 @@ class Threat extends Model
     {
         return $this->belongsTo(Term::class); 
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class); 
+    }
 
     public function register()
     {

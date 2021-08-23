@@ -191,14 +191,29 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label"
+                                <label class="col-sm-2 col-form-label" 
                                     >Kemungkinan</label
                                 >
+                                
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="possibilitygroup"
                                         label-for="possibility"
+                                        
                                     >
+                                   <template>
+                                    <div>
+                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
+                                        <b-sidebar id="sidebar-right" title="Matriks Risiko" right shadow>
+                                        <div class="px-3 py-2">
+                                            <p>
+                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
+                                            </p>
+                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
+                                        </div>
+                                        </b-sidebar>
+                                    </div>
+                                    </template>
                                         <v-select
                                             v-model="selectedpossibility"
                                             :options="possibilities"
@@ -459,7 +474,6 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
     data() {
         return {
-            form: {
                 form: {
                     id: "",
                     /* unit_kerja: "", */
@@ -481,8 +495,7 @@ export default {
                     resiko_ditoleransi: "",
                     cakupan_resiko: "",
                     status_program: ""
-                }
-            },
+                },
             validations: {
                 form: {
                     /*  unit_kerja: {
@@ -552,17 +565,12 @@ export default {
         this.loadData();
         this.getCategory();
         this.getCondition();
-        /* this.getThreat(); */
-        /* this.getVulnerability(); */
-        this.getPosibility();
-        this.getConsequence();
-        //this.perkalian();
     },
     methods: {
         loadData() {
             axios.get("api/register").then(response => {
                 this.items = Object.values(response.data);
-                console.log(Object.values(response.data));
+                //console.log(Object.values(response.data));
             });
         },
         getCategory() {
@@ -576,7 +584,6 @@ export default {
         },
         getCondition() {
             let id = this.selectedcategory.value;
-
             if (id == 2) {
                 this.showlh = false;
                 this.labelactivity = "Kegiatan";
@@ -601,6 +608,23 @@ export default {
                 });
                 this.conditions = cat;
             });
+            axios.get("api/threat/"+ id + "/threatkat").then(response => {
+                this.threats = Object.values(response.data);
+                console.log(this.threats);
+                let cat = $.map(this.threats, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                console.log(Object.values(response.data));
+                this.threats = cat;
+            });
+            /* axios.get("api/threat").then(response => {
+                this.threats = Object.values(response.data.data);
+                let cat = $.map(this.threats, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                console.log(Object.values(response.data));
+                this.threats = cat;
+            }); */
             /* let id = this.selectedcategory.value; */
             axios.get("api/vulnerability/" + id + "/showkat").then(response => {
                 this.vulnerabilities = Object.values(response.data);
@@ -609,27 +633,6 @@ export default {
                 });
                 this.vulnerabilities = cat;
             });
-            axios.get("api/consequence/" + id + "/showkat").then(response => {
-                this.consequences = Object.values(response.data);
-                let cat = $.map(this.consequences, function(t) {
-                    return {
-                        label: t.nilai + " - " + t.konsekuensi + "",
-                        value: t.nilai
-                    };
-                });
-                this.consequences = cat;
-            });
-            axios.get("api/threat").then(response => {
-                this.threats = Object.values(response.data.data);
-                let cat = $.map(this.threats, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                console.log(Object.values(response.data));
-                this.threats = cat;
-            });
-        },
-
-        getPosibility() {
             axios.get("api/possibility").then(response => {
                 this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
@@ -640,10 +643,6 @@ export default {
                 });
                 this.possibilities = cat;
             });
-        },
-
-        getConsequence() {
-            let id = this.selectedcategory.value;
             axios.get("api/consequence/" + id + "/showkat").then(response => {
                 this.consequences = Object.values(response.data);
                 let cat = $.map(this.consequences, function(t) {
@@ -654,6 +653,7 @@ export default {
                 });
                 this.consequences = cat;
             });
+            
         },
 
         perkalian() {

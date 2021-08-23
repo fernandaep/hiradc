@@ -199,6 +199,19 @@
                                         id="possibilitygroup"
                                         label-for="possibility"
                                     >
+                                    <template>
+                                    <div>
+                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
+                                        <b-sidebar id="sidebar-right" title="Matriks Resiko" right shadow>
+                                        <div class="px-3 py-2">
+                                            <p>
+                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
+                                            </p>
+                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
+                                        </div>
+                                        </b-sidebar>
+                                    </div>
+                                    </template>
                                         <v-select
                                             v-model="selectedpossibility"
                                             :options="possibilities"
@@ -459,7 +472,6 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
     data() {
         return {
-            form: {
                 form: {
                     id: "",
                     /* unit_kerja: "", */
@@ -481,8 +493,7 @@ export default {
                     resiko_ditoleransi: "",
                     cakupan_resiko: "",
                     status_program: ""
-                }
-            },
+                },
             validations: {
                 form: {
                     /*  unit_kerja: {
@@ -552,11 +563,7 @@ export default {
         this.loadData();
         this.getCategory();
         this.getCondition();
-        /* this.getThreat(); */
-        /* this.getVulnerability(); */
-        this.getPosibility();
-        this.getConsequence();
-        //this.perkalian();
+        this.perkalian();
     },
     methods: {
         loadData() {
@@ -566,17 +573,20 @@ export default {
                 .then(response => {
                     this.form.id = response.data.id;
                     this.selectedcategory = response.data.category_id;
+                    //this.selectedcategory = { label: item.nama, value: item.category_id };
                     this.form.activity = response.data.activity;
                     this.form.lokasi = response.data.lokasi;
                     this.selectedcondition = response.data.condition_id;
-                   /*  this.selectecondition = { label: item.nama, value: item.condition_id }; */
+                   /*  this.selectecondition = { label: response.data.data.condition , value: response.data.condition_id }; */
                     this.selectedthreat = response.data.threat_id;
-                    /*  this.selectedthreat = { label: item.nama, value: item.threat_id }; */
+                     //this.selectedthreat = { label: item.nama, value: item.threat_id };
+                      this.selectedvulnerability = response.data.vulnerability_id;
+                     //this.selectedvulnerability = { label: item.nama, value: item.vulnerability };
                     this.form.pengendalian = response.data.pengendalian;
                     this.selectedpossibility = response.data.possibility_id;
-                    /* this.selectedpossibility = { label: item.nama, value: item.possibility_id }; */
+                   // this.selectedpossibility = { label: item.nama, value: item.possibility_id };
                     this.selectedconsequence = response.data.consequence_id;
-                    /* this.selectedconsequence = { label: item.nama, value: item.consequence_id }; */
+                   // this.selectedconsequence = { label: item.nama, value: item.consequence_id };
                     this.form.tingkat_resiko = response.data.tingkat_resiko;
                     this.form.status_regulasi = response.data.status_regulasi;
                     this.form.aspek_lingkungan = response.data.aspek_lingkungan;
@@ -586,13 +596,13 @@ export default {
                     this.form.cakupan_resiko = response.data.cakupan_resiko;
                     this.form.status_program = response.data.status_program;
                     this.form.program = response.data.program;
-                    //console.log(Object.values(response.data));
+                    console.log(Object.values(response.data));
                 });
         
         },
         getCategory() {
             axios.get("http://127.0.0.1:8000/api/category").then(response => {
-                this.categories = Object.values(response.data.data);
+                this.categories = Object.values(response.data);
                 let cat = $.map(this.categories, function(t) {
                     return { label: t.nama, value: t.id };
                 });
@@ -626,6 +636,14 @@ export default {
                 });
                 this.conditions = cat;
             });
+            axios.get("http://127.0.0.1:8000/api/threat").then(response => {
+                this.threats = Object.values(response.data.data);
+                let cat = $.map(this.threats, function(t) {
+                    return { label: t.nama, value: t.id };
+                });
+                console.log(Object.values(response.data));
+                this.threats = cat;
+            });
             /* let id = this.selectedcategory.value; */
             axios.get("http://127.0.0.1:8000/api/vulnerability/").then(response => {
                 this.vulnerabilities = Object.values(response.data.data);
@@ -633,6 +651,16 @@ export default {
                     return { label: t.nama, value: t.id };
                 });
                 this.vulnerabilities = cat;
+            });
+            axios.get("http://127.0.0.1:8000/api/possibility").then(response => {
+                this.possibilities = Object.values(response.data);
+                let cat = $.map(this.possibilities, function(t) {
+                    return {
+                        label: t.nilai + " ( " + t.nama + " )",
+                        value: t.nilai
+                    };
+                });
+                this.possibilities = cat;
             });
             axios.get("http://127.0.0.1:8000/api/consequence/").then(response => {
                 this.consequences = Object.values(response.data.data);
@@ -644,43 +672,8 @@ export default {
                 });
                 this.consequences = cat;
             });
-            axios.get("http://127.0.0.1:8000/api/threat").then(response => {
-                this.threats = Object.values(response.data.data);
-                let cat = $.map(this.threats, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                console.log(Object.values(response.data));
-                this.threats = cat;
-            });
         },
-
-        getPosibility() {
-            axios.get("http://127.0.0.1:8000/api/possibility").then(response => {
-                this.possibilities = Object.values(response.data);
-                let cat = $.map(this.possibilities, function(t) {
-                    return {
-                        label: t.nilai + " ( " + t.nama + " )",
-                        value: t.nilai
-                    };
-                });
-                this.possibilities = cat;
-            });
-        },
-
-        getConsequence() {
-            let id = this.selectedcategory.value;
-            axios.get("http://127.0.0.1:8000/api/consequence/").then(response => {
-                this.consequences = Object.values(response.data);
-                let cat = $.map(this.consequences, function(t) {
-                    return {
-                        label: t.nilai + " - " + t.konsekuensi + "",
-                        value: t.nilai
-                    };
-                });
-                this.consequences = cat;
-            });
-        },
-
+    
         perkalian() {
             this.form.possibility_id = this.selectedpossibility.value;
             this.form.consequence_id = this.selectedconsequence.value;

@@ -22,6 +22,10 @@ class Register extends Model
     {
         return $this->belongsTo(Threat::class); 
     }
+    public function vulnerability()
+    {
+        return $this->belongsTo(Vulnerability::class); 
+    }
     public function possibility()
     {
         return $this->belongsTo(Possibility::class); 

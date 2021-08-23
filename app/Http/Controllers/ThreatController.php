@@ -61,8 +61,11 @@ class ThreatController extends Controller
 
     public function threatkat($id)
     {
-        return Threat::with('terms')->get();
+        //return Threat::with(['term','term.category'])->where('term.category_id',$id)->get();
+        return Threat::join('terms','terms.id','=','threats.term_id')->where('terms.category_id',$id)->get();
+        
     }
+    
     /**
      * Update the specified resource in storage.
      *

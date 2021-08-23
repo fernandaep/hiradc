@@ -25,6 +25,10 @@ class Category extends Model
     {
         return $this->hasMany(Term::class); 
     }
+    public function threat()
+    {
+        return $this->hasMany(Threat::class); 
+    }
 
     public function consequence()
     {

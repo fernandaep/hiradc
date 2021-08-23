@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RegisterResource;
+/* use App\Http\Resources\EditRegister; */
 use App\Models\Register;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,7 @@ class RegisterController extends Controller
             'lokasi' => 'required',
             'condition_id' => '',
             'threat_id' => 'required',
+            'vulnerability_id' => 'required',
             'pengendalian' => 'required',
             'possibility_id' => 'required',
             'consequence_id' => 'required',
@@ -53,6 +55,7 @@ class RegisterController extends Controller
             'lokasi'=> request('lokasi'),
             'condition_id' => request('condition_id'),
             'threat_id' => request('threat_id'),
+            'vulnerability_id' => request('vulnerability_id'),
             'pengendalian'=> request('pengendalian'),
             'possibility_id'=> request('possibility_id'),
             'consequence_id'=> request('consequence_id'),
@@ -93,7 +96,6 @@ class RegisterController extends Controller
         return $register;
     }
 
-  
     /**
      * Update the specified resource in storage.
      *
@@ -104,7 +106,7 @@ class RegisterController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-
+          
 
         ]);
         $register = Register::findOrFail($id);

@@ -298,7 +298,7 @@
                                     "
                                 >
                                     <div class="modal-body">
-                                        <b-form-group
+                                        <!-- <b-form-group
                                             id="example-input-group-1"
                                             label="Kegiatan"
                                             label-for="register_id"
@@ -308,7 +308,7 @@
                                                 name="register_id"
                                                 ref="registerReff"
                                                 v-model="
-                                                    $v.form2.kegiatan.$model
+                                                    $v.form2.register.$model
                                                 "
                                                 aria-describedby="input-1-live-feedback"
                                                 readonly
@@ -318,7 +318,7 @@
                                                 id="input-1-live-feedback"
                                                 >This is a required field.
                                             </b-form-invalid-feedback>
-                                        </b-form-group>
+                                        </b-form-group> -->
                                         <b-form-group
                                             id="example-input-group-1"
                                             label="Program Mitigasi"
@@ -350,7 +350,19 @@
                                             id="possibilitygroup"
                                             label="Kemungkinan"
                                             label-for="possibility"
-                                        >
+                                        > <template>
+                                    <div>
+                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
+                                        <b-sidebar id="sidebar-right" title="Matriks Resiko" right shadow>
+                                        <div class="px-3 py-2">
+                                            <p>
+                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
+                                            </p>
+                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
+                                        </div>
+                                        </b-sidebar>
+                                    </div>
+                                    </template>
                                             <v-select
                                                 v-model="selectedpossibility"
                                                 :options="possibilities"
@@ -589,6 +601,11 @@ export default {
                     sortable: true
                 },
                 {
+                    key: "vulnerability",
+                    label: "Dampak",
+                    sortable: true
+                },
+                {
                     key: "pengendalian",
                     label: "Pengendalian",
                     sortable: true
@@ -677,7 +694,7 @@ export default {
                 aspek_lingkungan: "",
                 resiko_ditoleransi: "",
                 keterangan: "",
-                kegiatan:"",
+               
             }
         };
     },
@@ -801,7 +818,6 @@ export default {
                 this.detailMode = true;
                 this.form2.id = item.id;
                 this.form2.register_id = item.id;
-                this.form2.kegiatan = item.kegiatan;
                 this.form2.mitigasi_id = "";
                 this.form2.program_mitigasi = "";
                 this.form2.possibility_id = "";
@@ -834,10 +850,10 @@ export default {
         hideModal() {
             this.$refs["my-modal"].hide();
         },
-        validateState(register) {
+       /*  validateState(register) {
             const { $dirty, $error } = this.$v.form2[register];
             return $dirty ? !$error : null;
-        },
+        }, */
         validateState(program_mitigasi) {
             const { $dirty, $error } = this.$v.form2[program_mitigasi];
             return $dirty ? !$error : null;

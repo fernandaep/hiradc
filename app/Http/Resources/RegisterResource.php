@@ -24,9 +24,11 @@ class RegisterResource extends JsonResource
             'condition' => $this->condition->nama,
             'threat_id' => $this->threat_id,
             'threat' => $this->threat->nama ,
+            'vulnerability_id' => $this->vulnerability_id ,
+            'vulnerability' => $this->vulnerability->nama ,
             'pengendalian' => $this->pengendalian,
             'possibility_id' => $this->possibility_id,
-           'possibilitynilai'  => $this->possibility->nilai, 
+           /* 'possibilitynilai'  => $this->possibility->nilai,  */
             'consequence_id' => $this->consequence_id,
             /* 'consequencenilai'  => $this->consequence->nilai, */
             'tingkat_resiko' => $this->tingkat_resiko,

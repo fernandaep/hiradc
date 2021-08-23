@@ -17,6 +17,7 @@ class ThreatResource extends JsonResource
         return [
             'id' => $this->id,
             'term_id' => $this->term_id,
+            /* 'category' => $this->term->category, */
             'kode' => $this->term->kode,
             'istilah' => $this->term->istilah,
             'nama' => $this->nama,
