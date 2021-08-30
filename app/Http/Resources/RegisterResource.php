@@ -16,6 +16,8 @@ class RegisterResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'unit_id' => $this->unit_id,
+            'units' => $this->unit->unit_kerja,
             'category_id' => $this->category_id,
             'category' => $this->category->nama,
             'activity' => $this->activity,

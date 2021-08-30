@@ -50,6 +50,7 @@ class RegisterController extends Controller
            
         ]);
         $register = Register::create([
+            'units_id' => request('units_id'),
             'category_id' => request('category_id'),
             'activity' => request('activity'),
             'lokasi'=> request('lokasi'),

@@ -14,4 +14,8 @@ class Unit extends Model
     {
         return $this->hasMany(K3team::class); 
     }
+    public function register()
+    {
+        return $this->hasMany(Register::class); 
+    }
 }

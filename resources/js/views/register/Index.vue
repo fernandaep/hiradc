@@ -19,6 +19,7 @@
                                         <i class="fas fa-plus"></i> Add New
                                     </router-link>
                                 </b-col>
+                                
                                 <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Year"
@@ -34,6 +35,25 @@
                                             id="per-year-select"
                                             v-model="filter"
                                             :options="year"
+                                            size="sm"
+                                        ></b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col lg="2" sm="4" md="2" class="my-1">
+                                    <b-form-group
+                                        label="Risk"
+                                        label-for="per-risk-select"
+                                        label-cols-sm="8"
+                                        label-cols-md="8"
+                                        label-cols-lg="6"
+                                        label-align-sm="right"
+                                        label-size="sm"
+                                        class="mb-0"
+                                    >
+                                        <b-form-select
+                                            id="per-risk-select"
+                                            v-model="filter"
+                                            :options="risk"
                                             size="sm"
                                         ></b-form-select>
                                     </b-form-group>
@@ -57,7 +77,22 @@
                                         ></b-form-select>
                                     </b-form-group>
                                 </b-col>
-                                <b-col lg="5" class="my-1">
+
+<!-- <b-table bordered show-empty striped stacked="md" no-provider-filtering 
+class="management-list" ref="table"
+v-model="filteredItems"
+:items="tableItems"
+:fields="fields"
+:current-page="currentPage"
+:per-page="perPage"
+:filter="filter"
+:filter-function="filterTable"
+:sort-by.sync="sortBy"
+:sort-desc.sync="sortDesc"
+@filtered="onFiltered">
+</b-table> -->
+                                
+                                <b-col lg="3" class="my-1">
                                     <b-form-group
                                         label="Filter"
                                         label-for="filter-input"
@@ -568,12 +603,23 @@ export default {
                 { value: "2023", text: "2023" },
                 { value: "2024", text: "2024" }
             ],
+            risk: [
+                { value: "Rendah", text: "Rendah" },
+                { value: "Sedang", text: "Sedang" },
+                { value: "Tinggi", text: "Tinggi" },
+                { value: "SangatTinggi", text: "Sangat Tinggi" },
+            ],
             fields: [
                 {
                     key: "no",
                     sortable: true,
                     tdClass: "text-center",
                     thClass: "text-center"
+                },
+                {
+                    key: "units",
+                    label: "Unit Kerja",
+                    sortable: true
                 },
                 {
                     key: "category",

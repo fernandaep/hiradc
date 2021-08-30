@@ -384,7 +384,7 @@ export default {
                 this.units = Object.values(response.data);
                 //console.log(this.units);
                 let cat = $.map(this.units, function(t) {
-                    return { label: t.unit_kerja, value: t.unit_kerja};
+                    return { label: t.unit_kerja, value: t.id};
                 });
                 this.units = cat;
                 //console.log(this.karyawans);

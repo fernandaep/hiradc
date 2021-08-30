@@ -42,4 +42,8 @@ class Register extends Model
     {
         return $this->hasMany(Mitigasi::class); 
     }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class); 
+    }
 }

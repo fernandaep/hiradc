@@ -6,10 +6,41 @@
                     <div class="card-header">New Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
+                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label"
+                                    >Unit Kerja</label
+                                >
+                                <div class="col-sm-10">
+                                    <b-form-group
+                                        id="unitsgroup"
+                                        label-for="units"
+                                    >
+                                        <v-select
+                                            v-model="selectedunitkerja"
+                                            :options="units"
+                                        >
+                                            <template
+                                                #search="{attributes, events}"
+                                            >
+                                                <input
+                                                    class="vs__search"
+                                                    :required="
+                                                        !selectedunitkerja
+                                                    "
+                                                    v-bind="attributes"
+                                                    v-on="events"
+                                                    ref="unitsReff"
+                                                />
+                                            </template>
+                                        </v-select>
+                                    </b-form-group>
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Kategori</label
                                 >
+                                
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="categorygroup"
@@ -476,7 +507,7 @@ export default {
         return {
                 form: {
                     id: "",
-                    /* unit_kerja: "", */
+                    units_id: "",
                     activity: "",
                     category_id: "",
                     activity: "",
@@ -498,9 +529,9 @@ export default {
                 },
             validations: {
                 form: {
-                    /*  unit_kerja: {
+                     units_id: {
                         required
-                    }, */
+                    },
                     activity: {
                         required
                     },
@@ -546,6 +577,7 @@ export default {
             selectedvulnerability: "",
             selectedpossibility: "",
             selectedconsequence: "",
+            selectedunitkerja: "",
             activities: [],
             assets: [],
             conditions: [],
@@ -554,6 +586,7 @@ export default {
             possibilities: [],
             consequences: [],
             categories: [],
+            units:[],
             labelthreat: "threat",
             labelactivity: "Activity",
             showlh: false,
@@ -563,6 +596,7 @@ export default {
     },
     mounted() {
         this.loadData();
+        this.getUnitkerja();
         this.getCategory();
         this.getCondition();
     },
@@ -572,6 +606,18 @@ export default {
                 this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });
+        },
+         getUnitkerja() {
+            axios.get("api/unit").then(response => {
+                this.units = Object.values(response.data);
+                //console.log(this.units);
+                let cat = $.map(this.units, function(t) {
+                    return { label: t.unit_kerja, value: t.id};
+                });
+                this.units = cat;
+                //console.log(this.karyawans);
+            });  
+           
         },
         getCategory() {
             axios.get("api/category").then(response => {
@@ -769,6 +815,7 @@ export default {
 
         async store() {
             try {
+                this.form.units_id = this.selectedunitkerja.value;
                 this.form.category_id = this.selectedcategory.value;
                 this.form.condition_id = this.selectedcondition.value;
                 this.form.threat_id = this.selectedthreat.value;
@@ -778,6 +825,7 @@ export default {
                 let response = await axios.post("api/register", this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
+                    this.form.units_id = "";
                     this.form.category_id = "";
                     this.form.activity = "";
                     this.form.asset_id = "";
