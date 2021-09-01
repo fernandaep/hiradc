@@ -16,6 +16,7 @@ import K3team from '../views/K3team/Index'
 import Register from '../views/Register/Index'
 import createRegister from '../views/Register/create'
 import editRegister from '../views/Register/edit'
+import tahunRegister from '../views/Register/tahun'
 import Unit from '../views/Unit/Index'
 
 
@@ -131,6 +132,11 @@ export default
             path:'/editregister/:id',
             name:'register.edit',
             component: editRegister,
+        },
+        {
+            path:'/tahunregister/:id',
+            name:'register.tahun',
+            component: tahunRegister,
         },
     ]
 }

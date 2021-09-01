@@ -13,7 +13,7 @@
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="unitsgroup"
-                                        label-for="units"
+                                        label-for="unit_id"
                                     >
                                         <v-select
                                             v-model="selectedunitkerja"
@@ -507,7 +507,7 @@ export default {
         return {
                 form: {
                     id: "",
-                    units_id: "",
+                    unit_id: "",
                     activity: "",
                     category_id: "",
                     activity: "",
@@ -529,7 +529,7 @@ export default {
                 },
             validations: {
                 form: {
-                     units_id: {
+                     unit_id: {
                         required
                     },
                     activity: {
@@ -815,7 +815,7 @@ export default {
 
         async store() {
             try {
-                this.form.units_id = this.selectedunitkerja.value;
+                this.form.unit_id = this.selectedunitkerja.value;
                 this.form.category_id = this.selectedcategory.value;
                 this.form.condition_id = this.selectedcondition.value;
                 this.form.threat_id = this.selectedthreat.value;
@@ -825,7 +825,7 @@ export default {
                 let response = await axios.post("api/register", this.form);
                 // console.log(response.status);
                 if (response.status == 200) {
-                    this.form.units_id = "";
+                    this.form.unit_id = "";
                     this.form.category_id = "";
                     this.form.activity = "";
                     this.form.asset_id = "";

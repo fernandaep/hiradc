@@ -6,6 +6,7 @@ use App\Http\Resources\RegisterResource;
 /* use App\Http\Resources\EditRegister; */
 use App\Models\Register;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -50,7 +51,7 @@ class RegisterController extends Controller
            
         ]);
         $register = Register::create([
-            'units_id' => request('units_id'),
+            'unit_id' => request('unit_id'),
             'category_id' => request('category_id'),
             'activity' => request('activity'),
             'lokasi'=> request('lokasi'),
@@ -93,7 +94,8 @@ class RegisterController extends Controller
      */
     public function show($id)
     {
-        $register = Register::findOrFail($id);
+       /*  $register = Register::findOrFail($id); */
+        $register = DB::table('registers')->join('categories','registers.category_id','=','categories.id')->join('conditions','registers.condition_id','=','conditions.id')->join('threats','registers.threat_id','=','threats.id')->join('vulnerabilities','registers.vulnerability_id','=','vulnerabilities.id')->join('possibilities','registers.possibility_id','=','possibilities.id')/* ->join('consequences','registers.consequence_id','=','consequences.id') */->where('registers.id','=',$id)->get();
         return $register;
     }
 

@@ -1,8 +1,8 @@
 <template>
     <div class="overflow-auto">
         <div class="container">
-            <div class="row mt-3">
-                <div class="col-md-12">
+            <div class="row mt-1">
+                <div class="col-md-20">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
@@ -10,13 +10,21 @@
                             </h3>
                         </div>
                         <div class="card-body">
-                            <b-row class="p-20">
-                                <b-col lg="2">
+                            <b-row class="p-10">
+                                <b-col lg="1">
                                     <router-link
                                         :to="{ name: 'register.create' }"
                                         class="btn btn-outline-primary"
                                     >
                                         <i class="fas fa-plus"></i> Add New
+                                    </router-link>
+                                </b-col>
+                                 <b-col lg="1">
+                                    <router-link
+                                        :to="{ name: 'register.create' }"
+                                        class="btn btn-outline-primary"
+                                    >
+                                        <i class="fas fa-plus"></i> HIRADC Sebelumnya
                                     </router-link>
                                 </b-col>
                                 

@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-auto">
      <div class="container">
-        <div class="row mt-3">
+        <div class="row mt-1">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
