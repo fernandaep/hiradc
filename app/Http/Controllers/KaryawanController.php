@@ -27,7 +27,7 @@ class KaryawanController extends Controller
     {
         //return $id;
         return karyawan::where([ 
-            ['band', '=','II'],
+            ['band', '=','I'],
             ['unit', '=', $id],
             ])->get();
     }
@@ -35,14 +35,14 @@ class KaryawanController extends Controller
     public function getketua($id)
     {
         return karyawan::where([ 
-            ['band', '=','III'],
+            ['band', '=','II'],
             ['unit', '=', $id],
             ])->get();
     }
     public function getpic($id)
     {
         return karyawan::where([ 
-            ['band', '=','IV'],
+            ['band', '=','III'],
             ['unit', '=', $id],
             ])->get();
     }

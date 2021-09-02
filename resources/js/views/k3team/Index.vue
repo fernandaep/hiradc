@@ -206,7 +206,7 @@
                                         </b-form-group>
                                         <b-form-group
                                             id="ketua"
-                                            label="NIK ketua"
+                                            label="Ketua"
                                             label-for="ketua"
                                         >
                                             <v-select
@@ -384,7 +384,7 @@ export default {
                 this.units = Object.values(response.data);
                 //console.log(this.units);
                 let cat = $.map(this.units, function(t) {
-                    return { label: t.unit_kerja, value: t.id};
+                    return { label: t.unit_kerja, value: t.unit_kerja};
                 });
                 this.units = cat;
                 //console.log(this.karyawans);

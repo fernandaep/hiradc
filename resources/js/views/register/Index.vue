@@ -843,13 +843,10 @@ export default {
                 this.labelresiko = "Sedang";
             } else if (this.hasilkali >= 10 && this.hasilkali <= 16) {
                 this.labelresiko = "Tinggi";
-            } else {
-                this.labelresiko = "Sangat Tinggi";
-            }
-            this.resiko = this.hasilkali + " - " + this.labelresiko;
             this.form2.tingkat_resiko = this.labelresiko;
 
             this.cekresiko();
+            }
         },
         cekresiko() {
             if (
@@ -1010,6 +1007,7 @@ export default {
             return this.items.length;
         }
     }
+    
 };
 </script>
 <style>
