@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 02 Sep 2021 pada 16.40
+-- Waktu pembuatan: 15 Bulan Mei 2022 pada 14.15
 -- Versi server: 10.4.13-MariaDB
 -- Versi PHP: 7.4.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `hiradcvuee`
+-- Database: `sqlhiradc`
 --
 
 -- --------------------------------------------------------
@@ -62,7 +62,10 @@ CREATE TABLE `assets` (
 --
 
 INSERT INTO `assets` (`id`, `nama`, `created_at`, `updated_at`) VALUES
-(2, 'Truck', '2021-06-07 23:33:50', '2021-06-07 23:35:23');
+(3, 'Draft', '2022-04-10 22:02:20', '2022-04-10 22:02:20'),
+(4, 'Upload', '2022-04-10 22:12:09', '2022-04-10 22:12:09'),
+(5, 'Reject', '2022-04-10 22:12:16', '2022-04-10 22:12:16'),
+(6, 'Approve', '2022-04-10 22:12:23', '2022-04-10 22:12:23');
 
 -- --------------------------------------------------------
 
@@ -1864,7 +1867,8 @@ INSERT INTO `mitigasis` (`id`, `register_id`, `program_mitigasi`, `possibility_i
 (1, 1, 'Simulasi Gempa', 5, 4, 'Sangat Tinggi', 'Penting', 'Ya', 'ss', '2021-08-20 02:44:57', '2021-08-20 02:44:57'),
 (2, 4, 'Simulasi Gempa', 4, 5, 'Sangat Tinggi', 'Penting', 'Ya', 'Sering terjadi dan atau kejadiannya lebih dari 1 kali sebulan', '2021-08-25 02:08:14', '2021-08-25 02:08:14'),
 (3, 1, 'saasas', 4, 4, 'Tinggi', 'Tidak Penting', 'Ya', 'asa', '2021-08-31 01:28:24', '2021-08-31 01:28:24'),
-(4, 3, 'Mengganti kunci', 1, 1, 'Rendah', 'Penting', 'Tidak', 'Seharusnya terjadi dan atau minimal 1 kali per lima tahun hingga 1 kali per tahun', '2021-08-31 19:14:30', '2021-08-31 19:14:30');
+(4, 3, 'Mengganti kunci', 1, 1, 'Rendah', 'Penting', 'Tidak', 'Seharusnya terjadi dan atau minimal 1 kali per lima tahun hingga 1 kali per tahun', '2021-08-31 19:14:30', '2021-08-31 19:14:30'),
+(5, 11, 'wedxe', 4, 3, 'Tinggi', 'Tidak Penting', 'Ya', 'Bisa terjadi pada suatu waktu dan atau 1 kali per sepuluh tahun', '2022-04-11 04:33:36', '2022-04-11 04:33:36');
 
 -- --------------------------------------------------------
 
@@ -1930,7 +1934,7 @@ CREATE TABLE `registers` (
   `resiko_ditoleransi` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cakupan_resiko` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status_program` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int(255) DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1942,7 +1946,15 @@ CREATE TABLE `registers` (
 INSERT INTO `registers` (`id`, `unit_id`, `category_id`, `activity`, `lokasi`, `condition_id`, `threat_id`, `vulnerability_id`, `pengendalian`, `possibility_id`, `consequence_id`, `tingkat_resiko`, `status_regulasi`, `aspek_lingkungan`, `peluang`, `resiko`, `resiko_ditoleransi`, `cakupan_resiko`, `status_program`, `status`, `created_at`, `updated_at`) VALUES
 (1, 53, 7, 'Quisquam veritatis p', 'Velit consequatur ut', 5, 9, '27', 'Anim mollit sint ali', 4, 3, 'Tinggi', NULL, 'Penting', NULL, NULL, 'Ya', 'Unit Kerja', 'PUK', NULL, '2021-08-31 01:26:38', '2021-08-31 01:26:38'),
 (2, 24, 2, 'Parkir Mobil', 'parkiran', 2, 7, '1', 'belum ada', 5, 1, 'Sedang', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2021-08-31 18:58:26', '2021-08-31 18:58:26'),
-(3, 53, 7, 'Laptop di area kantor USM', 'USM', 5, 9, '27', 'belum ada', 1, 1, 'Rendah', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2021-08-31 19:13:11', '2021-08-31 19:13:11');
+(3, 53, 7, 'Laptop di area kantor USM', 'USM', 5, 9, '27', 'belum ada', 1, 1, 'Rendah', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2021-08-31 19:13:11', '2021-08-31 19:13:11'),
+(4, 49, 6, 'Vel ad quisquam dolo', 'Distinctio Voluptat', 13, 8, '17', 'Blanditiis et amet', 4, 4, 'Tinggi', 'Animi consequuntur', 'Penting', 'Animi consequuntur', 'Eligendi laborum Ea', 'Ya', 'Unit Kerja', 'PUK', NULL, '2022-04-10 22:34:37', '2022-04-10 22:34:37'),
+(5, 51, 2, 'Dignissimos nemo id', 'Nam et illum amet', 2, 7, '2', 'Est quia sint volup', 4, 2, 'Sedang', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', 'Draft', '2022-04-11 01:05:48', '2022-04-11 01:05:48'),
+(6, 48, 2, 'Commodo est velit se', 'Nobis omnis numquam', 2, 7, '5', 'Autem aut accusantiu', 3, 3, 'Sedang', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', 'Draft', '2022-04-11 01:22:11', '2022-04-11 01:22:11'),
+(7, 50, 6, 'Cillum saepe rerum q', 'Voluptatem eligendi', 3, 8, '16', 'Quis quisquam magnam', 4, 2, 'Sedang', 'Sunt dolores omnis s', 'Tidak Penting', 'Sunt dolores omnis s', 'Ea rem aut nobis ita', 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2022-04-11 01:23:40', '2022-04-11 01:23:40'),
+(8, 53, 7, 'Incidunt architecto', 'Dolore veniam susci', 5, 9, '27', 'Molestias nostrum la', 4, 2, 'Sedang', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2022-04-11 03:22:53', '2022-04-11 03:22:53'),
+(9, 50, 6, 'Et quia obcaecati vo', 'Autem animi sit om', 4, 8, '18', 'In fugiat nobis sin', 2, 3, 'Sedang', 'm', 'Tidak Penting', 'm', 'm', 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2022-04-11 03:24:51', '2022-04-11 03:24:51'),
+(10, 28, 2, 'Atque velit autem ei', 'Soluta magni sequi i', 2, 7, '1', 'Quo voluptas exercit', 4, 1, 'Rendah', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2022-04-11 03:26:05', '2022-04-11 03:26:05'),
+(11, 51, 2, 'Corrupti cillum nem', 'Id ex accusantium c', 2, 7, '2', 'Et voluptate enim ni', 5, 1, 'Sedang', NULL, 'Tidak Penting', NULL, NULL, 'Tidak', 'Unit Kerja', 'Pengendalian Operasional', NULL, '2022-04-11 03:55:37', '2022-04-11 03:55:37');
 
 -- --------------------------------------------------------
 
@@ -2116,6 +2128,16 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin@gmail.com', NULL, '$2y$10$hZK4w.LdiwJkJ1df9toBoOoZ6FBmT2.7WiegqqzVKNpfAt5F.iddq', NULL, '2022-05-15 04:51:01', '2022-05-15 04:51:01'),
+(2, 'unitkerja', 'unitkerja@gmail.com', NULL, '$2y$10$yrTeqaouz5Y27hD0vPmly.HMGR7N4sjZoTSNre6IFP8MEXQEfLQt.', NULL, '2022-05-15 04:54:44', '2022-05-15 04:54:44'),
+(3, 'verifikator', 'verifikator@gmail.com', NULL, '$2y$10$n0YbfmJL7Yb3l72XlT/7BuVFESt.iuZpQU0W2N3GPYXZI3.yl/4fy', NULL, '2022-05-15 04:55:19', '2022-05-15 04:55:19'),
+(4, 'approval', 'approval@gmail.com', NULL, '$2y$10$Z6y0nB.sQ4zsLSABWJKExeph0H8NqhCHj/4VEvzvZxX/0E6DGWHAi', NULL, '2022-05-15 04:55:51', '2022-05-15 04:55:51');
 
 -- --------------------------------------------------------
 
@@ -2314,7 +2336,7 @@ ALTER TABLE `activities`
 -- AUTO_INCREMENT untuk tabel `assets`
 --
 ALTER TABLE `assets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `categories`
@@ -2356,7 +2378,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `mitigasis`
 --
 ALTER TABLE `mitigasis`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `possibilities`
@@ -2368,7 +2390,7 @@ ALTER TABLE `possibilities`
 -- AUTO_INCREMENT untuk tabel `registers`
 --
 ALTER TABLE `registers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `terms`
@@ -2392,7 +2414,7 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `vulnerabilities`
