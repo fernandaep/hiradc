@@ -6,7 +6,7 @@
                     <div class="card-header">New Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="store">
-                             <div class="form-group row">
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label"
                                     >Unit Kerja</label
                                 >
@@ -40,7 +40,7 @@
                                 <label class="col-sm-2 col-form-label"
                                     >Kategori</label
                                 >
-                                
+
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="categorygroup"
@@ -222,29 +222,47 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" 
+                                <label class="col-sm-2 col-form-label"
                                     >Kemungkinan</label
                                 >
-                                
+
                                 <div class="col-sm-10">
                                     <b-form-group
                                         id="possibilitygroup"
                                         label-for="possibility"
-                                        
                                     >
-                                   <template>
-                                    <div>
-                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
-                                        <b-sidebar id="sidebar-right" title="Matriks Risiko" right shadow>
-                                        <div class="px-3 py-2">
-                                            <p>
-                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
-                                            </p>
-                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
-                                        </div>
-                                        </b-sidebar>
-                                    </div>
-                                    </template>
+                                        <template>
+                                            <div>
+                                                <b-button
+                                                    v-b-toggle.sidebar-right
+                                                    >Matrik</b-button
+                                                >
+                                                <b-sidebar
+                                                    id="sidebar-right"
+                                                    title="Matriks Risiko"
+                                                    right
+                                                    shadow
+                                                >
+                                                    <div class="px-3 py-2">
+                                                        <p>
+                                                            Tentukan Tingkat
+                                                            Risiko Rendah,
+                                                            Sedang, Tinggi dan
+                                                            Sangat Tinggi dari
+                                                            Nilai Risiko yang
+                                                            telah dinilai
+                                                            berdasarkan Matriks
+                                                            Risiko sbb :
+                                                        </p>
+                                                        <b-img
+                                                            src="img/matrik.png"
+                                                            fluid
+                                                            thumbnail
+                                                        ></b-img>
+                                                    </div>
+                                                </b-sidebar>
+                                            </div>
+                                        </template>
                                         <v-select
                                             v-model="selectedpossibility"
                                             :options="possibilities"
@@ -477,16 +495,39 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label
+                                    for="status"
+                                    class="col-sm-2 col-form-label"
+                                    >Status</label
+                                >
+                                <div class="col-sm-10">
+                                    <input
+                                        type="text"
+                                        v-model="form.status"
+                                        class="form-control"
+                                        id="resiko_ditoleransi"
+                                        readonly
+                                    />
+                                    <div
+                                        v-if="theErrors.status"
+                                        class="mt2 text-danger"
+                                    >
+                                        {{ theErrors.status[0] }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-12 text-right">
                                     <input
                                         type="button"
                                         value="Go Back"
-                                        onclick="history.back(-1)"
+                                        this.form.status="draft"
                                     />
                                     <button
                                         type="submit"
                                         class="btn btn-primary"
+                                        @click="checkstatusprogram"
                                     >
                                         Save
                                     </button>
@@ -505,31 +546,33 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
     data() {
         return {
-                form: {
-                    id: "",
-                    unit_id: "",
-                    activity: "",
-                    category_id: "",
-                    activity: "",
-                    lokasi: "",
-                    condition_id: "",
-                    threat_id: "",
-                    vulnerability_id: "",
-                    pengendalian: "",
-                    possibility_id: "",
-                    consequence_id: "",
-                    tingkat_resiko: "",
-                    status_regulasi: "",
-                    aspek_lingkungan: "",
-                    peluang: "",
-                    resiko: "",
-                    resiko_ditoleransi: "",
-                    cakupan_resiko: "",
-                    status_program: ""
-                },
+            form: {
+                id: "",
+                unit_id: "",
+                asset: "",
+                activity: "",
+                category_id: "",
+                activity: "",
+                lokasi: "",
+                condition_id: "",
+                threat_id: "",
+                vulnerability_id: "",
+                pengendalian: "",
+                possibility_id: "",
+                consequence_id: "",
+                tingkat_resiko: "",
+                status_regulasi: "",
+                aspek_lingkungan: "",
+                peluang: "",
+                resiko: "",
+                resiko_ditoleransi: "",
+                cakupan_resiko: "",
+                status_program: "",
+                status: ""
+            },
             validations: {
                 form: {
-                     unit_id: {
+                    unit_id: {
                         required
                     },
                     activity: {
@@ -586,12 +629,12 @@ export default {
             possibilities: [],
             consequences: [],
             categories: [],
-            units:[],
+            units: [],
             labelthreat: "threat",
             labelactivity: "Activity",
             showlh: false,
-            resiko:"",
-            hasilkali:0
+            resiko: "",
+            hasilkali: 0
         };
     },
     mounted() {
@@ -607,17 +650,16 @@ export default {
                 //console.log(Object.values(response.data));
             });
         },
-         getUnitkerja() {
+        getUnitkerja() {
             axios.get("api/unit").then(response => {
                 this.units = Object.values(response.data);
                 //console.log(this.units);
                 let cat = $.map(this.units, function(t) {
-                    return { label: t.unit_kerja, value: t.id};
+                    return { label: t.unit_kerja, value: t.id };
                 });
                 this.units = cat;
                 //console.log(this.karyawans);
-            });  
-           
+            });
         },
         getCategory() {
             axios.get("api/category").then(response => {
@@ -634,14 +676,17 @@ export default {
                 this.showlh = false;
                 this.labelactivity = "Kegiatan";
                 this.labelthreat = "Potensi Bahaya";
+                this.form.status = "In Progress";
             } else if (id == 6) {
                 this.showlh = true;
                 this.labelactivity = "Kegiatan";
                 this.labelthreat = "Aspek Lingkungan";
+                this.form.status = "In Progress";
             } else if (id == 7) {
                 this.showlh = false;
                 this.labelactivity = "Asset";
                 this.labelthreat = "Ancaman Keamanan";
+                this.form.status = "In Progress";
             } else {
                 this.showlh = false;
                 this.labelthreat = "Threat";
@@ -654,7 +699,7 @@ export default {
                 });
                 this.conditions = cat;
             });
-            axios.get("api/threat/"+ id + "/threatkat").then(response => {
+            axios.get("api/threat/" + id + "/threatkat").then(response => {
                 this.threats = Object.values(response.data);
                 console.log(this.threats);
                 let cat = $.map(this.threats, function(t) {
@@ -699,9 +744,14 @@ export default {
                 });
                 this.consequences = cat;
             });
-            
         },
-
+        checkstatusprogram() {
+            let id = this.form.id;
+            axios.get("api/register/" + id + "/approved").then(response => {
+                this.form.id = response.data.id;
+                //console.log(this.threats);
+            });
+        },
         perkalian() {
             this.form.possibility_id = this.selectedpossibility.value;
             this.form.consequence_id = this.selectedconsequence.value;
@@ -711,31 +761,24 @@ export default {
             ) {
                 this.hasilkali = 0;
             } else {
-                this.hasilkali=
+                this.hasilkali =
                     parseInt(this.form.possibility_id) *
                     parseInt(this.form.consequence_id);
             }
 
             if (this.hasilkali <= 4) {
                 this.labelresiko = "Rendah";
-               
-            } else if (
-                this.hasilkali >= 5 &&
-                this.hasilkali <= 9
-            ) {
+            } else if (this.hasilkali >= 5 && this.hasilkali <= 9) {
                 this.labelresiko = "Sedang";
-            } else if (
-                this.hasilkali >= 10 &&
-                this.hasilkali <= 16
-            ) {
+            } else if (this.hasilkali >= 10 && this.hasilkali <= 16) {
                 this.labelresiko = "Tinggi";
             } else {
-               this.labelresiko = "Sangat Tinggi";
+                this.labelresiko = "Sangat Tinggi";
             }
 
-            this.resiko = this.hasilkali + " - " + this.labelresiko; 
+            this.resiko = this.hasilkali + " - " + this.labelresiko;
             this.form.tingkat_resiko = this.labelresiko;
-            
+
             this.cakupan();
             this.cekresiko();
             this.status();
@@ -760,12 +803,12 @@ export default {
             if (
                 this.labelresiko == "Sangat Tinggi" ||
                 this.labelresiko == "Tinggi"
-                ){
+            ) {
                 this.form.resiko_ditoleransi = "Ya";
             } else if (
                 this.labelresiko == "Sedang" ||
                 this.labelresiko == "Rendah"
-                ){
+            ) {
                 this.form.resiko_ditoleransi = "Tidak";
             } else {
                 this.form.resiko_ditoleransi = "";
@@ -787,30 +830,42 @@ export default {
                 (this.labelresiko == "Sedang" ||
                     this.labelresiko == "Rendah") &&
                 (this.form.cakupan_resiko == "Koorporat/Direktorat" ||
-                this.form.cakupan_resiko == "Unit Kerja")
+                    this.form.cakupan_resiko == "Unit Kerja")
             ) {
                 this.form.status_program = "Pengendalian Operasional";
             } else {
                 this.form.status_program = "";
             }
         },
-
+        /* checkstatusprogram() {
+                if(document.getElementById('button').clicked == true)
+                    {
+                        $draft = 0;
+                            if($request= get('save')){
+                                $draft = 1;
+                            }
+                            $offer = update([
+                                'draft' = $draft
+                            ]);
+                            }
+            },
+ */
         regulasi() {
             if (this.form.status_regulasi == "Legal") {
                 this.form.aspek_lingkungan = "Penting";
-            }
-            
-            else  {
-                if(this.labelresiko=="Rendah" || this.labelresiko=="Sedang")
-                {
+            } else {
+                if (
+                    this.labelresiko == "Rendah" ||
+                    this.labelresiko == "Sedang"
+                ) {
                     this.form.aspek_lingkungan = "Tidak Penting";
-                }
-                else if(this.labelresiko=="Tinggi" || this.labelresiko=="Sangat Tinggi")
-                {
+                } else if (
+                    this.labelresiko == "Tinggi" ||
+                    this.labelresiko == "Sangat Tinggi"
+                ) {
                     this.form.aspek_lingkungan = "Penting";
                 }
             }
-          
         },
 
         async store() {

@@ -42,6 +42,7 @@ class RegisterResource extends JsonResource
             'cakupan_resiko' => $this->cakupan_resiko,
             'status_program' => $this->status_program,
             'program' => $this->program,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'mitigasi' => MitigasiResource::collection($this->mitigasi),

@@ -10,12 +10,9 @@ class K3team extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function karyawan()
+    public function activity()
     {
-        return $this->belongsTo(Karyawan::class); 
-    }
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class); 
+        return $this->belongsTo(Activity::class); 
     }
 }
+

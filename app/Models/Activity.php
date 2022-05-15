@@ -15,4 +15,8 @@ class Activity extends Model
     {
         return $this->hasMany(Register::class); 
     }
+    public function k3team()
+    {
+        return $this->hasMany(K3team::class); 
+    }
 }

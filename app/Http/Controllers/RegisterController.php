@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RegisterResource;
+use App\Exports\RegisterExport;
 /* use App\Http\Resources\EditRegister; */
 use App\Models\Register;
 use Illuminate\Http\Request;
@@ -69,6 +70,7 @@ class RegisterController extends Controller
             'resiko_ditoleransi'=> request('resiko_ditoleransi'),
             'cakupan_resiko'=> request('cakupan_resiko'),
             'status_program'=> request('status_program'),
+            'status'=> request('status'),
             
         ]);
         
@@ -99,6 +101,17 @@ class RegisterController extends Controller
         return $register;
     }
 
+    public function approved($id)
+    {
+        $register = ("UPDATE registers SET activity='1' WHERE registers.id = $id");   
+        return $register();
+    }
+
+    public function export($id)
+    {
+        $pdf = PDF::loadView('hiradc.pdf', ['data' => $register]);
+        return $pdf->output();
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -143,4 +156,5 @@ class RegisterController extends Controller
             'message' => 'Register deleted successfully'
         ]);
     }
+   
 }

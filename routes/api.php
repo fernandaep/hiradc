@@ -12,9 +12,13 @@ use App\Http\Controllers\VulnerabilityController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\ConsequencesController;
 use App\Http\Controllers\K3teamController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LoginController;
 
 
+/* Route::post('/login', 'Api\LoginController@index');
+Route::get('/logout', 'Api\LoginController@logout'); */
 Route::resource('karyawan', KaryawanController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('activity', ActivityController::class);
@@ -28,6 +32,8 @@ Route::resource('vulnerability', VulnerabilityController::class);
 Route::resource('term', TermController::class);
 Route::resource('consequence', ConsequencesController::class);
 Route::resource('k3team', K3teamController::class);
+Route::resource('registrasi', AuthController::class);
+Route::resource('login', LoginController::class);
 Route::resource('register', RegisterController::class);
 Route::get('condition/{id}/showkat',[conditionController::class,'showkat'])->name('condition.showkat');
 Route::get('threat/{id}/threatkat',[ThreatController::class,'threatkat'])->name('threat.threatkat');
@@ -37,9 +43,13 @@ Route::get('karyawan/{id}/getkoor',[KaryawanController::class,'getkoor'])->name(
 Route::get('karyawan/getunit',[KaryawanController::class,'getunit'])->name('karyawan.getunit');
 Route::get('karyawan/{id}/getketua',[KaryawanController::class,'getketua'])->name('karyawan.getketua');
 Route::get('karyawan/{id}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
+Route::get('register/{id}/approved',[RegisterController::class,'approved'])->name('register.approved');
+Route::get('register/export',[RegisterController::class,'export'])->name('register.export');
+Route::post('k3team/adminlogin',[K3teamController::class,'adminlogin'])->name('k3team.adminlogin');
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+ });
+ 
 

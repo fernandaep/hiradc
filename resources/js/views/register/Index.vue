@@ -19,16 +19,24 @@
                                         <i class="fas fa-plus"></i> Add New
                                     </router-link>
                                 </b-col>
-                                 <b-col lg="1">
+                                <a type="button">
+                                    <button
+                                        @click="onClick()"
+                                        class="btn btn-primary"
+                                    >
+                                        Export
+                                    </button>
+                                </a>
+                                <!-- <b-col lg="1">
                                     <router-link
                                         :to="{ name: 'register.create' }"
                                         class="btn btn-outline-primary"
                                     >
                                         <i class="fas fa-plus"></i> HIRADC Sebelumnya
                                     </router-link>
-                                </b-col>
-                                
-                                <b-col lg="2" sm="4" md="2" class="my-1">
+                                </b-col> -->
+
+                                <!--    <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Year"
                                         label-for="per-year-select"
@@ -38,16 +46,16 @@
                                         label-align-sm="right"
                                         label-size="sm"
                                         class="mb-0"
-                                    >
-                                        <b-form-select
+                                    > -->
+                                <!--  <b-form-select
                                             id="per-year-select"
                                             v-model="filter"
                                             :options="year"
                                             size="sm"
                                         ></b-form-select>
                                     </b-form-group>
-                                </b-col>
-                                <b-col lg="2" sm="4" md="2" class="my-1">
+                                </b-col> -->
+                                <!--    <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Risk"
                                         label-for="per-risk-select"
@@ -57,15 +65,15 @@
                                         label-align-sm="right"
                                         label-size="sm"
                                         class="mb-0"
-                                    >
-                                        <b-form-select
+                                    > -->
+                                <!--       <b-form-select
                                             id="per-risk-select"
                                             v-model="filter"
                                             :options="risk"
                                             size="sm"
                                         ></b-form-select>
                                     </b-form-group>
-                                </b-col>
+                                </b-col> -->
                                 <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Per page"
@@ -86,20 +94,20 @@
                                     </b-form-group>
                                 </b-col>
 
-<!-- <b-table bordered show-empty striped stacked="md" no-provider-filtering 
-class="management-list" ref="table"
-v-model="filteredItems"
-:items="tableItems"
-:fields="fields"
-:current-page="currentPage"
-:per-page="perPage"
-:filter="filter"
-:filter-function="filterTable"
-:sort-by.sync="sortBy"
-:sort-desc.sync="sortDesc"
-@filtered="onFiltered">
-</b-table> -->
-                                
+                                <!-- <b-table bordered show-empty striped stacked="md" no-provider-filtering 
+                                class="management-list" ref="table"
+                                v-model="filteredItems"
+                                :items="tableItems"
+                                :fields="fields"
+                                :current-page="currentPage"
+                                :per-page="perPage"
+                                :filter="filter"
+                                :filter-function="filterTable"
+                                :sort-by.sync="sortBy"
+                                :sort-desc.sync="sortDesc"
+                                @filtered="onFiltered">
+                                </b-table> -->
+
                                 <b-col lg="3" class="my-1">
                                     <b-form-group
                                         label="Filter"
@@ -294,6 +302,16 @@ v-model="filteredItems"
                                     >
                                         <i class="fa fa-plus"></i>
                                     </b-button>
+
+                                    <b-button
+                                        variant="outline-info"
+                                        size="sm"
+                                        @click="checkstatusprogram"
+                                        class="mr-1"
+                                    >
+                                        <i class="fa fa-check"></i>
+                                    </b-button>
+
                                     <b-button variant="outline-info" size="sm">
                                         <router-link
                                             :to="{
@@ -341,27 +359,31 @@ v-model="filteredItems"
                                     "
                                 >
                                     <div class="modal-body">
-                                        <!-- <b-form-group
-                                            id="example-input-group-1"
-                                            label="Kegiatan"
-                                            label-for="register_id"
+                                        <b-form-group
+                                            id="registersgroup"
+                                            label="Register"
+                                            label-for="register"
                                         >
-                                            <b-form-input
-                                                id="register_id"
-                                                name="register_id"
-                                                ref="registerReff"
-                                                v-model="
-                                                    $v.form2.register.$model
-                                                "
-                                                aria-describedby="input-1-live-feedback"
-                                                readonly
-                                            ></b-form-input>
+                                            <v-select
+                                                v-model="selectedregister"
+                                                :options="registers"
+                                            >
+                                                <template
+                                                    #search="{attributes, events}"
+                                                >
+                                                    <input
+                                                        class="vs__search"
+                                                        :required="
+                                                            !selectedregister
+                                                        "
+                                                        v-bind="attributes"
+                                                        v-on="events"
+                                                        ref="registerReff"
+                                                    />
+                                                </template>
+                                            </v-select>
+                                        </b-form-group>
 
-                                            <b-form-invalid-feedback
-                                                id="input-1-live-feedback"
-                                                >This is a required field.
-                                            </b-form-invalid-feedback>
-                                        </b-form-group> -->
                                         <b-form-group
                                             id="example-input-group-1"
                                             label="Program Mitigasi"
@@ -393,19 +415,42 @@ v-model="filteredItems"
                                             id="possibilitygroup"
                                             label="Kemungkinan"
                                             label-for="possibility"
-                                        > <template>
-                                    <div>
-                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
-                                        <b-sidebar id="sidebar-right" title="Matriks Resiko" right shadow>
-                                        <div class="px-3 py-2">
-                                            <p>
-                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
-                                            </p>
-                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
-                                        </div>
-                                        </b-sidebar>
-                                    </div>
-                                    </template>
+                                        >
+                                            <template>
+                                                <div>
+                                                    <b-button
+                                                        v-b-toggle.sidebar-right
+                                                        >Matrik</b-button
+                                                    >
+                                                    <b-sidebar
+                                                        id="sidebar-right"
+                                                        title="Matriks Resiko"
+                                                        right
+                                                        shadow
+                                                    >
+                                                        <div class="px-3 py-2">
+                                                            <p>
+                                                                Tentukan Tingkat
+                                                                Risiko Rendah,
+                                                                Sedang, Tinggi
+                                                                dan Sangat
+                                                                Tinggi dari
+                                                                Nilai Risiko
+                                                                yang telah
+                                                                dinilai
+                                                                berdasarkan
+                                                                Matriks Risiko
+                                                                sbb :
+                                                            </p>
+                                                            <b-img
+                                                                src="img/matrik.png"
+                                                                fluid
+                                                                thumbnail
+                                                            ></b-img>
+                                                        </div>
+                                                    </b-sidebar>
+                                                </div>
+                                            </template>
                                             <v-select
                                                 v-model="selectedpossibility"
                                                 :options="possibilities"
@@ -597,8 +642,9 @@ export default {
             currentPage: 1,
             filter: "",
             selectedpossibility: "",
-            registers: "",
+            registers: [],
             selectedconsequence: "",
+            selectedregister: "",
             hasilkali: 0,
             possibilities: [],
             consequences: [],
@@ -615,7 +661,7 @@ export default {
                 { value: "Rendah", text: "Rendah" },
                 { value: "Sedang", text: "Sedang" },
                 { value: "Tinggi", text: "Tinggi" },
-                { value: "SangatTinggi", text: "Sangat Tinggi" },
+                { value: "SangatTinggi", text: "Sangat Tinggi" }
             ],
             fields: [
                 {
@@ -623,6 +669,11 @@ export default {
                     sortable: true,
                     tdClass: "text-center",
                     thClass: "text-center"
+                },
+                {
+                    key: "status",
+                    label: "Status",
+                    sortable: true
                 },
                 {
                     key: "units",
@@ -747,8 +798,7 @@ export default {
                 tingkat_resiko: 0,
                 aspek_lingkungan: "",
                 resiko_ditoleransi: "",
-                keterangan: "",
-               
+                keterangan: ""
             }
         };
     },
@@ -786,6 +836,7 @@ export default {
 
     mounted() {
         this.loadData();
+        /* this.getRegister(); */
         this.getPossibility();
         this.getConsequence();
     },
@@ -793,7 +844,19 @@ export default {
         loadData() {
             axios.get("api/register").then(response => {
                 this.items = Object.values(response.data.data);
-                console.log(Object.values(response.data.data));
+                //console.log(Object.values(response.data.data));
+            });
+        },
+        getRegister() {
+            axios.get("api/register").then(response => {
+                this.registers = Object.values(response.data.data);
+                let cat = $.map(this.registers, function(t) {
+                    return {
+                        label: t.id,
+                        value: t.id
+                    };
+                });
+                this.registers = cat;
             });
         },
         getPossibility() {
@@ -823,6 +886,14 @@ export default {
         focusMyElement() {
             this.$refs.registerReff.focus();
         },
+
+        checkstatusprogram() {
+            let id = this.form2.register_id;
+            axios.get("api/register/" + id + "/approved").then(response => {
+                this.form2.register_id = response.data.id;
+                //console.log(this.threats);
+            });
+        },
         perkalian() {
             this.form2.possibility_id = this.selectedpossibility.value;
             this.form2.consequence_id = this.selectedconsequence.value;
@@ -843,9 +914,9 @@ export default {
                 this.labelresiko = "Sedang";
             } else if (this.hasilkali >= 10 && this.hasilkali <= 16) {
                 this.labelresiko = "Tinggi";
-            this.form2.tingkat_resiko = this.labelresiko;
+                this.form2.tingkat_resiko = this.labelresiko;
 
-            this.cekresiko();
+                this.cekresiko();
             }
         },
         cekresiko() {
@@ -891,6 +962,24 @@ export default {
             this.infoModal.title = title;
             this.$root.$emit("bv::show::modal", this.infoModal.id, button);
         },
+        onClick() {
+            axios
+                .get("api/register", {
+                    responseType: "blob"
+                })
+                .then(response => {
+                    const url = URL.createObjectURL(
+                        new Blob([response.data], {
+                            type: "application/vnd.ms-excel"
+                        })
+                    );
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", "hiradc");
+                    document.body.appendChild(link);
+                    link.click();
+                });
+        },
 
         resetInfoModal() {
             this.infoModal.title = "";
@@ -901,7 +990,7 @@ export default {
         hideModal() {
             this.$refs["my-modal"].hide();
         },
-       /*  validateState(register) {
+        /*  validateState(register) {
             const { $dirty, $error } = this.$v.form2[register];
             return $dirty ? !$error : null;
         }, */
@@ -1007,7 +1096,6 @@ export default {
             return this.items.length;
         }
     }
-    
 };
 </script>
 <style>

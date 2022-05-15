@@ -28,8 +28,6 @@ import vSelect from 'vue-select';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-
-
 Vue.filter("strToUpper", function(text) {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 });

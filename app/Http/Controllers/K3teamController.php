@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\K3TeamResource;
 use App\Models\K3team;
-use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class K3teamController extends Controller
 {
@@ -16,7 +16,53 @@ class K3teamController extends Controller
      */
     public function index()
     {
-        return K3team::latest()->get();
+        $k3team = K3team::latest()->get();
+        return K3TeamResource::collection($k3team);
+
+        /* // validate request
+        $this->validate($request, [
+            'email' => 'bail|required|email',
+            'password' => 'bail|required|min:6',
+        ]);
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $k3team = Auth::k3team();
+            if ($k3team->role->isAdmin == 0) {
+                Auth::logout();
+                return response()->json([
+                    'msg' => 'Incorrect login details',
+                ], 401);
+            }
+            return response()->json([
+                'msg' => 'You are logged in',
+                'user' => $k3team,
+            ]);
+        } else {
+            return response()->json([
+                'msg' => 'Incorrect login details',
+            ], 401);
+        }
+
+          // first check if you are loggedin and admin user ...
+        //return Auth::check();
+
+        if (!Auth::check() && $request->path() != 'login') {
+            return redirect('/login');
+        }
+
+        if (!Auth::check() && $request->path() == 'login') {
+
+            return view('welcome');
+        }
+        // you are already logged in... so check for if you are an admin user..
+        $k3team = Auth::user();
+        if ($user->userType == 'Admin') {
+            return redirect('/login');
+        }
+        if ($request->path() == 'login') {
+            return redirect('/');
+        }
+
+        return $this->checkForPermission($user, $request); */
     }
 
 
@@ -28,12 +74,20 @@ class K3teamController extends Controller
      */
     public function store(Request $request)
     {
-       
+      /*   request()->validate([
+            'nama' => 'required',
+            'email' => 'bail|required|email',
+            'password' => 'bail|required|min:6',
+         
+            
+        ]); */
+        /* $password = bcrypt($request->password); */
         $k3team= K3team::create([
-            'unit_kerja'=> request('unit_kerja'),
-            'koordinator'=> request('koordinator'),
-            'ketua'=> request('ketua'),
-            'pic'=> request('pic'),
+            'activity_id' => request('activity_id'),
+            'nama'=> request('nama'),
+            'email'=> request('email'),
+            'password'=> request('password'),
+           /*  'usertype'=> request('usertype'), */
         ]);
         
         if($k3team) {
@@ -103,6 +157,31 @@ class K3teamController extends Controller
         return response()->json([
             'message' => 'K3Team deleted successfully'
         ]);
+    }
+
+    public function adminlogin(Request $request)
+    {
+        // validate request
+        if (K3team::create([ 'email'=> request('email'),
+        'password'=> request('password')])) {
+            $k3team = Auth::k3team();
+            if ($k3team->role->isAdmin == 0) {
+                Auth::logout();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Incorrect login details',
+                ], 409);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'You are logged in',
+                'data'    => $k3team
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Incorrect login details',
+            ], 401);
+        }
     }
 
   

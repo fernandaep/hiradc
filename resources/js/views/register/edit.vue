@@ -199,19 +199,38 @@
                                         id="possibilitygroup"
                                         label-for="possibility"
                                     >
-                                    <template>
-                                    <div>
-                                        <b-button v-b-toggle.sidebar-right>Matrik</b-button>
-                                        <b-sidebar id="sidebar-right" title="Matriks Resiko" right shadow>
-                                        <div class="px-3 py-2">
-                                            <p>
-                                            Tentukan Tingkat Risiko Rendah, Sedang, Tinggi dan Sangat Tinggi dari Nilai Risiko yang telah dinilai berdasarkan Matriks Risiko sbb :
-                                            </p>
-                                            <b-img src="img/matrik.png" fluid thumbnail></b-img>
-                                        </div>
-                                        </b-sidebar>
-                                    </div>
-                                    </template>
+                                        <template>
+                                            <div>
+                                                <b-button
+                                                    v-b-toggle.sidebar-right
+                                                    >Matrik</b-button
+                                                >
+                                                <b-sidebar
+                                                    id="sidebar-right"
+                                                    title="Matriks Resiko"
+                                                    right
+                                                    shadow
+                                                >
+                                                    <div class="px-3 py-2">
+                                                        <p>
+                                                            Tentukan Tingkat
+                                                            Risiko Rendah,
+                                                            Sedang, Tinggi dan
+                                                            Sangat Tinggi dari
+                                                            Nilai Risiko yang
+                                                            telah dinilai
+                                                            berdasarkan Matriks
+                                                            Risiko sbb :
+                                                        </p>
+                                                        <b-img
+                                                            src="img/matrik.png"
+                                                            fluid
+                                                            thumbnail
+                                                        ></b-img>
+                                                    </div>
+                                                </b-sidebar>
+                                            </div>
+                                        </template>
                                         <v-select
                                             v-model="selectedpossibility"
                                             :options="possibilities"
@@ -454,6 +473,7 @@
                                     <button
                                         type="submit"
                                         class="btn btn-primary"
+                                        @click="checkstatusprogram"
                                     >
                                         Save
                                     </button>
@@ -472,28 +492,28 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
     data() {
         return {
-                form: {
-                    id: "",
-                    /* unit_kerja: "", */
-                    activity: "",
-                    category_id: "",
-                    activity: "",
-                    lokasi: "",
-                    condition_id: "",
-                    threat_id: "",
-                    vulnerability_id: "",
-                    pengendalian: "",
-                    possibility_id: "",
-                    consequence_id: "",
-                    tingkat_resiko: "",
-                    status_regulasi: "",
-                    aspek_lingkungan: "",
-                    peluang: "",
-                    resiko: "",
-                    resiko_ditoleransi: "",
-                    cakupan_resiko: "",
-                    status_program: ""
-                },
+            form: {
+                id: "",
+                /* unit_kerja: "", */
+                activity: "",
+                category_id: "",
+                activity: "",
+                lokasi: "",
+                condition_id: "",
+                threat_id: "",
+                vulnerability_id: "",
+                pengendalian: "",
+                possibility_id: "",
+                consequence_id: "",
+                tingkat_resiko: "",
+                status_regulasi: "",
+                aspek_lingkungan: "",
+                peluang: "",
+                resiko: "",
+                resiko_ditoleransi: "",
+                cakupan_resiko: "",
+                status_program: ""
+            },
             validations: {
                 form: {
                     /*  unit_kerja: {
@@ -555,8 +575,8 @@ export default {
             labelthreat: "threat",
             labelactivity: "Activity",
             showlh: false,
-            resiko:"",
-            hasilkali:0
+            resiko: "",
+            hasilkali: 0
         };
     },
     mounted() {
@@ -567,32 +587,43 @@ export default {
     },
     methods: {
         loadData() {
-             axios
+            axios
                 .get(
-                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`)
+                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`
+                )
                 .then(response => {
                     this.form.id = response.data.id;
-                    this.selectedcategory = {label: response.data[0].nama, value: response.data[0].category_id};
+                    this.selectedcategory = response.data[0].category_id;
                     this.form.activity = response.data[0].activity;
                     this.form.lokasi = response.data[0].lokasi;
-                    this.selectedcondition = { label: response.data[0].nama, value: response.data[0].condition_id }; 
-                    this.selectedthreat = { label:  response.data[0].nama, value: response.data[0].threat_id };
-                    this.selectedvulnerability = { label: response.data[0].nama, value: response.data[0].vulnerability_id };
-                    this.form.pengendalian =response.data[0].pengendalian;
-                    this.selectedpossibility = { label: response.data[0].nilai, value: response.data[0].possibility_id };
-                    this.selectedconsequence = {label: response.data[0].nilai, value: response.data[0].consequence_id };
+                    this.selectedcondition = {
+                        label: response.data[0].condition_id
+                    };
+                    this.selectedthreat = { label: response.data[0].threat_id };
+                    this.selectedvulnerability = {
+                        label: response.data[0].vulnerability_id
+                    };
+                    this.form.pengendalian = response.data[0].pengendalian;
+                    this.selectedpossibility = {
+                        label: response.data[0].possibility_id
+                    };
+                    this.selectedconsequence = {
+                        label: response.data[0].consequence_id
+                    };
                     this.form.tingkat_resiko = response.data[0].tingkat_resiko;
-                    this.form.status_regulasi = response.data[0].status_regulasi;
-                    this.form.aspek_lingkungan = response.data[0].aspek_lingkungan;
+                    this.form.status_regulasi =
+                        response.data[0].status_regulasi;
+                    this.form.aspek_lingkungan =
+                        response.data[0].aspek_lingkungan;
                     this.form.peluang = response.data[0].peluang;
                     this.form.resiko = response.data[0].resiko;
-                    this.form.resiko_ditoleransi = response.data[0].resiko_ditoleransi;
+                    this.form.resiko_ditoleransi =
+                        response.data[0].resiko_ditoleransi;
                     this.form.cakupan_resiko = response.data[0].cakupan_resiko;
                     this.form.status_program = response.data[0].status_program;
                     //this.form.program = response.data.program;
                     console.log(Object.values(response.data[0].nama));
                 });
-        
         },
         getCategory() {
             axios.get("http://127.0.0.1:8000/api/category").then(response => {
@@ -639,35 +670,47 @@ export default {
                 this.threats = cat;
             });
             /* let id = this.selectedcategory.value; */
-            axios.get("http://127.0.0.1:8000/api/vulnerability/").then(response => {
-                this.vulnerabilities = Object.values(response.data.data);
-                let cat = $.map(this.vulnerabilities, function(t) {
-                    return { label: t.nama, value: t.id };
+            axios
+                .get("http://127.0.0.1:8000/api/vulnerability/")
+                .then(response => {
+                    this.vulnerabilities = Object.values(response.data.data);
+                    let cat = $.map(this.vulnerabilities, function(t) {
+                        return { label: t.nama, value: t.id };
+                    });
+                    this.vulnerabilities = cat;
                 });
-                this.vulnerabilities = cat;
-            });
-            axios.get("http://127.0.0.1:8000/api/possibility").then(response => {
-                this.possibilities = Object.values(response.data);
-                let cat = $.map(this.possibilities, function(t) {
-                    return {
-                        label: t.nilai + " ( " + t.nama + " )",
-                        value: t.nilai
-                    };
+            axios
+                .get("http://127.0.0.1:8000/api/possibility")
+                .then(response => {
+                    this.possibilities = Object.values(response.data);
+                    let cat = $.map(this.possibilities, function(t) {
+                        return {
+                            label: t.nilai + " ( " + t.nama + " )",
+                            value: t.nilai
+                        };
+                    });
+                    this.possibilities = cat;
                 });
-                this.possibilities = cat;
-            });
-            axios.get("http://127.0.0.1:8000/api/consequence/").then(response => {
-                this.consequences = Object.values(response.data.data);
-                let cat = $.map(this.consequences, function(t) {
-                    return {
-                        label: t.nilai + " - " + t.konsekuensi + "",
-                        value: t.nilai
-                    };
+            axios
+                .get("http://127.0.0.1:8000/api/consequence/")
+                .then(response => {
+                    this.consequences = Object.values(response.data.data);
+                    let cat = $.map(this.consequences, function(t) {
+                        return {
+                            label: t.nilai + " - " + t.konsekuensi + "",
+                            value: t.nilai
+                        };
+                    });
+                    this.consequences = cat;
                 });
-                this.consequences = cat;
+        },
+        checkstatusprogram() {
+            let id = this.form.id;
+            axios.get("api/register/" + id + "/approved").then(response => {
+                this.form.id = response.data.id;
+                //console.log(this.threats);
             });
         },
-    
         perkalian() {
             this.form.possibility_id = this.selectedpossibility.value;
             this.form.consequence_id = this.selectedconsequence.value;
@@ -677,31 +720,24 @@ export default {
             ) {
                 this.hasilkali = 0;
             } else {
-                this.hasilkali=
+                this.hasilkali =
                     parseInt(this.form.possibility_id) *
                     parseInt(this.form.consequence_id);
             }
 
             if (this.hasilkali <= 4) {
                 this.labelresiko = "Rendah";
-               
-            } else if (
-                this.hasilkali >= 5 &&
-                this.hasilkali <= 9
-            ) {
+            } else if (this.hasilkali >= 5 && this.hasilkali <= 9) {
                 this.labelresiko = "Sedang";
-            } else if (
-                this.hasilkali >= 10 &&
-                this.hasilkali <= 16
-            ) {
+            } else if (this.hasilkali >= 10 && this.hasilkali <= 16) {
                 this.labelresiko = "Tinggi";
             } else {
-               this.labelresiko = "Sangat Tinggi";
+                this.labelresiko = "Sangat Tinggi";
             }
 
-            this.resiko = this.hasilkali + " - " + this.labelresiko; 
+            this.resiko = this.hasilkali + " - " + this.labelresiko;
             this.form.tingkat_resiko = this.labelresiko;
-            
+
             this.cakupan();
             this.cekresiko();
             this.status();
@@ -726,12 +762,12 @@ export default {
             if (
                 this.labelresiko == "Sangat Tinggi" ||
                 this.labelresiko == "Tinggi"
-                ){
+            ) {
                 this.form.resiko_ditoleransi = "Ya";
             } else if (
                 this.labelresiko == "Sedang" ||
                 this.labelresiko == "Rendah"
-                ){
+            ) {
                 this.form.resiko_ditoleransi = "Tidak";
             } else {
                 this.form.resiko_ditoleransi = "";
@@ -753,7 +789,7 @@ export default {
                 (this.labelresiko == "Sedang" ||
                     this.labelresiko == "Rendah") &&
                 (this.form.cakupan_resiko == "Koorporat/Direktorat" ||
-                this.form.cakupan_resiko == "Unit Kerja")
+                    this.form.cakupan_resiko == "Unit Kerja")
             ) {
                 this.form.status_program = "Pengendalian Operasional";
             } else {
@@ -764,19 +800,19 @@ export default {
         regulasi() {
             if (this.form.status_regulasi == "Legal") {
                 this.form.aspek_lingkungan = "Penting";
-            }
-            
-            else  {
-                if(this.labelresiko=="Rendah" || this.labelresiko=="Sedang")
-                {
+            } else {
+                if (
+                    this.labelresiko == "Rendah" ||
+                    this.labelresiko == "Sedang"
+                ) {
                     this.form.aspek_lingkungan = "Tidak Penting";
-                }
-                else if(this.labelresiko=="Tinggi" || this.labelresiko=="Sangat Tinggi")
-                {
+                } else if (
+                    this.labelresiko == "Tinggi" ||
+                    this.labelresiko == "Sangat Tinggi"
+                ) {
                     this.form.aspek_lingkungan = "Penting";
                 }
             }
-          
         },
 
         async update() {
@@ -787,7 +823,10 @@ export default {
                 this.form.vulnerability_id = this.selectedvulnerability.value;
                 this.form.possibility_id = this.selectedpossibility.value;
                 this.form.consequence_id = this.selectedconsequence.value;
-                let response = await axios.put(`http://127.0.0.1:8000/api/register/${this.$route.params.id}`,this.form);
+                let response = await axios.put(
+                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`,
+                    this.form
+                );
                 // console.log(response.status);
                 if (response.status == 200) {
                     this.form.category_id = "";

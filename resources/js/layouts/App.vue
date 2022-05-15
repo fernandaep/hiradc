@@ -1,4 +1,5 @@
 <template>
+<!-- <div v-if="isLoggedIn"> -->
   <div class="wrapper">
     <Navbar />
     <Sidebar />    
@@ -15,6 +16,11 @@ import Footer from '../components/Footer'
 import Sidebar from '../components/Sidebar'
 
 export default {
+    /* data(){
+        return {
+            isLoggedIn :false,
+        }
+    }, */
   components: { Navbar, Footer, Sidebar },
   mounted() {
     window.$('body').Layout();
@@ -24,5 +30,6 @@ export default {
     window.$('.dropdown').Dropdown();
     window.$('ul[data-widget="treeview"]').overlayScrollbars();
   }
+  
 }
 </script>
