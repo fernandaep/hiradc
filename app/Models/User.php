@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Model
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable, HasApiTokens;
 
     protected $guarded = [];
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -20,6 +20,7 @@ class AuthController extends Controller
         User::create([
             'name'          => $request->name,
             'email'         => $request->email,
+            'level'         => 'user',
             'password'      => Hash::make($request->password),
         ]);
 

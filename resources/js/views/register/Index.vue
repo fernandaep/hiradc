@@ -187,6 +187,7 @@
                                                         key) in row.item
                                                             .mitigasi"
                                                         :key="key"
+                                                        
                                                     >
                                                         <td>{{ key + 1 }}</td>
                                                         <td>

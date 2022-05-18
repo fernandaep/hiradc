@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\AdminCheck;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -15,9 +15,8 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Selamat Datang</h5>
+                                <h5 class="card-title"> Selamat Datang <strong>{{ user.name }}</strong></h5>
                                 <p class="card-text">
-                                    HIRADC
                                 </p>
                             </div>
                         </div>
@@ -30,6 +29,33 @@
 
 <script>
     export default {
-       
+    data() {
+        return {
+
+            //state loggedIn with localStorage
+            loggedIn: localStorage.getItem('loggedIn'),
+            //state token
+            token: localStorage.getItem('token'),
+            //state user logged In
+            user: [],
+
+            userview:true,
+            items:[],            
+            
+        };
+    },
+    created() {
+        axios.get('api/user', {headers: {'Authorization': 'Bearer '+this.token}})
+        .then(response => {
+            //console.log(response)
+            this.user = response.data // assign response to state user
+        })
+    },
+
+    mounted() {
+        if (!this.loggedIn) {
+            return this.$router.push({ name: 'login'})
+        }
     }
+}
 </script>

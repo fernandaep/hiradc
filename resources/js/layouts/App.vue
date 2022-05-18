@@ -1,27 +1,50 @@
 <template>
-<!-- <div v-if="isLoggedIn"> -->
-  <div class="wrapper">
-    <Navbar />
-    <Sidebar />    
-    <div class="content-wrapper">
-      <router-view></router-view>
+ <div v-if="loggedIn">
+    <div class="wrapper">
+      <Navbar />
+      <Sidebar />    
+      <div class="content-wrapper">
+        <router-view></router-view>
+      </div>
+      <Footer />
     </div>
-    <Footer />
+  </div>
+
+  <div v-else>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Sidebar from '../components/Sidebar'
+import Login from '../views/auth/login'
 
 export default {
-    /* data(){
-        return {
-            isLoggedIn :false,
+    name: 'App',
+    data() {
+      return {
+        loggedIn: null
+      }
+    },
+      methods: {
+      getLoggedIn() {
+        this.loggedIn = localStorage.getItem("loggedIn")
+      }
+    },
+
+    watch: {
+      $route: {
+        immediate: true,
+        handler() {
+          this.getLoggedIn()
         }
-    }, */
-  components: { Navbar, Footer, Sidebar },
+      }
+    },
+
+  components: { Navbar, Footer, Sidebar, Login },
   mounted() {
     window.$('body').Layout();
     window.$('[data-widget="pushmenu"]').PushMenu();

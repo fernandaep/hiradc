@@ -1,5 +1,4 @@
 import Home from '../views/home/index'
-import Login from '../views/auth/login'
 import Registrasi from '../views/auth/registrasi'
 import Karyawan from '../views/Karyawan/Index'
 import Category from '../views/category/Index'
@@ -20,8 +19,7 @@ import createRegister from '../views/Register/create'
 import editRegister from '../views/Register/edit'
 import tahunRegister from '../views/Register/tahun'
 import Unit from '../views/Unit/Index'
-/* import Login from '../views/login/index' */
-
+import Login from '../views/auth/login'
 
 export default
 {
