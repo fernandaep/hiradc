@@ -44,7 +44,8 @@ Route::get('karyawan/{id}/getkoor',[KaryawanController::class,'getkoor'])->name(
 Route::get('karyawan/getunit',[KaryawanController::class,'getunit'])->name('karyawan.getunit');
 Route::get('karyawan/{id}/getketua',[KaryawanController::class,'getketua'])->name('karyawan.getketua');
 Route::get('karyawan/{id}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
-Route::get('register/{id}/approved',[RegisterController::class,'approved'])->name('register.approved');
+Route::put('register/{id}/approved',[RegisterController::class,'approved'])->name('register.approved');
+Route::put('register/{id}/verified',[RegisterController::class,'verified'])->name('register.verified');
 Route::get('register/export',[RegisterController::class,'export'])->name('register.export');
 Route::post('k3team/adminlogin',[K3teamController::class,'adminlogin'])->name('k3team.adminlogin');
 

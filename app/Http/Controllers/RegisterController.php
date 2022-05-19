@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'resiko_ditoleransi'=> request('resiko_ditoleransi'),
             'cakupan_resiko'=> request('cakupan_resiko'),
             'status_program'=> request('status_program'),
-            'status'=> request('status'),
+            'status'=> 'Menunggu Verifikasi',
             
         ]);
         
@@ -101,16 +101,57 @@ class RegisterController extends Controller
         return $register;
     }
 
+    public function verified($id)
+    {
+
+        $register = Register::findOrFail($id);
+        $register->update(
+            [
+                'status' => 'Menunggu Approval',
+            ]
+        );
+
+        if ($register) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Register Verified',
+                'data'    => $register
+            ], 200);
+        }
+        //failed save to database
+        return response()->json([
+            'success' => false,
+            'message' => 'Register Failed to Verified',
+        ], 409);
+    }
+
     public function approved($id)
     {
-        $register = ("UPDATE registers SET activity='1' WHERE registers.id = $id");   
-        return $register();
+        $register = Register::findOrFail($id);
+        $register->update(
+            [
+                'status' => 'Approved',
+            ]
+        );
+
+        if ($register) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Register Approved',
+                'data'    => $register
+            ], 200);
+        }
+        //failed save to database
+        return response()->json([
+            'success' => false,
+            'message' => 'Register Failed to Approved',
+        ], 409);
     }
 
     public function export($id)
     {
-        $pdf = PDF::loadView('hiradc.pdf', ['data' => $register]);
-        return $pdf->output();
+        //$pdf = PDF::loadView('hiradc.pdf', ['data' => $register]);
+        //return $pdf->output();
     }
     /**
      * Update the specified resource in storage.

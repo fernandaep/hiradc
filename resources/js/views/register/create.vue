@@ -495,40 +495,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label
-                                    for="status"
-                                    class="col-sm-2 col-form-label"
-                                    >Status</label
-                                >
-                                <div class="col-sm-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.status"
-                                        class="form-control"
-                                        id="resiko_ditoleransi"
-                                        readonly
-                                    />
-                                    <div
-                                        v-if="theErrors.status"
-                                        class="mt2 text-danger"
-                                    >
-                                        {{ theErrors.status[0] }}
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    <input
-                                        type="button"
-                                        value="Go Back"
-                                        this.form.status="draft"
-                                    />
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary"
-                                        @click="checkstatusprogram"
-                                    >
+                                    <button type="button" class="btn btn-default" onclick="history.back(-1)">
+                                        <i class="fas fa-chevron-left"></i>
+                                        Back
+                                        
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i>
                                         Save
                                     </button>
                                 </div>
@@ -543,6 +519,7 @@
 
 <script>
 import { required, minLength } from "vuelidate/lib/validators";
+
 export default {
     data() {
         return {
@@ -638,18 +615,18 @@ export default {
         };
     },
     mounted() {
-        this.loadData();
         this.getUnitkerja();
         this.getCategory();
         this.getCondition();
     },
     methods: {
-        loadData() {
+       /*  loadData() {
             axios.get("api/register").then(response => {
                 this.items = Object.values(response.data);
                 //console.log(Object.values(response.data));
             });
-        },
+        }, */
+
         getUnitkerja() {
             axios.get("api/unit").then(response => {
                 this.units = Object.values(response.data);
@@ -661,6 +638,7 @@ export default {
                 //console.log(this.karyawans);
             });
         },
+
         getCategory() {
             axios.get("api/category").then(response => {
                 this.categories = Object.values(response.data);
@@ -670,23 +648,21 @@ export default {
                 this.categories = cat;
             });
         },
+
         getCondition() {
             let id = this.selectedcategory.value;
             if (id == 2) {
                 this.showlh = false;
                 this.labelactivity = "Kegiatan";
                 this.labelthreat = "Potensi Bahaya";
-                this.form.status = "In Progress";
             } else if (id == 6) {
                 this.showlh = true;
                 this.labelactivity = "Kegiatan";
                 this.labelthreat = "Aspek Lingkungan";
-                this.form.status = "In Progress";
             } else if (id == 7) {
                 this.showlh = false;
                 this.labelactivity = "Asset";
                 this.labelthreat = "Ancaman Keamanan";
-                this.form.status = "In Progress";
             } else {
                 this.showlh = false;
                 this.labelthreat = "Threat";
@@ -699,13 +675,14 @@ export default {
                 });
                 this.conditions = cat;
             });
+
             axios.get("api/threat/" + id + "/threatkat").then(response => {
                 this.threats = Object.values(response.data);
-                console.log(this.threats);
+                //console.log(this.threats);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
                 });
-                console.log(Object.values(response.data));
+                //console.log(Object.values(response.data));
                 this.threats = cat;
             });
             /* axios.get("api/threat").then(response => {
@@ -745,13 +722,15 @@ export default {
                 this.consequences = cat;
             });
         },
-        checkstatusprogram() {
+        
+       /*  checkstatusprogram() {
             let id = this.form.id;
             axios.get("api/register/" + id + "/approved").then(response => {
                 this.form.id = response.data.id;
                 //console.log(this.threats);
             });
-        },
+        }, */
+
         perkalian() {
             this.form.possibility_id = this.selectedpossibility.value;
             this.form.consequence_id = this.selectedconsequence.value;
@@ -877,8 +856,10 @@ export default {
                 this.form.vulnerability_id = this.selectedvulnerability.value;
                 this.form.possibility_id = this.selectedpossibility.value;
                 this.form.consequence_id = this.selectedconsequence.value;
+                
                 let response = await axios.post("api/register", this.form);
-                // console.log(response.status);
+
+                console.log(response.status);
                 if (response.status == 200) {
                     this.form.unit_id = "";
                     this.form.category_id = "";

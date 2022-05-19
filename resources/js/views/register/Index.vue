@@ -162,72 +162,20 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>
-                                                            Kegiatan
-                                                        </th>
-                                                        <th>
-                                                            Program Mitigasi
-                                                        </th>
+                                                        <th>Action</th>
+                                                        <th>Kegiatan</th>
+                                                        <th>Program Mitigasi</th>
                                                         <th>Kemungkinan</th>
                                                         <th>Konsekuensi</th>
                                                         <th>Tingkat Resiko</th>
-                                                        <th>
-                                                            Aspek Lingkungan
-                                                        </th>
-                                                        <th>
-                                                            Resiko Ditoleransi
-                                                        </th>
+                                                        <th>Aspek Lingkungan</th>
+                                                        <th>Resiko Ditoleransi</th>
                                                         <th>Keterangan</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        v-for="(value,
-                                                        key) in row.item
-                                                            .mitigasi"
-                                                        :key="key"
-                                                        
-                                                    >
+                                                    <tr v-for="(value,key) in row.item.mitigasi" :key="key">
                                                         <td>{{ key + 1 }}</td>
-                                                        <td>
-                                                            {{ value.register }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.program_mitigasi
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.possibility_id
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.consequence_id
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.tingkat_resiko
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.aspek_lingkungan
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.resiko_ditoleransi
-                                                            }}
-                                                        </td>
-                                                        <td>
-                                                            {{
-                                                                value.keterangan
-                                                            }}
-                                                        </td>
                                                         <td>
                                                             <b-button
                                                                 variant="outline-info"
@@ -263,13 +211,21 @@
                                                                 ></i>
                                                             </b-button>
                                                         </td>
-                                                        <td></td>
+                                                        <td> {{ value.register }} </td>
+                                                        <td> {{ value.program_mitigasi }} </td>
+                                                        <td> {{ value.possibility_id }} </td>
+                                                        <td> {{ value.consequence_id }} </td>
+                                                        <td> {{ value.tingkat_resiko }} </td>
+                                                        <td> {{ value.aspek_lingkungan }} </td>
+                                                        <td> {{ value.resiko_ditoleransi }} </td>
+                                                        <td> {{ value.keterangan }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </b-card>
                                 </template>
+
                                 <template #cell(no)="row">
                                     {{ row.index + 1 }}
                                 </template>
@@ -280,57 +236,56 @@
                                     {{ row.item.updated_at | formatDate }}
                                 </template>
                                 <template #cell(actions)="row">
-                                    <b-button
-                                        variant="outline-info"
-                                        size="sm"
-                                        @click="row.toggleDetails"
-                                        class="mr-1"
-                                    >
+                                    
+                                    <b-button variant="outline-info" size="sm" @click="row.toggleDetails" class="mr-1">
                                         <i class="fa fa-eye"></i>
                                     </b-button>
-                                    <b-button
-                                        variant="outline-success"
-                                        size="sm"
+
+                                    <b-button variant="outline-success" size="sm"  class="mr-1"
                                         @click="
                                             openModal(
                                                 'mitigasi',
                                                 'Tambah Mitigasi',
                                                 $event.target,
                                                 row.item
-                                            )
-                                        "
-                                        class="mr-1"
+                                            )"
                                     >
                                         <i class="fa fa-plus"></i>
                                     </b-button>
 
-                                    <b-button
-                                        variant="outline-info"
-                                        size="sm"
-                                        @click="checkstatusprogram"
-                                        class="mr-1"
-                                    >
+                                    <b-button variant="outline-info" size="sm" class="mr-1" @click="verifiedRegister(row.item.id)" v-if="row.item.status=='Menunggu Verifikasi' && (level=='verifikator' || level=='admin')">
                                         <i class="fa fa-check"></i>
                                     </b-button>
 
-                                    <b-button variant="outline-info" size="sm">
-                                        <router-link
-                                            :to="{
-                                                name: 'register.edit',
-                                                params: { id: row.item.id }
-                                            }"
-                                        >
-                                            <i class="fa fa-edit"></i>
-                                        </router-link>
-                                    </b-button>
-
                                     <b-button
-                                        variant="outline-danger"
+                                        variant="outline-primary"
                                         size="sm"
-                                        @click="deleteRegister(row.item.id)"
+                                        @click="approvedRegister(row.item.id)"
+                                        class="mr-1" 
+                                        v-if="row.item.status=='Menunggu Approval' && (level=='approval' || level=='admin')"
                                     >
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-check-double"></i>
                                     </b-button>
+                                    <b-button variant="outline-info" size="sm" 
+                                        v-if="row.item.status=='Menunggu Verifikasi' && (level=='unitkerja' || level=='admin')">
+                                            <router-link
+                                                :to="{
+                                                    name: 'register.edit',
+                                                    params: { id: row.item.id }
+                                                }"
+                                            >
+                                                <i class="fa fa-edit"></i>
+                                            </router-link>
+                                        </b-button>
+
+                                        <b-button
+                                            variant="outline-danger"
+                                            size="sm"
+                                            @click="deleteRegister(row.item.id)"
+                                            v-if="row.item.status=='Menunggu Verifikasi' && (level=='unitkerja' || level=='admin')"
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                        </b-button>
                                 </template>
                             </b-table>
 
@@ -346,6 +301,7 @@
                                     ></b-pagination>
                                 </b-col>
                             </b-row>
+
                             <b-modal
                                 @shown="focusMyElement"
                                 ref="my-modal"
@@ -354,11 +310,7 @@
                                 @hide="resetInfoModal"
                                 hide-footer
                             >
-                                <form
-                                    @submit.prevent="
-                                        editMode ? update() : store2()
-                                    "
-                                >
+                                <form @submit.prevent=" editMode ? update() : store2()">
                                     <div class="modal-body">
                                         <b-form-group
                                             id="registersgroup"
@@ -619,6 +571,7 @@
                                     </div>
                                 </form>
                             </b-modal>
+
                         </div>
                     </div>
                 </div>
@@ -635,6 +588,12 @@ export default {
     mixins: [validationMixin],
     data() {
         return {
+             //state loggedIn with localStorage
+            loggedIn: localStorage.getItem('loggedIn'),
+            //state token
+            token: localStorage.getItem('token'),
+            //state user logged In
+
             perPage: 10,
             editMode: false,
             detailMode: false,
@@ -651,6 +610,7 @@ export default {
             consequences: [],
             mitigasis: [],
             items: [],
+            level:null,
             year: [
                 { value: "2020", text: "2020" },
                 { value: "2021", text: "2021" },
@@ -672,113 +632,152 @@ export default {
                     thClass: "text-center"
                 },
                 {
+                    key: "actions",
+                    label: "Actions",
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
+                },
+                {
                     key: "status",
                     label: "Status",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "units",
                     label: "Unit Kerja",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "category",
                     label: "Kategori",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "activity",
                     label: "Kegiatan",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "lokasi",
                     label: "Lokasi",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "condition",
                     label: "Kondisi",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "threat",
                     label: "Threat",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "vulnerability",
                     label: "Dampak",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "pengendalian",
                     label: "Pengendalian",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "possibility_id",
                     label: "Kemungkinan",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-center nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "consequence_id",
                     label: "Konsekuensi",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-center nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "tingkat_resiko",
                     label: "Tingkat Resiko",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "status_regulasi",
                     label: "Status Regulasi",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "aspek_lingkungan",
                     label: "Aspek Resiko",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "peluang",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "resiko",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "resiko_ditoleransi",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-center nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "cakupan_resiko",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "status_program",
-                    sortable: true
+                    sortable: true,
+                    tdClass: "text-left nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "created_at",
                     sortable: true,
-                    tdClass: "text-right",
-                    thClass: "text-center"
+                    tdClass: "text-center nowrap",
+                    thClass: "text-center nowrap"
                 },
                 {
                     key: "updated_at",
                     sortable: true,
-                    tdClass: "text-right",
-                    thClass: "text-center"
+                    tdClass: "text-center nowrap",
+                    thClass: "text-center nowrap"
                 },
-                {
-                    key: "actions",
-                    label: "Actions",
-                    tdClass: "text-center",
-                    thClass: "text-center"
-                }
+               
             ],
             headvariant: "dark",
             transProps: {
@@ -800,7 +799,8 @@ export default {
                 aspek_lingkungan: "",
                 resiko_ditoleransi: "",
                 keterangan: ""
-            }
+            },
+
         };
     },
     validations: {
@@ -841,12 +841,69 @@ export default {
         this.getPossibility();
         this.getConsequence();
     },
+    created() {
+        axios.get('api/user', {headers: {'Authorization': 'Bearer '+this.token}})
+        .then(response => {
+            //console.log(response.data)
+            this.level= response.data.level
+            //console.log(this.level)
+        })
+    },
+
     methods: {
         loadData() {
             axios.get("api/register").then(response => {
                 this.items = Object.values(response.data.data);
-                //console.log(Object.values(response.data.data));
             });
+        },
+      verifiedRegister(id) {
+            this.$swal({
+                title: "Apakah Kamu Yakin?",
+                text: "Akan Memverifikasi Register ini??",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Verifikasi!"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios.put("api/register/" + id+"/verified").then(response => {
+                        this.$swal(
+                            "Verified!",
+                            "Register ini Berhasil di Verifikasi.",
+                            "success"
+                        );
+                        this.loadData();
+                    });
+                }
+            });
+        },
+
+        approvedRegister(id) {
+            this.$swal({
+                title: "Apakah Kamu Yakin?",
+                text: "Akan Approved Register ini??",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Approved!"
+            }).then(result => {
+                if (result.isConfirmed) {
+                    axios.put("api/register/" + id+"/approved").then(response => {
+                        this.$swal(
+                            "Approved",
+                            "Register ini Berhasil di Approved.",
+                            "success"
+                        );
+                        this.loadData();
+                    });
+                }
+            });
+        },
+
+        approved(){
+            //
         },
         getRegister() {
             axios.get("api/register").then(response => {
@@ -888,13 +945,6 @@ export default {
             this.$refs.registerReff.focus();
         },
 
-        checkstatusprogram() {
-            let id = this.form2.register_id;
-            axios.get("api/register/" + id + "/approved").then(response => {
-                this.form2.register_id = response.data.id;
-                //console.log(this.threats);
-            });
-        },
         perkalian() {
             this.form2.possibility_id = this.selectedpossibility.value;
             this.form2.consequence_id = this.selectedconsequence.value;
@@ -1095,6 +1145,7 @@ export default {
     computed: {
         rows() {
             return this.items.length;
+
         }
     }
 };
@@ -1102,5 +1153,9 @@ export default {
 <style>
 table#my-table .flip-list-move {
     transition: transform 1s;
+}
+
+.nowrap {
+    white-space: nowrap;
 }
 </style>

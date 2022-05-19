@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">New Register</div>
+                    <div class="card-header">Edit Register</div>
                     <div class="card-body">
                         <form action="#" method="post" @submit.prevent="update">
                             <div class="form-group row">
@@ -465,17 +465,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    <input
-                                        type="button"
-                                        value="Go Back"
-                                        onclick="history.back(-1)"
-                                    />
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary"
-                                        @click="checkstatusprogram"
-                                    >
-                                        Save
+                                    <button type="button" class="btn btn-default" onclick="history.back(-1)">
+                                         <i class="fas fa-chevron-left"></i>
+                                        Back  
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                         <i class="fas fa-pen-nib"></i>
+                                        Update
+                                       
                                     </button>
                                 </div>
                             </div>
@@ -587,10 +584,7 @@ export default {
     },
     methods: {
         loadData() {
-            axios
-                .get(
-                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`
-                )
+            axios.get(`/api/register/${this.$route.params.id}`)
                 .then(response => {
                     this.form.id = response.data.id;
                     this.selectedcategory = response.data[0].category_id;
@@ -622,11 +616,11 @@ export default {
                     this.form.cakupan_resiko = response.data[0].cakupan_resiko;
                     this.form.status_program = response.data[0].status_program;
                     //this.form.program = response.data.program;
-                    console.log(Object.values(response.data[0].nama));
+                    //console.log(Object.values(response));
                 });
         },
         getCategory() {
-            axios.get("http://127.0.0.1:8000/api/category").then(response => {
+            axios.get("/api/category").then(response => {
                 this.categories = Object.values(response.data);
                 let cat = $.map(this.categories, function(t) {
                     return { label: t.nama, value: t.id };
@@ -654,14 +648,14 @@ export default {
                 this.labelthreat = "Threat";
             }
 
-            axios.get("http://127.0.0.1:8000/api/condition").then(response => {
+            axios.get("/api/condition").then(response => {
                 this.conditions = Object.values(response.data.data);
                 let cat = $.map(this.conditions, function(t) {
                     return { label: t.nama, value: t.id };
                 });
                 this.conditions = cat;
             });
-            axios.get("http://127.0.0.1:8000/api/threat").then(response => {
+            axios.get("/api/threat").then(response => {
                 this.threats = Object.values(response.data.data);
                 let cat = $.map(this.threats, function(t) {
                     return { label: t.nama, value: t.id };
@@ -670,18 +664,14 @@ export default {
                 this.threats = cat;
             });
             /* let id = this.selectedcategory.value; */
-            axios
-                .get("http://127.0.0.1:8000/api/vulnerability/")
-                .then(response => {
-                    this.vulnerabilities = Object.values(response.data.data);
-                    let cat = $.map(this.vulnerabilities, function(t) {
-                        return { label: t.nama, value: t.id };
-                    });
-                    this.vulnerabilities = cat;
+            axios.get("/api/vulnerability/").then(response => {
+                this.vulnerabilities = Object.values(response.data.data);
+                let cat = $.map(this.vulnerabilities, function(t) {
+                    return { label: t.nama, value: t.id };
                 });
-            axios
-                .get("http://127.0.0.1:8000/api/possibility")
-                .then(response => {
+                this.vulnerabilities = cat;
+            });
+            axios.get("/api/possibility").then(response => {
                     this.possibilities = Object.values(response.data);
                     let cat = $.map(this.possibilities, function(t) {
                         return {
@@ -691,26 +681,18 @@ export default {
                     });
                     this.possibilities = cat;
                 });
-            axios
-                .get("http://127.0.0.1:8000/api/consequence/")
-                .then(response => {
-                    this.consequences = Object.values(response.data.data);
-                    let cat = $.map(this.consequences, function(t) {
-                        return {
-                            label: t.nilai + " - " + t.konsekuensi + "",
-                            value: t.nilai
-                        };
-                    });
-                    this.consequences = cat;
+            axios.get("/api/consequence/").then(response => {
+                this.consequences = Object.values(response.data.data);
+                let cat = $.map(this.consequences, function(t) {
+                    return {
+                        label: t.nilai + " - " + t.konsekuensi + "",
+                        value: t.nilai
+                    };
                 });
-        },
-        checkstatusprogram() {
-            let id = this.form.id;
-            axios.get("api/register/" + id + "/approved").then(response => {
-                this.form.id = response.data.id;
-                //console.log(this.threats);
+                this.consequences = cat;
             });
         },
+
         perkalian() {
             this.form.possibility_id = this.selectedpossibility.value;
             this.form.consequence_id = this.selectedconsequence.value;
@@ -824,7 +806,7 @@ export default {
                 this.form.possibility_id = this.selectedpossibility.value;
                 this.form.consequence_id = this.selectedconsequence.value;
                 let response = await axios.put(
-                    `http://127.0.0.1:8000/api/register/${this.$route.params.id}`,
+                    `api/register/${this.$route.params.id}`,
                     this.form
                 );
                 // console.log(response.status);
