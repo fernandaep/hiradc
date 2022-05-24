@@ -35,30 +35,30 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview"> 
-                                <li class="nav-item">
+                              <!--   <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'karyawan' }">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>Karyawan</p>
                                     </router-link>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'category' }">
                                             <i class="nav-icon fas fa-bars"></i>
                                         <p>Kategori</p>
                                     </router-link>
                                 </li>
-                                <li class="nav-item">
+                               <!--  <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'asset' }">
                                         <i class="nav-icon fas fa-archive"></i>
                                         <p>Asset</p>
                                     </router-link>
-                                </li>
-                                <li class="nav-item">
+                                </li> -->
+                               <!--  <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'activity' }">
                                         <i class="nav-icon fas fa-people-carry"></i>
                                         <p>Kegiatan</p>
                                     </router-link>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'possibility' }">
                                         <i class="nav-icon fas fa-balance-scale"></i>
@@ -119,12 +119,12 @@
                                         <p>Konsekuensi</p>
                                     </router-link>
                                 </li>
-                                <li class="nav-item">
+                            <!--     <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'k3team' }" >
                                         <i class="nav-icon fas fa-handshake"></i>
                                         <p>Admin User</p>
                                     </router-link>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
                     </div>
@@ -135,7 +135,12 @@
                             <p>register</p>
                         </router-link>
                     </li>
-
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'Registerpertanggal' }" >
+                            <i class="nav-icon fas fa-registered"></i>
+                            <p>Cetak Register</p>
+                        </router-link>
+                    </li>
                   
                     
                     <li class="nav-header"></li>

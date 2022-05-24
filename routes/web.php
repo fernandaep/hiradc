@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CetakRegisterController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+Route::get('cetakregister', 'CetakRegisterController@index')->name('cetakregister');
+Route::get('cetakregisterpertanggal', 'CetakRegisterController@exportPDF')->name('cetakregisterpertanggal');
 Route::view('/{any?}', 'layouts.vue')->where('any','.*');

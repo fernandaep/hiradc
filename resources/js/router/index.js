@@ -20,6 +20,9 @@ import editRegister from '../views/Register/edit'
 import tahunRegister from '../views/Register/tahun'
 import Unit from '../views/Unit/Index'
 import Login from '../views/auth/login'
+import CetakRegister from '../views/register/cetakregister'
+import Registerpertanggal from '../views/cetakregister/index'
+
 
 export default
 {
@@ -144,9 +147,14 @@ export default
             component: editRegister,
         },
         {
-            path:'/tahunregister/:id',
-            name:'register.tahun',
-            component: tahunRegister,
+            path:'/cetakregister',
+            name:'register.cetakregister',
+            component: CetakRegister,
+        },
+        {
+            path:'/registerpertanggal',
+            name:'Registerpertanggal',
+            component: Registerpertanggal,
         },
     ]
 }

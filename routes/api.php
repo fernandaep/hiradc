@@ -18,6 +18,7 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\PossibilityController;
 use App\Http\Controllers\ConsequencesController;
 use App\Http\Controllers\VulnerabilityController;
+use App\Http\Controllers\CetakRegisterController;
 
 Route::resource('karyawan', KaryawanController::class);
 Route::resource('category', CategoryController::class);
@@ -46,13 +47,16 @@ Route::get('karyawan/{id}/getketua',[KaryawanController::class,'getketua'])->nam
 Route::get('karyawan/{id}/getpic',[KaryawanController::class,'getpic'])->name('karyawan.getpic');
 Route::put('register/{id}/approved',[RegisterController::class,'approved'])->name('register.approved');
 Route::put('register/{id}/verified',[RegisterController::class,'verified'])->name('register.verified');
-Route::get('register/export',[RegisterController::class,'export'])->name('register.export');
+Route::get('register/{id}/export',[RegisterController::class,'export'])->name('register.export');
 Route::post('k3team/adminlogin',[K3teamController::class,'adminlogin'])->name('k3team.adminlogin');
 
 
 Route::post('/login', [LoginController::class,'index'])->name('login');
 Route::get('/logout', [LoginController::class,'logout'])->name('logout');
 Route::post('/registrasi', [AuthController::class,'store'])->name('registrasi');
+
+Route::resource('cetakregister', CetakRegisterController::class);
+Route::get('/exportPDF/{tglawal}/{tglakhir}', [CetakRegisterController::class,'exportPDF'])->name('exportPDF');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

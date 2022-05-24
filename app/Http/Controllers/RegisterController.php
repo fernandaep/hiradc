@@ -8,6 +8,7 @@ use App\Exports\RegisterExport;
 use App\Models\Register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class RegisterController extends Controller
 {
@@ -150,8 +151,7 @@ class RegisterController extends Controller
 
     public function export($id)
     {
-        //$pdf = PDF::loadView('hiradc.pdf', ['data' => $register]);
-        //return $pdf->output();
+       //
     }
     /**
      * Update the specified resource in storage.

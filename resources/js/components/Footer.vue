@@ -6,8 +6,8 @@
       AdminLTE 3.0.5
     </div>
     <strong>
-      Copyright &copy; 2021
-      <a href="#">Techniu Comp</a>.
+      Copyright &copy; 2022
+      <a href="#">Nad'sComp</a>.
     </strong> All rights reserved.
    </footer>
   <!--  </div> -->

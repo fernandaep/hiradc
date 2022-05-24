@@ -19,9 +19,9 @@
                                         <i class="fas fa-plus"></i> Add New
                                     </router-link>
                                 </b-col>
-                                <a type="button">
+                               <a type="button">
                                     <button
-                                        @click="onClick()"
+                                        @click="downloadPDF"
                                         class="btn btn-primary"
                                     >
                                         Export
@@ -878,7 +878,22 @@ export default {
                 }
             });
         },
+        downloadPDF(){
+                 axios({
+                    url: "api/cetakregister",
+                    method: 'GET',
+                    responseType: 'blob',
+                    }).then((response) => {
+                        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                        var fileLink = document.createElement('a');
+                        fileLink.href = fileURL;
+                        fileLink.setAttribute('download', 'file.pdf');
+                        document.body.appendChild(fileLink);
+                        fileLink.click();
 
+            });
+
+        },
         approvedRegister(id) {
             this.$swal({
                 title: "Apakah Kamu Yakin?",
