@@ -52,30 +52,31 @@
 
 <script>
     export default {
-            data() {
-                return {
-                    tglawal : "",
-                    tglakhir : "",
-                    }
-            },
-             mounted() {
-                console.log(tglawal)
-                    },
+        data() {
+            return {
+                tglawal : "",
+                tglakhir : "",
+                }
+        },
+        mounted() {
+        // 
+        },
         methods : {
        
         downloadPDF(){
-                 axios({
-                    url: "api/exportPDF/{tglawal}/{tglahir}",
-                    method: 'GET',
-                    responseType: 'blob',
-                    }).then((response) => {
-                        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                        //console.log(response.data);
-                        var fileLink = document.createElement('a');
-                        fileLink.href = fileURL;
-                        fileLink.setAttribute('download', 'file.pdf');
-                        document.body.appendChild(fileLink);
-                        fileLink.click();
+            //console.log(this.tglakhir)
+            axios({
+                url: "api/register/"+this.tglawal+"/"+this.tglakhir+"/export",
+                method: 'GET',
+                responseType: 'blob',
+                }).then((response) => {
+                   //console.log(response.data);
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileLink = document.createElement('a');
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', 'file.pdf');
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
 
             });
 

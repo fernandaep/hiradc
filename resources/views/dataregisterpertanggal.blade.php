@@ -6,6 +6,7 @@
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  margin-top: 20px;
 }
 
 #customers td, #customers th {
@@ -28,8 +29,11 @@
 </head>
 <body>
   <div class = "col-md-4">
-    <h2> <img height="100" width="75" src="img/download.png">  IDENTIFIKASI & PENETAPAN PROGRAM MITIGASI RESIKO K3, KO DAN ASPEK LINGKUNGAN</h2>
+    <h2> <img height="100" width="75" src="img/download.png">  
+      IDENTIFIKASI & PENETAPAN PROGRAM MITIGASI RESIKO K3, KO DAN ASPEK LINGKUNGAN</h2>
   </div>
+
+  Periode : {{ $data['tglawal'] }} s/d {{ $data['tglakhir'] }}
 
 <table id="customers">
   <tr>
@@ -55,7 +59,7 @@
   @php
     $no=1;
   @endphp
-@foreach ( $data as $row )
+@foreach ( $data['dataRegister'] as $row )
   <tr>
     <td>{{ $row->unit->unit_kerja }}</td>
     <td>{{ $row->category->nama }}</td>

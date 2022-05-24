@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\RegisterResource;
-use App\Exports\RegisterExport;
+use PDF;
+use Carbon\Carbon;
 /* use App\Http\Resources\EditRegister; */
 use App\Models\Register;
 use Illuminate\Http\Request;
+use App\Exports\RegisterExport;
 use Illuminate\Support\Facades\DB;
-use PDF;
+use App\Http\Resources\RegisterResource;
 
 class RegisterController extends Controller
 {
@@ -149,9 +150,22 @@ class RegisterController extends Controller
         ], 409);
     }
 
-    public function export($id)
+    public function export($tglawal,$tglakhir)
     {
-       //
+        $tglawal1   = $tglawal." 00:00:00";
+        $tglakhir1  = $tglakhir." 23:59:59";
+        //$data =DB::table('registers')->whereBetween('created_at',[$tglawal1,$tglakhir1])->get(); 
+        $dataRegister =Register::whereBetween('created_at',[$tglawal1,$tglakhir1])->get();
+        $data = [
+            'dataRegister'=>$dataRegister,
+            'tglawal' =>$tglawal,
+            'tglakhir' =>$tglakhir,
+        ];
+        view()->share('data',$data);
+        $pdf = PDF::loadView('dataregisterpertanggal');
+    
+        return $pdf->download('document.pdf');
+        //return $data;
     }
     /**
      * Update the specified resource in storage.

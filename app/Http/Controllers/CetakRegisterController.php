@@ -26,10 +26,12 @@ class CetakRegisterController extends Controller
     }
 
     public function exportPDF($tglawal,$tglakhir) {
-       $data =DB::table('registers')->whereBetween('created_at',[$tglawal,$tglakhir])->get(); 
-       view()->share('data',$data);
+       //$data =DB::table('registers')->whereBetween('created_at',[$tglawal,$tglakhir])->get(); 
+        $data = Register::where('created_at',$tglawal)->get();
+       /* view()->share('data',$data);
        $pdf = PDF::loadView('dataregisterpertanggal');
-       return $pdf->download('document.pdf');
+       return $pdf->download('document.pdf'); */
+       return $data;
       }
 
     public function show($id)

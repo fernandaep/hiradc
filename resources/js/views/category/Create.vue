@@ -53,7 +53,7 @@ export default {
     },
     async store() {
       try {
-         let response = await axios.post('http://hiradc.test/api/category',this.form)
+         let response = await axios.post('api/category',this.form)
           if(response.status==200){
               //console.log(response.data);
               this.form.nama = ''
