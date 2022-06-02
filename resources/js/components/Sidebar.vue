@@ -132,13 +132,25 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'register' }" >
                             <i class="nav-icon fas fa-registered"></i>
-                            <p>register</p>
+                            <p>Dokumen HIRADC</p>
                         </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'Registerpertanggal' }" >
-                            <i class="nav-icon fas fa-registered"></i>
-                            <p>Cetak Register</p>
+                            <i class="nav-icon fas fa-print"></i>
+                            <p>Cetak Dok. HIRADC</p>
+                        </router-link>
+                    </li>
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'cetakmitigasi' }" >
+                            <i class="nav-icon fas fa-print"></i>
+                            <p>Cetak Mitigasi</p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{ name: 'cetakunit' }" >
+                            <i class="nav-icon fas fa-print"></i>
+                            <p>Cetak Dok. Per-Unit</p>
                         </router-link>
                     </li>
                   

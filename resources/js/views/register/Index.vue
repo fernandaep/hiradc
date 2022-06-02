@@ -27,53 +27,7 @@
                                         Export
                                     </button>
                                 </a>
-                                <!-- <b-col lg="1">
-                                    <router-link
-                                        :to="{ name: 'register.create' }"
-                                        class="btn btn-outline-primary"
-                                    >
-                                        <i class="fas fa-plus"></i> HIRADC Sebelumnya
-                                    </router-link>
-                                </b-col> -->
-
-                                <!--    <b-col lg="2" sm="4" md="2" class="my-1">
-                                    <b-form-group
-                                        label="Year"
-                                        label-for="per-year-select"
-                                        label-cols-sm="8"
-                                        label-cols-md="8"
-                                        label-cols-lg="6"
-                                        label-align-sm="right"
-                                        label-size="sm"
-                                        class="mb-0"
-                                    > -->
-                                <!--  <b-form-select
-                                            id="per-year-select"
-                                            v-model="filter"
-                                            :options="year"
-                                            size="sm"
-                                        ></b-form-select>
-                                    </b-form-group>
-                                </b-col> -->
-                                <!--    <b-col lg="2" sm="4" md="2" class="my-1">
-                                    <b-form-group
-                                        label="Risk"
-                                        label-for="per-risk-select"
-                                        label-cols-sm="8"
-                                        label-cols-md="8"
-                                        label-cols-lg="6"
-                                        label-align-sm="right"
-                                        label-size="sm"
-                                        class="mb-0"
-                                    > -->
-                                <!--       <b-form-select
-                                            id="per-risk-select"
-                                            v-model="filter"
-                                            :options="risk"
-                                            size="sm"
-                                        ></b-form-select>
-                                    </b-form-group>
-                                </b-col> -->
+                         
                                 <b-col lg="2" sm="4" md="2" class="my-1">
                                     <b-form-group
                                         label="Per page"
@@ -93,20 +47,6 @@
                                         ></b-form-select>
                                     </b-form-group>
                                 </b-col>
-
-                                <!-- <b-table bordered show-empty striped stacked="md" no-provider-filtering 
-                                class="management-list" ref="table"
-                                v-model="filteredItems"
-                                :items="tableItems"
-                                :fields="fields"
-                                :current-page="currentPage"
-                                :per-page="perPage"
-                                :filter="filter"
-                                :filter-function="filterTable"
-                                :sort-by.sync="sortBy"
-                                :sort-desc.sync="sortDesc"
-                                @filtered="onFiltered">
-                                </b-table> -->
 
                                 <b-col lg="3" class="my-1">
                                     <b-form-group
@@ -312,7 +252,7 @@
                             >
                                 <form @submit.prevent=" editMode ? update() : store2()">
                                     <div class="modal-body">
-                                        <b-form-group
+                                       <!--  <b-form-group
                                             id="registersgroup"
                                             label="Register"
                                             label-for="register"
@@ -335,7 +275,7 @@
                                                     />
                                                 </template>
                                             </v-select>
-                                        </b-form-group>
+                                        </b-form-group> -->
 
                                         <b-form-group
                                             id="example-input-group-1"
@@ -957,7 +897,7 @@ export default {
             });
         },
         focusMyElement() {
-            this.$refs.registerReff.focus();
+            this.$refs.program_mitigasi.focus();
         },
 
         perkalian() {

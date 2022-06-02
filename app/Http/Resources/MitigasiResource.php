@@ -17,7 +17,7 @@ class MitigasiResource extends JsonResource
         return [
             'id' => $this->id,
             'register_id' => $this->register_id,
-            'register' => $this->register->activity,
+            /* 'register' => $this->register->activity, */
             'program_mitigasi' => $this->program_mitigasi,
             'possibility_id' => $this->possibility_id,
             /* 'possibilitynama'  => $this->possibility->nama, */

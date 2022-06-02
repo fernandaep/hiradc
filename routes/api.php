@@ -45,6 +45,8 @@ Route::get('karyawan/{id}/getpic',[KaryawanController::class,'getpic'])->name('k
 Route::put('register/{id}/approved',[RegisterController::class,'approved'])->name('register.approved');
 Route::put('register/{id}/verified',[RegisterController::class,'verified'])->name('register.verified');
 Route::get('register/{tglawal}/{tglakhir}/export',[RegisterController::class,'export'])->name('register.export');
+Route::get('register/{id}/exportunit',[RegisterController::class,'exportunit'])->name('register.exportunit');
+Route::get('mitigasi/{tglawal}/{tglakhir}/exportmitigasi',[MitigasiController::class,'exportmitigasi'])->name('mitigasi.exportmitigasi');
 Route::post('k3team/adminlogin',[K3teamController::class,'adminlogin'])->name('k3team.adminlogin');
 
 

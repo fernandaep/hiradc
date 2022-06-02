@@ -164,9 +164,22 @@ class RegisterController extends Controller
         view()->share('data',$data);
         $pdf = PDF::loadView('dataregisterpertanggal');
     
-        return $pdf->download('document.pdf');
+        return $pdf->download('Dokumen.pdf');
         //return $data;
     }
+
+    public function exportunit($id)
+    { 
+        $dataUnit =Register::where('unit_id',$id)->get();
+        $data = [
+            'dataUnit'=>$dataUnit,
+        ];
+        view()->share('data',$data);
+        $pdf = PDF::loadView('cetakregisterunit');
+    
+        return $pdf->download('Dokumen.pdf');
+        //return $data;
+    } 
     /**
      * Update the specified resource in storage.
      *

@@ -22,6 +22,8 @@ import Unit from '../views/Unit/Index'
 import Login from '../views/auth/login'
 import CetakRegister from '../views/register/cetakregister'
 import Registerpertanggal from '../views/cetakregister/index'
+import cetakmitigasi from '../views/cetakmitigasi/index'
+import cetakunit from '../views/cetakunit/index'
 
 
 export default
@@ -155,6 +157,16 @@ export default
             path:'/registerpertanggal',
             name:'Registerpertanggal',
             component: Registerpertanggal,
+        },
+        {
+            path:'/cetakmitigasi',
+            name:'cetakmitigasi',
+            component: cetakmitigasi,
+        },
+        {
+            path:'/cetakunit',
+            name:'cetakunit',
+            component: cetakunit,
         },
     ]
 }

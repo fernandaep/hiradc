@@ -409,7 +409,7 @@ export default {
                     thClass: "text-center"
                 },
                 {
-                    key: "register",
+                    key: "register_id",
                     sortable: true
                 },
                 {
@@ -517,7 +517,7 @@ export default {
         },
         getRegister() {
             axios.get("api/register").then(response => {
-                this.registers = Object.values(response.data.data);
+                this.registers = Object.values(response.data);
                 let cat = $.map(this.registers, function(t) {
                     return { label: t.activity, value: t.id };
                 });
@@ -526,7 +526,7 @@ export default {
         },
         getPossibility() {
             axios.get("api/possibility").then(response => {
-                this.possibilities = Object.values(response.data.data);
+                this.possibilities = Object.values(response.data);
                 let cat = $.map(this.possibilities, function(t) {
                     return {
                         label: t.nilai + " ( " + t.nama + " )",
@@ -538,7 +538,7 @@ export default {
         },
         getConsequence() {
             axios.get("api/consequence").then(response => {
-                this.consequences = Object.values(response.data.data);
+                this.consequences = Object.values(response.data);
                 let cat = $.map(this.consequences, function(t) {
                     return {
                         label: t.nilai + " - " + t.konsekuensi + "",

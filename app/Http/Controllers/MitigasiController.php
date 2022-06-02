@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MitigasiResource;
 use App\Models\Mitigasi;
 use Illuminate\Http\Request;
+use PDF;
+use Carbon\Carbon;
 
 class MitigasiController extends Controller
 {
@@ -51,7 +53,23 @@ class MitigasiController extends Controller
             'message' => 'Mitigasi Failed to Save',
         ], 409);
     }
-
+    public function exportmitigasi($tglawal,$tglakhir)
+    {
+        $tglawal1   = $tglawal." 00:00:00";
+        $tglakhir1  = $tglakhir." 23:59:59";
+        //$data =DB::table('registers')->whereBetween('created_at',[$tglawal1,$tglakhir1])->get(); 
+        $dataRegister =Mitigasi::whereBetween('created_at',[$tglawal1,$tglakhir1])->get();
+        $data = [
+            'dataRegister'=>$dataRegister,
+            'tglawal' =>$tglawal,
+            'tglakhir' =>$tglakhir,
+        ];
+        view()->share('data',$data);
+        $pdf = PDF::loadView('datamitigasi');
+    
+        return $pdf->download('Dokumen.pdf');
+        //return $data;
+    }
     /**
      * Display the specified resource.
      *

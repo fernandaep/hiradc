@@ -15,25 +15,37 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="input-group mb-3">
-                                    <label for="label">Tanggal Awal</label>
+                                 <div class="form-group row">
+                                <label
+                                    for="tglawal"
+                                    class="col-sm-2 col-form-label"
+                                    >Tanggal Awal</label
+                                >
+                                <div class="col-sm-10">
                                     <input
                                         type="date"
+                                        v-model="tglawal"
                                         class="form-control"
                                         id="tglawal"
-                                        v-model="tglawal"
                                     />
                                 </div>
-                                
-                                 <div class="input-group mb-3">
-                                    <label for="label">Tanggal Akhir</label>
+                            </div>
+                         
+                            <div class="form-group row">
+                                <label
+                                    for="tglakhir"
+                                    class="col-sm-2 col-form-label"
+                                    >Tanggal Akhir</label
+                                >
+                                <div class="col-sm-10">
                                     <input
                                         type="date"
+                                        v-model="tglakhir"
                                         class="form-control"
                                         id="tglakhir"
-                                        v-model="tglakhir"
                                     />
                                 </div>
+                            </div>
                                 
                                 <div class="col-5">
                                     <button @click="downloadPDF" class="btn btn-primary btn-block">
@@ -74,7 +86,7 @@
                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                     var fileLink = document.createElement('a');
                     fileLink.href = fileURL;
-                    fileLink.setAttribute('download', 'file.pdf');
+                    fileLink.setAttribute('download', "Dokumen "+this.tglawal+"/"+this.tglakhir+".pdf");
                     document.body.appendChild(fileLink);
                     fileLink.click();
 
