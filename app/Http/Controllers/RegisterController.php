@@ -180,6 +180,15 @@ class RegisterController extends Controller
         return $pdf->download('Dokumen.pdf');
         //return $data;
     } 
+
+    public function cetakregister()
+    {
+        $data = Register::all();
+        view()->share('data',$data);
+          $pdf = PDF::loadView('dataregister');
+          return $pdf->download('document.pdf');
+
+    }
     /**
      * Update the specified resource in storage.
      *

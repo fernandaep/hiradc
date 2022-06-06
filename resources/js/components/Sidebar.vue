@@ -119,12 +119,12 @@
                                         <p>Konsekuensi</p>
                                     </router-link>
                                 </li>
-                            <!--     <li class="nav-item">
+                                <li class="nav-item">
                                     <router-link class="nav-link" :to="{ name: 'k3team' }" >
                                         <i class="nav-icon fas fa-handshake"></i>
                                         <p>Admin User</p>
                                     </router-link>
-                                </li> -->
+                                </li>
                             </ul>
                         </li>
                     </div>
@@ -135,6 +135,16 @@
                             <p>Dokumen HIRADC</p>
                         </router-link>
                     </li>
+
+                    <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-link"></i>
+                                <p>
+                                    Cetak Dok. HIRADC
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                    <ul class="nav nav-treeview">
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{ name: 'Registerpertanggal' }" >
                             <i class="nav-icon fas fa-print"></i>
@@ -153,7 +163,8 @@
                             <p>Cetak Dok. Per-Unit</p>
                         </router-link>
                     </li>
-                  
+                  </ul>
+                </li>
                     
                     <li class="nav-header"></li>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-auto">
      <div class="container">
-        <div class="row mt-1">
+        <div class="row mt-3">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
@@ -89,7 +89,7 @@
                   <b-button variant="outline-info" size="sm" @click="openModal('edit' , 'Edit ID : ' +row.item.id, $event.target,row.item)" class="mr-1">
                     <i class="fa fa-edit"></i>
                   </b-button>
-                  <b-button variant="outline-danger" size="sm" @click="deleteActivity(row.item.id)">
+                  <b-button variant="outline-danger" size="sm" @click="deleteAdminUsers(row.item.id)">
                    <i class="fa fa-trash"></i>
                   </b-button>
                 </template>
@@ -113,13 +113,13 @@
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Name" label-for="nama">
+                    <b-form-group id="example-input-group-1" label="Name" label-for="name">
                       <b-form-input
-                        id="nama"
-                        name="nama"
-                        ref="namaReff"
-                        v-model="$v.form.nama.$model"
-                        :state="validateState('nama')"
+                        id="name"
+                        name="name"
+                        ref="nameReff"
+                        v-model="$v.form.name.$model"
+                        :state="validateState('name')"
                         aria-describedby="input-1-live-feedback"
                       ></b-form-input>
 
@@ -128,7 +128,9 @@
                       >This is a required field.
                       </b-form-invalid-feedback>
                     </b-form-group>
-                     <b-form-group id="example-input-group-1" label="Email" label-for="email">
+                  </div>
+                  <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="Email" label-for="email">
                       <b-form-input
                         id="email"
                         name="email"
@@ -142,8 +144,9 @@
                         id="input-1-live-feedback"
                       >This is a required field.
                       </b-form-invalid-feedback>
-
                     </b-form-group>
+                  </div>
+                  <div class="modal-body">
                     <b-form-group id="example-input-group-1" label="Password" label-for="password">
                       <b-form-input
                         id="password"
@@ -159,29 +162,25 @@
                       >This is a required field.
                       </b-form-invalid-feedback>
                     </b-form-group>
-                     <b-form-group
-                                            id="activitygroup"
-                                            label="activity"
-                                            label-for="activity"
-                                        >
-                                            <v-select
-                                                v-model="selected"
-                                                :options="activities"
-                                            >
-                                                <template
-                                                    #search="{attributes, events}"
-                                                >
-                                                    <input
-                                                        class="vs__search"
-                                                        :required="!selected"
-                                                        v-bind="attributes"
-                                                        v-on="events"
-                                                        ref="activityreff"
-                                                    />
-                                                </template>
-                                            </v-select>
-                                        </b-form-group>
                   </div>
+                  <div class="modal-body">
+                    <b-form-group id="example-input-group-1" label="Level" label-for="level">
+                      <b-form-input
+                        id="level"
+                        name="level"
+                        ref="levelReff"
+                        v-model="$v.form.level.$model"
+                        :state="validateState('level')"
+                        aria-describedby="input-1-live-feedback"
+                      ></b-form-input>
+
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >This is a required field.
+                      </b-form-invalid-feedback>
+                    </b-form-group>
+                  </div>
+
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" @click="hideModal" >
                       Close
@@ -218,56 +217,55 @@ import { required, minLength } from "vuelidate/lib/validators";
         pageOptions: [1, 5, 10, 15, { value: 100, text: "All" }],
         currentPage: 1,
         filter: "",
-        selected: "",
-        activities :[],
+        user: [],
+        errors: {},
         items: [],
         fields: [
-                {
-                    key: "no",
-                    sortable: true,
-                    tdClass: "text-center",
-                    thClass: "text-center"
-                },
-                {
-                    key: "id",
-                    sortable: true
-                },
-                {
-                    key: "activity",
-                    label: "activity",
-                    sortable: true
-                },
-                {
-                    key: "nama",
-                    sortable: true
-                },
-                {
-                    key: "email",
-                    sortable: true
-                },
-                {
-                    key: "password",
-                    sortable: true
-                },
-                {
-                    key: "created_at",
-                    sortable: true,
-                    tdClass: "text-right",
-                    thClass: "text-center"
-                },
-                {
-                    key: "updated_at",
-                    sortable: true,
-                    tdClass: "text-right",
-                    thClass: "text-center"
-                },
-                {
-                    key: "actions",
-                    label: "Actions",
-                    tdClass: "text-center",
-                    thClass: "text-center"
-                }
-            ],
+          {
+            key: 'no',
+            sortable: true,
+            tdClass:'text-center',
+            thClass:'text-center'
+          },
+          /* {
+            key: 'id',
+            sortable: true
+          }, */
+          {
+            key: 'name',
+            sortable: true
+          },
+          {
+            key: 'email',
+            sortable: true
+          },
+          {
+            key: 'password',
+            sortable: true
+          },
+           {
+              key: 'level',
+            sortable: true
+           },
+          /* {
+            key: 'created_at',
+            sortable: true,
+            tdClass:'text-right',
+            thClass:'text-center'
+          },
+          {
+            key: 'updated_at',
+            sortable: true,
+            tdClass:'text-right',
+            thClass:'text-center'
+          }, */
+          { 
+            key: 'actions', 
+            label: 'Actions' ,
+            tdClass:'text-center',
+            thClass:'text-center'
+          }
+        ],
         headvariant:'dark',
         transProps: {
           name: 'flip-list'
@@ -280,53 +278,43 @@ import { required, minLength } from "vuelidate/lib/validators";
         },
         form: {
           id : '',
-          nama : '',
-          email : "",
-          password : "",
-          activity_id :"",
+          name : '',
+          email : '',
+          password: '',
+          level:'',
         },
       }
     },
     validations: {
       form: {
-          activity_id: {
-                required
-            },
-        nama: {
-          required,
-          minLength: minLength(3)
-        },
-        email: {
+        name: {
           required,
         },
-        password: {
+        email : {
           required,
-        }
+          minLength: minLength(1)
+        },
+        password : {
+          required,
+        },
+         level : {
+          required,
+        },
       }
     },
     mounted() {
       this.loadData();
-      this.getActivity();
     },
     methods: {
      loadData() {
         axios.get("api/k3team").then((response) => {
-          this.items = Object.values(response.data.data);
-          //console.log(Object.values(response.data));
+          this.items = Object.values(response.data);
+          console.log(Object.values(response.data));
         }); 
       },
-      getActivity() {
-            axios.get("api/activity").then(response => {
-                this.activities = Object.values(response.data);
-                let cat = $.map(this.activities, function(t) {
-                    return { label: t.nama, value: t.id };
-                });
-                this.activities = cat;
-            });
-        },
       focusMyElement()
       {
-         this.$refs.namaReff.focus();
+         this.$refs.nameReff.focus();
       },
 
       openModal(tipe, title, button,item) {
@@ -336,20 +324,17 @@ import { required, minLength } from "vuelidate/lib/validators";
           this.form.nama =item.nama;
           this.form.email =item.email;
           this.form.password =item.password;
-           this.form.activity_id = item.activity_id;
-                this.selected = item.activity_id;
-                this.selected = {
-                    label: item.activity,
-                    value: item.activity_id
-                };
+          this.form.level =item.level;
+         
         }
         else {
           this.editMode = false;
           this.form.nama ='';
           this.form.email ='';
           this.form.password ='';
-          this.form.activity_id ='';
+          this.form.level ='';
         }
+
 
         this.infoModal.title = title
         this.$root.$emit('bv::show::modal', this.infoModal.id, button)
@@ -367,24 +352,19 @@ import { required, minLength } from "vuelidate/lib/validators";
         const { $dirty, $error } = this.$v.form[name];
         return $dirty ? !$error : null;
       },
-      validateState(email) {
+       validateState(email) {
         const { $dirty, $error } = this.$v.form[email];
         return $dirty ? !$error : null;
       },
-      validateState(password) {
+       validateState(password) {
         const { $dirty, $error } = this.$v.form[password];
         return $dirty ? !$error : null;
       },
-     /*   validateState(name) {
-        const { $dirty, $error } = this.$v.form[name];
+      validateState(level) {
+        const { $dirty, $error } = this.$v.form[level];
         return $dirty ? !$error : null;
       },
-       validateState(name) {
-        const { $dirty, $error } = this.$v.form[name];
-        return $dirty ? !$error : null;
-      }, */
       async store() {
-          this.form.activity_id = this.selected.value;
          this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -393,14 +373,14 @@ import { required, minLength } from "vuelidate/lib/validators";
             let response =  await axios.post('api/k3team',this.form)
              //console.log(response.status);
               if(response.status==200){
-                  this.form.activity_id = '';
                   this.form.nama = '';
                   this.form.email = '';
                   this.form.password = '';
+                  this.form.level = '';
                   this.hideModal();
                   this.$swal({
                     icon: 'success',
-                    title: 'Activity Added successfully'
+                    title: 'Admin User Added successfully'
                   });
                   this.loadData();
               }
@@ -410,8 +390,6 @@ import { required, minLength } from "vuelidate/lib/validators";
       },
 
       async update() {
-           let id = this.form.id;
-            this.form.activity_id = this.selected.value;
         this.$v.form.$touch();
           if (this.$v.form.$anyError) {
             return;
@@ -420,27 +398,27 @@ import { required, minLength } from "vuelidate/lib/validators";
             let id = this.form.id;
             let updated = await axios.put('api/k3team/'+id,this.form)
               if(updated.status==200){
-                  this.form.activity_id = '';
                   this.form.nama = '';
                   this.form.email = '';
                   this.form.password = '';
+                  this.form.level = '';
                   this.hideModal();
                   this.$swal({
                     icon: 'success',
-                    title: 'Activity Updated successfully'
+                    title: 'Admin User Updated successfully'
                   });
                   this.loadData();
               }
           } catch (e) {
              this.$swal({
                 icon: 'Error',
-                title: 'Activity Updated Failed '+e.response.data.errors
+                title: 'Admin User Updated Failed '+e.response.data.errors
               });
             this.theErrors = e.response.data.errors ;
           }
       },
 
-      deleteActivity(id) { 
+      deleteAdminUsers(id) { 
         this.$swal({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",

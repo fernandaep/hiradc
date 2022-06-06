@@ -818,18 +818,20 @@ export default {
                 }
             });
         },
+
         downloadPDF(){
-                 axios({
-                    url: "api/cetakregister",
-                    method: 'GET',
-                    responseType: 'blob',
-                    }).then((response) => {
-                        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                        var fileLink = document.createElement('a');
-                        fileLink.href = fileURL;
-                        fileLink.setAttribute('download', 'file.pdf');
-                        document.body.appendChild(fileLink);
-                        fileLink.click();
+                axios({
+                url: "api/cetakregister",
+                method: 'GET',
+                responseType: 'blob',
+                }).then((response) => {
+                   console.log(response.data);
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileLink = document.createElement('a');
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', "Dok.HIRADC.pdf");
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
 
             });
 

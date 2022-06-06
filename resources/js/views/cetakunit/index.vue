@@ -89,7 +89,7 @@
                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                     var fileLink = document.createElement('a');
                     fileLink.href = fileURL;
-                    fileLink.setAttribute('download', "Dokumen.pdf");
+                    fileLink.setAttribute('download', "Dok.HIRADC"+ id +".pdf");
                     document.body.appendChild(fileLink);
                     fileLink.click();
 

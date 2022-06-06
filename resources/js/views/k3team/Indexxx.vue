@@ -112,70 +112,41 @@
               <!-- Info modal -->
               <b-modal @shown="focusMyElement" ref="my-modal" :id="infoModal.id" :title="infoModal.title" @hide="resetInfoModal" hide-footer>
                 <form @submit.prevent="editMode ? update() : store()"> 
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Fullname" label-for="nama">
-                      <b-form-input
-                        id="nama"
-                        name="nama"
-                        ref="namaReff"
-                        v-model="$v.form.nama.$model"
-                        :state="validateState('nama')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                  <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Email" label-for="email">
-                      <b-form-input
-                        id="email"
-                        name="email"
-                        ref="emailReff"
-                        v-model="$v.form.email.$model"
-                        :state="validateState('email')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                   <div class="modal-body">
-                    <b-form-group id="example-input-group-1" label="Password" label-for="password">
-                      <b-form-input
-                        id="password"
-                        name="password"
-                        ref="passwordReff"
-                        v-model="$v.form.password.$model"
-                        :state="validateState('password')"
-                        aria-describedby="input-1-live-feedback"
-                      ></b-form-input>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >This is a required field.
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-                  </div>
-                <div class="modal-body">
-                                        <b-form-group
-                                            id="example-input-group-1"
-                                            label="Usertype"
-                                            label-for="usertype"
-                                        >
-                                            <select v-model="usertype" placeholder="Select admin Type">
-                                            <option value="admin">Admin</option>
-                                            <option value="unitkerja">Unit Kerja</option>
-                                            <option value="verifikator">Verifikator</option>
-                                            <option value="approval">Approval</option>
-                                              
-                                            </select>
-                                            </b-form-group>
-                                            </div>
+                   <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Full name" name="name" v-model="user.name">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                   <!--  <p class="text-danger" v-text="errors.name"></p> -->
+                    </div>
+                    <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email" v-model="user.email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                  <!--   <p class="text-danger" v-text="errors.email"></p> -->
+                    </div>
+                    <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="password" v-model="user.password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                   <!--  <p class="text-danger" v-text="errors.password"></p> -->
+                    </div>
+                    <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Retype password" name="password_confirmation" v-model="user.password_confirmation">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    </div>
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" @click="hideModal" >
@@ -227,7 +198,7 @@ import { required, minLength } from "vuelidate/lib/validators";
             sortable: true
           }, */
           {
-            key: 'nama',
+            key: 'name',
             sortable: true
           },
           {

@@ -18,6 +18,7 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\PossibilityController;
 use App\Http\Controllers\ConsequencesController;
 use App\Http\Controllers\VulnerabilityController;
+use App\Http\Controllers\CetakRegisterController;
 
 Route::resource('karyawan', KaryawanController::class);
 Route::resource('category', CategoryController::class);
@@ -33,6 +34,7 @@ Route::resource('term', TermController::class);
 Route::resource('consequence', ConsequencesController::class);
 Route::resource('k3team', K3teamController::class);
 Route::resource('register', RegisterController::class);
+Route::resource('cetakregister', CetakRegisterController::class);
 
 Route::get('condition/{id}/showkat',[conditionController::class,'showkat'])->name('condition.showkat');
 Route::get('threat/{id}/threatkat',[ThreatController::class,'threatkat'])->name('threat.threatkat');

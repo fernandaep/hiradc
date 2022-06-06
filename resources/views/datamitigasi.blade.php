@@ -58,11 +58,16 @@
     <td>{{ $row->tingkat_resiko }}</td>
     <td>{{ $row->aspek_lingkungan }}</td>
     <td>{{ $row->keterangan }}</td>
-
-
   </tr>
 @endforeach
 </table>
+<div>
+<p align="center">Menyetujui,</p>
+<p align="center">Kepala Unit Sistem Manajemen,</p>
+<p align=center><img height="100" width="75" src="img/download.png"></p>
+<p align="center"><b><u>Nelvi Irawati, S.si, M.T</b></u></p>
+<p align="center">NIP : 7502015</p>
+</div>
 </body>
 </html>
 

@@ -65,9 +65,6 @@
                         <!-- /.col -->
                         </div>
 
-                    <p class="mb-1">
-                        <a href="#">I forgot my password</a>
-                    </p>
                     <p class="mb-0">
                         <router-link :to="{ name: 'registrasi' }">Create New Account!</router-link>
                     </p>
